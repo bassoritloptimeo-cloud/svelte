@@ -1,2 +1,14 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://svelte.dev/docs/kit">svelte.dev/docs/kit</a> to read the documentation</p>
+<script>
+	import { resolve } from "$app/paths";
+</script>
+
+<div class="container">
+    <a href={resolve('/sur-le-toit')}>Labyrinthe 3D (sur le toit)</a>
+</div>
+
+<style>
+    .container {
+        padding: 2rem;
+    }
+
+</style>
