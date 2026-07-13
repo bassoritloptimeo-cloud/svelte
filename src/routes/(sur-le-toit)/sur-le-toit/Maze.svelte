@@ -9,7 +9,7 @@
             {#each floors as rows, y (y)}
                 <div class="maze-grid">
                     {#each rows as cell, x (x)}
-                    {@const {top, right, bottom, left, up, down} = cell}
+                    	{@const {top, right, bottom, left, up, down} = cell}
                         <div 
                             class="cell" 
                             class:wall-top={!top} 
