@@ -31,3 +31,5 @@ export interface Cell {
     /** Distance pour les algos de pathfinding. */
     dist?: number;
 }
+
+export type Direction = 'up' | 'down' | 'left' | 'right' | 'top' | 'bottom';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { floors$, height$, started$, width$, createMaze } from "./state.store";
+    import { floors$, height$, started$, width$, createMaze, onkeydown, win$, newGame } from "./state.store";
     import Maze from "./Maze.svelte";
 
     import "./styles.css";
@@ -14,9 +14,20 @@
   <title>Sur le toit</title>
 </svelte:head>
 
+<svelte:document {onkeydown} />
+
 {#if $started$}
     <button class="demarrage" onclick={solveLabyrinth}>Trouver la sortie</button>
     <Maze></Maze>
+	{#if $win$}
+		<dialog open>
+			Vous avez gagné !
+			<div class="buttons">
+				<button onclick={newGame}>Nouveau jeu</button>
+			</div>
+		</dialog>
+	{/if}
+
 {:else}
     <div class="highButton">
         <button class="position" onclick={() => createMaze()}>Créer le jeu</button>
@@ -39,3 +50,11 @@
         </div>
     </div>
 {/if}
+<style>
+	dialog {
+		text-align: center;
+	}
+	.buttons {
+		padding: 1rem;
+	}
+</style>

@@ -1,13 +1,17 @@
 <script lang="ts">
-    import {maze$, width$} from "./state.store";
+    import {maze$, player$, width$} from "./state.store";
+
+
+	const [pz, py, px] = $derived($player$);
+
 </script>
 
 <div class="tableContainer" style:--cols={$width$}>
     {#each $maze$ as floors, z (z)}
         <div>
             <div class="floorTitle">Etage No {z}</div>
-            {#each floors as rows, y (y)}
-                <div class="maze-grid">
+			<div class="maze-grid">
+            	{#each floors as rows, y (y)}
                     {#each rows as cell, x (x)}
                     	{@const {top, right, bottom, left, up, down} = cell}
                         <div 
@@ -16,6 +20,7 @@
                             class:wall-bottom={!bottom} 
                             class:wall-left={!left} 
                             class:wall-right={!right} 
+							class:player={z === pz && y === py && x === px}
                             data-y={y} 
                             data-x={x}
                         >
@@ -31,8 +36,8 @@
                            {/if}
                         </div>                       
                     {/each}
-                </div>
-            {/each}
+				{/each}
+			</div>
         </div>
     {/each}
 </div>

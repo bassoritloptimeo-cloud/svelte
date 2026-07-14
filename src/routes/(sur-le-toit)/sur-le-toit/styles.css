@@ -15,6 +15,35 @@ body {
 	background: var(--bg-dark);
 	color: white;
 }
+
+dialog[open] {
+	position: fixed;
+	inset: 0;
+	margin: auto;
+	width: fit-content;
+	height: fit-content;
+	z-index: 100;
+	background: var(--panel-bg);
+	border: 1px solid var(--neon-cyan);
+	box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+	padding: 2rem;
+	color: white;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(4px);
+}
+
+dialog button {
+	background: var(--neon-cyan);
+	color: black;
+}
+
+dialog button:hover {
+	background: transparent;
+	color: white;
+}
 button {
 	margin-top: auto;
 	background: transparent;
