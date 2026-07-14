@@ -6,9 +6,6 @@
 	"prettier.useTabs": true,
 	"prettier.tabWidth": 4,
 	"prettier.printWidth": 1000,
-	"files.exclude": {
-		"src/": true
-	},
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
