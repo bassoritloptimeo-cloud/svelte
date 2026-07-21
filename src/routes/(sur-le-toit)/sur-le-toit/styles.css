@@ -1,0 +1,213 @@
+* {
+	box-sizing: border-box;
+}
+:root {
+	--neon-cyan: #00f2ff;
+	--neon-green: #39ff14;
+	--neon-red: #ff3131;
+	--neon-purple: #bc13fe;
+	--bg-dark: #020b16;
+	--panel-bg: rgba(10, 25, 41, 0.8);
+}
+body {
+	margin: 0;
+	min-height: 100vh;
+	background: var(--bg-dark);
+	color: white;
+}
+
+dialog[open] {
+	position: fixed;
+	inset: 0;
+	margin: auto;
+	width: fit-content;
+	height: fit-content;
+	z-index: 100;
+	background: var(--panel-bg);
+	border: 1px solid var(--neon-cyan);
+	box-shadow: 0 0 30px rgba(0, 242, 255, 0.3);
+	padding: 2rem;
+	color: white;
+}
+
+dialog::backdrop {
+	background: rgba(0, 0, 0, 0.7);
+	backdrop-filter: blur(4px);
+}
+
+dialog button {
+	background: var(--neon-cyan);
+	color: black;
+}
+
+dialog button:hover {
+	background: transparent;
+	color: white;
+}
+button {
+	margin-top: auto;
+	background: transparent;
+	border: 1px solid var(--neon-cyan);
+	color: white;
+	padding: 12px;
+	font-family: 'Orbitron', sans-serif;
+	text-transform: uppercase;
+	cursor: pointer;
+	transition: 0.3s;
+	box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2);
+	clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+}
+button:hover {
+	background-color: var(--neon-cyan);
+	color: black;
+	box-shadow: 0 0 20px --neon-red
+}
+
+.tableContainer {
+	--cell-size: 50px;
+	--border-color: black;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 1rem;
+	flex-wrap: wrap;
+	/* height: 100%; */
+}
+
+.maze-grid {
+	display: grid;
+	grid-template-columns: repeat(var(--cols), 45px);
+	border: 2px solid var(--neon-cyan);
+	box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+	background: rgba(0, 0, 0, 0.5);
+}
+
+.cell {
+	position: relative;
+	aspect-ratio: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	/* Inner wall glow effect */
+	box-sizing: border-box;
+}
+
+
+.tableContainer table {
+	table-layout: fixed;
+	border-collapse: collapse;
+	border: 10px solid black;
+}
+
+.floorTitle {
+	margin-bottom: 1rem;
+	font-weight: bold;
+}
+
+.board-cell {
+	width: var(--cell-size);
+	height: var(--cell-size);
+	padding: 1rem;
+	border: 2px solid transparent;
+	text-align: center;
+	vertical-align: center;
+}
+
+.wall-top {
+	border-top: 2px solid var(--neon-cyan);
+	box-shadow: inset 0 5px 5px -5px var(--neon-cyan);
+}
+
+.wall-bottom {
+	border-bottom: 2px solid var(--neon-cyan);
+	box-shadow: inset 0 -5px 5px -5px var(--neon-cyan);
+}
+
+.wall-left {
+	border-left: 2px solid var(--neon-cyan);
+	box-shadow: inset 5px 0 5px -5px var(--neon-cyan);
+}
+
+.wall-right {
+	border-right: 2px solid var(--neon-cyan);
+	box-shadow: inset -5px 0 5px -5px var(--neon-cyan);
+}
+
+.player {
+	position: relative;
+}
+.player::after {
+	content: " ";
+	display: block;
+	width: calc(var(--cell-size) / 2.2);
+	height: calc(var(--cell-size) / 2.2);
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+
+	background: white;
+	opacity: 0.6;
+	border-radius: 50%;
+	box-shadow: 0 0 15px 5px var(--neon-cyan), 0 0 30px var(--neon-cyan);
+}
+
+.go-up {
+	width: 0; height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-bottom: 14px solid var(--neon-green);
+	filter: drop-shadow(0 0 5px var(--neon-green));
+}
+
+.go-down {
+	width: 0; height: 0;
+	border-left: 8px solid transparent;
+	border-right: 8px solid transparent;
+	border-top: 14px solid var(--neon-red);
+	filter: drop-shadow(0 0 5px var(--neon-red));
+}
+.go-both {
+	width: 10px; height: 10px;
+	border: 2px solid var(--neon-purple);
+	transform: rotate(45deg);
+	filter: drop-shadow(0 0 5px var(--neon-purple));
+}
+.WIN_general {
+	transition:
+		color 2000ms,
+		border 2000ms,
+		border-color 1500ms;
+	outline: none;
+}
+.WIN_begin {
+	color : rgb(0, 0, 0);
+	background-color: rgb(0, 0, 0);
+	border: 0.2px solid rgb(0, 0, 0);
+	border-radius: 0px;
+}
+.WIN_color {
+	color : rgb(255, 255, 255);
+	background-color: rgb(0, 0, 0);
+	border: 40px solid var(--neon-cyan);
+	border-radius: 100px;
+}
+.WINtext_general {
+	transition: 2000ms;
+}
+.WINtext_begin {
+	font-size: 1px;
+}
+.WINtext_end {
+	font-size: 200px;
+}
+.slide {
+	display: flex;
+  	flex-wrap: nowrap;
+}
+.slider {
+	transition: 500ms;
+	padding: 10px;
+	margin: 10px;
+	width: 500px;
+}
