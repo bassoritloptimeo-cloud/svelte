@@ -1,5 +1,5 @@
-export const places = [
-	{
+export const places = {
+	maison_haut_gauche: {
 		id: 'maison_haut_gauche',
 		nom: 'Maison avec fleurs (en haut à gauche)',
 		numero_noir: 71,
@@ -7,7 +7,7 @@ export const places = [
 		left: 15.0,
 		top: 12.5
 	},
-	{
+	gare: {
 		id: 'gare',
 		nom: 'Station (Gare)',
 		numero_noir: 14,
@@ -15,7 +15,7 @@ export const places = [
 		left: 40.5,
 		top: 12.5
 	},
-	{
+	maison_haut_centre: {
 		id: 'maison_haut_centre',
 		nom: 'Petite maison (à côté de la gare)',
 		numero_noir: 9,
@@ -23,7 +23,7 @@ export const places = [
 		left: 60.5,
 		top: 13.0
 	},
-	{
+	hotel: {
 		id: 'hotel',
 		nom: 'Hôtel (Méridional)',
 		numero_noir: 12,
@@ -31,7 +31,7 @@ export const places = [
 		left: 83.5,
 		top: 14.5
 	},
-	{
+	sheriff: {
 		id: 'sheriff',
 		nom: 'Bureau du Shérif (Sheriff Office)',
 		numero_noir: 16,
@@ -39,7 +39,7 @@ export const places = [
 		left: 17.5,
 		top: 27.5
 	},
-	{
+	diligence: {
 		id: 'diligence',
 		nom: 'Diligence et cheval',
 		numero_noir: 29,
@@ -47,7 +47,7 @@ export const places = [
 		left: 39.5,
 		top: 27.0
 	},
-	{
+	banque: {
 		id: 'banque',
 		nom: 'Banque (Bank)',
 		numero_noir: 77,
@@ -55,7 +55,7 @@ export const places = [
 		left: 64.0,
 		top: 26.5
 	},
-	{
+	primeur: {
 		id: 'primeur',
 		nom: 'Marchand de légumes (Vegetables)',
 		numero_noir: 25,
@@ -63,7 +63,7 @@ export const places = [
 		left: 86.0,
 		top: 30.5
 	},
-	{
+	epicerie: {
 		id: 'epicerie',
 		nom: 'Épicerie (Grocery)',
 		numero_noir: 76,
@@ -71,7 +71,7 @@ export const places = [
 		left: 19.5,
 		top: 43.0
 	},
-	{
+	fontaine: {
 		id: 'fontaine',
 		nom: 'Fontaine',
 		numero_noir: 75,
@@ -79,7 +79,7 @@ export const places = [
 		left: 42.5,
 		top: 42.0
 	},
-	{
+	prison: {
 		id: 'prison',
 		nom: 'Prison (Jail)',
 		numero_noir: 59,
@@ -87,7 +87,7 @@ export const places = [
 		left: 63.0,
 		top: 44.0
 	},
-	{
+	pont_bois: {
 		id: 'pont_bois',
 		nom: 'Grand pont en bois (à gauche)',
 		numero_noir: 42,
@@ -95,7 +95,7 @@ export const places = [
 		left: 16.5,
 		top: 58.5
 	},
-	{
+	cabane_droite: {
 		id: 'cabane_droite',
 		nom: 'Cabane en bois (à droite de la prison)',
 		numero_noir: 6,
@@ -103,7 +103,7 @@ export const places = [
 		left: 86.5,
 		top: 45.5
 	},
-	{
+	armurier: {
 		id: 'armurier',
 		nom: 'Armurier (Guns)',
 		numero_noir: 58,
@@ -111,7 +111,7 @@ export const places = [
 		left: 38.5,
 		top: 58.0
 	},
-	{
+	cabane_peche: {
 		id: 'cabane_peche',
 		nom: 'Cabane de pêche / Puits',
 		numero_noir: 34,
@@ -119,7 +119,7 @@ export const places = [
 		left: 60.5,
 		top: 60.5
 	},
-	{
+	pont_pierre: {
 		id: 'pont_pierre',
 		nom: 'Pont en pierre / Tunnel (à droite)',
 		numero_noir: 45,
@@ -127,7 +127,7 @@ export const places = [
 		left: 81.5,
 		top: 59.5
 	},
-	{
+	pompes_funebres: {
 		id: 'pompes_funebres',
 		nom: 'Pompes funèbres (Funerals)',
 		numero_noir: 31,
@@ -135,7 +135,7 @@ export const places = [
 		left: 19.0,
 		top: 72.0
 	},
-	{
+	forge: {
 		id: 'forge',
 		nom: 'Forge (Maréchal-ferrant)',
 		numero_noir: 55,
@@ -143,7 +143,7 @@ export const places = [
 		left: 40.0,
 		top: 73.0
 	},
-	{
+	statue: {
 		id: 'statue',
 		nom: 'Statue de cowboy',
 		numero_noir: 67,
@@ -151,7 +151,7 @@ export const places = [
 		left: 61.5,
 		top: 71.5
 	},
-	{
+	poste: {
 		id: 'poste',
 		nom: 'Bureau de poste (Post Office)',
 		numero_noir: 51,
@@ -159,7 +159,7 @@ export const places = [
 		left: 82.0,
 		top: 73.0
 	},
-	{
+	saloon: {
 		id: 'saloon',
 		nom: 'Saloon',
 		numero_noir: 37,
@@ -167,7 +167,7 @@ export const places = [
 		left: 16.5,
 		top: 86.5
 	},
-	{
+	cimetiere: {
 		id: 'cimetiere',
 		nom: 'Cimetière',
 		numero_noir: 61,
@@ -175,7 +175,7 @@ export const places = [
 		left: 40.5,
 		top: 86.5
 	},
-	{
+	eglise: {
 		id: 'eglise',
 		nom: 'Église',
 		numero_noir: 36,
@@ -183,7 +183,7 @@ export const places = [
 		left: 63.5,
 		top: 84.5
 	},
-	{
+	ecole: {
 		id: 'ecole',
 		nom: 'École (School)',
 		numero_noir: 39,
@@ -191,7 +191,7 @@ export const places = [
 		left: 86.0,
 		top: 86.5
 	}
-];
+};
 
 export const moves = {
 	maison_haut_gauche: {
