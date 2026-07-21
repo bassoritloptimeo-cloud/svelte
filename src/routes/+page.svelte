@@ -4,6 +4,7 @@
 
 <div class="container">
     <a href={resolve('/sur-le-toit')}>Labyrinthe 3D (sur le toit)</a>
+	<a href={resolve('/sherif')}>Shérif et bandit</a>
 	<a href={resolve('/test')}>Test</a>
 </div>
 
