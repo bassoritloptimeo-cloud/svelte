@@ -11,14 +11,14 @@ export function position() {
 		if (player === "sheriff") {
 			sheriff$.set({
 				place: placesRandom.id,
-				x: placesRandom.left,
-				y: placesRandom.top
+				x: placesRandom.x,
+				y: placesRandom.y
 			});
 		} else {
 			bandit$.set({
 				place: placesRandom.id,
-				x: placesRandom.left,
-				y: placesRandom.top
+				x: placesRandom.x,
+				y: placesRandom.y
 			});
 		}
 	}
@@ -44,16 +44,17 @@ export const bandit$ = writable({
 */
 
 
-const allowedDirs = ['1', '2', '3', '4'];
+const allowedDirs: Array<keyof typeof moves[keyof typeof moves]> = ['1', '2', '3', '4'];
 export function handleGlobalKeyDown(event: KeyboardEvent) {
-	const lastKey = event.key;
-	if (allowedDirs.includes(lastKey)) {
+	const lastKey = event.key as keyof typeof moves[keyof typeof moves];
+	if ((allowedDirs as string[]).includes(lastKey)) {
 		const sheriff = sheriff$();
-		const lastPosition = sheriff.place;
+		const lastPosition = sheriff.place as keyof typeof moves;
 		console.log("lastKey, lastPosition", lastKey, lastPosition);
 		sheriff.place = moves[lastPosition][lastKey];
-		sheriff.x = places[sheriff.place].left;
-		sheriff.y = places[sheriff.place].top;
+		const target = places[sheriff.place as keyof typeof places];
+		sheriff.x = target.x;
+		sheriff.y = target.y;
 		sheriff$.set(sheriff);
 	}
 
