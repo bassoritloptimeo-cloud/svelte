@@ -1,3 +1,5 @@
+
+
 export const places = {
 	maison_haut_gauche: {
 		id: 'maison_haut_gauche',
@@ -193,34 +195,35 @@ export const places = {
 	}
 };
 
+
 export const moves = {
 	maison_haut_gauche: {
-		'1': 'sheriff',
-		'2': 'gare',
+		'1': 'maison_haut_centre',
+		'2': 'sheriff',
 		'3': 'hotel',
-		'4': 'pont_bois'
+		'4': 'gare'
 	},
 	gare: {
 		'1': 'diligence',
-		'2': 'maison_haut_gauche',
-		'3': 'hotel',
-		'4': 'maison_haut_centre'
+		'2': 'hotel',
+		'3': 'maison_haut_centre',
+		'4': 'maison_haut_gauche'
 	},
 	maison_haut_centre: {
-		'1': 'hotel',
+		'1': 'maison_haut_gauche',
 		'2': 'banque',
-		'4': 'gare',
-		'9': 'gare'
+		'3': 'gare',
+		'4': 'hotel'
 	},
 	hotel: {
 		'1': 'primeur',
-		'2': 'maison_haut_gauche',
-		'3': 'maison_haut_centre',
+		'2': 'gare',
+		'3': 'maison_haut_gauche',
 		'4': 'maison_haut_centre'
 	},
 	sheriff: {
-		'1': 'maison_haut_gauche',
-		'2': 'diligence',
+		'1': 'pont_bois',
+		'2': 'maison_haut_gauche',
 		'3': 'epicerie',
 		'4': 'diligence'
 	},
@@ -238,15 +241,15 @@ export const moves = {
 	},
 	primeur: {
 		'1': 'hotel',
-		'2': 'cabane_droite',
-		'3': 'prison',
+		'2': 'pont_pierre',
+		'3': 'cabane_droite',
 		'4': 'banque'
 	},
 	epicerie: {
 		'1': 'fontaine',
-		'2': 'armurier',
+		'2': 'pont-bois',
 		'3': 'sheriff',
-		'4': 'pont_bois'
+		'4': 'pompes_funebres'
 	},
 	fontaine: {
 		'1': 'epicerie',
@@ -261,22 +264,22 @@ export const moves = {
 		'4': 'fontaine'
 	},
 	cabane_droite: {
-		'2': 'primeur',
-		'3': 'prison',
-		'4': 'pont_pierre',
-		'6': 'pont_pierre'
+		"1": 'poste',
+		'2': 'prison',
+		'3': 'primeur',
+		'4': 'pont_pierre'
 	},
 	pont_bois: {
-		'1': 'epicerie',
+		'1': 'cheriff',
+		"2": 'epicerie',
 		'3': 'pompes_funebres',
-		'4': 'maison_haut_gauche',
-		'5': 'pompes_funebres'
+		'4': 'armurerie'
 	},
 	armurier: {
 		'1': 'forge',
 		'2': 'cabane_peche',
 		'3': 'fontaine',
-		'4': 'epicerie'
+		'4': 'pont_bois'
 	},
 	cabane_peche: {
 		'1': 'pont_pierre',
@@ -285,8 +288,8 @@ export const moves = {
 		'4': 'statue'
 	},
 	pont_pierre: {
-		'1': 'poste',
-		'2': 'cabane_droite',
+		'1': 'cabane_peche',
+		'2': 'primeur',
 		'3': 'poste',
 		'4': 'cabane_droite'
 	},
@@ -294,7 +297,7 @@ export const moves = {
 		'1': 'saloon',
 		'2': 'forge',
 		'3': 'pont_bois',
-		'4': 'saloon'
+		'4': 'epicerie'
 	},
 	forge: {
 		'1': 'armurier',
@@ -309,22 +312,22 @@ export const moves = {
 		'4': 'cabane_peche'
 	},
 	poste: {
-		'1': 'pont_pierre',
-		'3': 'ecole',
-		'4': 'ecole',
-		'51': 'statue'
+		'1': 'cabane_droite',
+		'2': 'statue',
+		'3': 'pont_pierre',
+		'4': 'ecole'
 	},
 	saloon: {
 		'1': 'pompes_funebres',
 		'2': 'cimetiere',
-		'4': 'pompes_funebres',
-		'37': 'eglise'
+		'3': 'ecole',
+		'4': 'eglise'
 	},
 	cimetiere: {
+		'1': 'ecole',
 		'2': 'saloon',
 		'3': 'eglise',
-		'4': 'forge',
-		'61': 'eglise'
+		'4': 'forge'
 	},
 	eglise: {
 		'1': 'statue',
@@ -333,9 +336,9 @@ export const moves = {
 		'4': 'saloon'
 	},
 	ecole: {
-		'1': 'eglise',
+		'1': 'cimetiere',
 		'2': 'eglise',
-		'3': 'poste',
+		'3': 'saloon',
 		'4': 'poste'
 	}
 };
