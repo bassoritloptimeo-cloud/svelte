@@ -6,3 +6,12 @@ export interface Cell {
 	'3': CellPos
 	'4': CellPos
 }
+
+export interface Place {
+	id: string
+	nom: string
+	numero_noir: number
+	numero_rouge: number
+	x: number
+	y: number
+}

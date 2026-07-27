@@ -1,6 +1,6 @@
-import type {Cell} from './types.ts';
+import type {Cell, Place} from './types.ts';
 
-export const places = {
+export const places: Record<string, Place> = {
 	maison_haut_gauche: {
 		id: 'maison_haut_gauche',
 		nom: 'Maison avec fleurs (en haut à gauche)',

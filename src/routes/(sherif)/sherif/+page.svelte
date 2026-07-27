@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { position, sheriff$, bandit$, handleGlobalKeyDown } from "./state.store";
+	import { position, sheriff$, bandit$,beginGame$, banditMovesActu$, handleGlobalKeyDown, sheriffMoves$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
 	
@@ -21,6 +21,33 @@
 	</div>
 	<div class="option">
 		<button onclick={position}>Commencer le jeu</button>
+		{#if $beginGame$}
+			<div class="moves">
+				<p class="moves_opposant">Déplacements adverse</p>
+				<div class="relatives-moves">
+					{#each Object.entries($banditMovesActu$) as [key, value] (key)}
+						<div>
+							<p class="moves_possibilities">{key}</p>
+						</div>
+						<div>
+							<p class="moves_possibilities">{value}</p>
+						</div>
+					{/each}
+				</div>
+			</div>
+
+			<div class="relatives-moves">
+				{#each Object.entries($sheriffMoves$) as [key, place] (key)}
+					<div>
+						<p class="moves_possibilities">{key}</p>
+					</div>
+					<div>
+						<p class="moves_possibilities">{place.nom}</p>
+					</div>
+				{/each}
+			</div>
+
+		{/if}
 	</div>
 </div>
 
@@ -30,5 +57,26 @@
 		height: 10%;
 		filter: drop-shadow(-10px 0px 8px red);
 		transition: 500ms;
+	}
+	.moves_opposant {
+		margin-top: 5px;
+		margin-bottom: 20px;
+		margin-left: 20px;
+		font-size: 2rem;
+		color: rgb(100, 20, 20);
+	}
+	.moves {
+		width: 500px;
+		border-top: 5px solid rgb(100, 20, 20);
+	}
+	.relatives-moves {
+		display: grid;
+		grid-template-columns: auto 1fr;
+	}
+	.moves_possibilities {
+		display: inline-block;
+		border: 2px solid rgb(100, 20, 20);
+		font-size: 1.75rem;
+		padding: 5px 10px 5px 10px;
 	}
 </style>
