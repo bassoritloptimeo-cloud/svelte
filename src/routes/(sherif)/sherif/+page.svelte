@@ -1,7 +1,8 @@
 <script lang="ts">
-	import { position, sheriff$, bandit$,beginGame$, banditMovesActu$, handleGlobalKeyDown, sheriffMoves$ } from "./state.store";
+	import { position, sherif$, bandit$,beginGame$, banditMovesActu$, handleGlobalKeyDown, sheriffMoves$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
+	import Avatar from "./components/Avatar.svelte";
 	
 	
 </script>
@@ -9,15 +10,24 @@
 <svelte:window onkeydown={handleGlobalKeyDown} />
 
 <svelte:head>
-  <title>Shérif et bandit</title>s
+  <title>Shérif et bandit</title>
 </svelte:head>
 
 
 <div class="container">
 	<div class="play_contener">
 		<img src="sherif/map.jpg" alt="Carte du monde" class="map">
-		<img src="sherif/sherif.png" alt="Shérif" class="character sherif" style={`left: ${placePositions[placeByPos[`${$sheriff$.x},${$sheriff$.y}`]]?.left ?? 0}%; top: ${placePositions[placeByPos[`${$sheriff$.x},${$sheriff$.y}`]]?.top ?? 0}%;`}>
-		<img src="sherif/bandit.png" alt="Bandit" class="character bandit" style={`left: ${placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.left ?? 0}%; top: ${placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.top ?? 0}%;`}>
+		<Avatar 
+			name="sherif" 
+			left={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.left} 
+			top={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.top}
+		></Avatar>
+		<Avatar 
+			name="bandit" 
+			left={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.left} 
+			top={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.top}
+		></Avatar>
+
 	</div>
 	<div class="option">
 		<button onclick={position}>Commencer le jeu</button>
@@ -52,12 +62,7 @@
 </div>
 
 <style>
-	.character {
-		position: absolute;
-		height: 10%;
-		filter: drop-shadow(-10px 0px 8px red);
-		transition: 500ms;
-	}
+	
 	.moves_opposant {
 		margin-top: 5px;
 		margin-bottom: 20px;

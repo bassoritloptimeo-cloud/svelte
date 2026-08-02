@@ -18,18 +18,18 @@ function getRandomPlace() {
 }
 export function position() {
 	beginGame$.set(true);
-	sheriff$.set(getRandomPlace());
+	sherif$.set(getRandomPlace());
 	bandit$.set(getRandomPlace());
 }
 
-export const sheriff$ = writable<CellPos>({ x: 0, y: 0 });
+export const sherif$ = writable<CellPos>({ x: 0, y: 0 });
 
 export const bandit$ = writable<CellPos>({ x: 0, y: 0 });
 
 export const sheriffMoves$ = computed(() => {
 
 
-	const {x, y} = sheriff$();
+	const {x, y} = sherif$();
 	const cell = grid[y][x];
 
 	const moves = ['1', '2', '3', '4'];
@@ -42,6 +42,12 @@ export const sheriffMoves$ = computed(() => {
 
 	return result;
 });
+
+const moves = [
+	[2, 3, 4, 1],
+	[3, 4, 1, 2],
+];
+
 
 const banditMoves = {
 	1: {
@@ -88,9 +94,9 @@ const allowedDirs: Array<keyof Cell> = ['1', '2', '3', '4'];
 export function handleGlobalKeyDown(event: KeyboardEvent) {
 	const lastKey = event.key;
 	if ((allowedDirs as string[]).includes(lastKey)) {
-		const sheriff = sheriff$();
+		const sheriff = sherif$();
 		const next = grid[sheriff.y][sheriff.x][lastKey as keyof Cell];
-		sheriff$.set(next);
+		sherif$.set(next);
 
 		const bandit = bandit$();
 		const banditDir = banditMoves[diceValue][lastKey as keyof Cell];
