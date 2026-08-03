@@ -1,31 +1,32 @@
-## Project Configuration
+# AGENTS.md
 
-- **Language**: TypeScript
-- **Package Manager**: npm
-- **Add-ons**: prettier, eslint, vitest, playwright, tailwindcss, sveltekit-adapter, mcp
+## Commands
 
----
+- `npm run dev` — dev server
+- `npm run check` — svelte-check typecheck (`svelte-kit sync` runs first; `prepare` script also syncs on install)
+- `npm run lint` — `prettier --check . && eslint .`
+- `npm run format` — `prettier --write .`
+- `npm run test:unit` — vitest (watch by default; use `npm run test:unit -- --run` for one-shot)
+- `npm run test:e2e` — playwright (spawns `npm run build && npm run preview` on port 4173; matches `**/*.e2e.{ts,js}`)
+- `npm run test` — `test:unit -- --run` then e2e
 
-You are able to use the Svelte MCP server, where you have access to comprehensive Svelte 5 and SvelteKit documentation. Here's how to use the available tools effectively:
+Verify with `npm run check` and `npm run lint` after changes.
 
-## Available Svelte MCP Tools:
+## Layout
 
-### 1. list-sections
+Two independent games, each fully self-contained under a route group (groups only affect URLs):
+- `src/routes/(sherif)/sherif/` — "Shérif et bandit" board game (URL `/sherif`). Game data + grid live in `data.ts`, logic in `state.store.ts`, types in `types.ts`.
+- `src/routes/(sur-le-toit)/sur-le-toit/` — 3D maze game (URL `/sur-le-toit`). Includes a legacy `old/` folder.
 
-Use this FIRST to discover all available documentation sections. Returns a structured list with titles, use_cases, and paths.
-When asked about Svelte or SvelteKit topics, ALWAYS use this tool at the start of the chat to find relevant sections.
+## Conventions
 
-### 2. get-documentation
+- **State management uses `@amadeus-it-group/tansu`** (`writable`, `computed`, `batch`) in `state.store.ts` files — not Svelte stores or runes. `$`-suffixed names like `sherif$` are stores.
+- **Runes mode is forced on** project-wide (except `node_modules`) via `compilerOptions.runes` in `vite.config.ts`.
+- **No `svelte.config.js/ts` exists.** The static adapter and Tailwind v4 plugin are configured directly in `vite.config.ts` via `sveltekit({ adapter: adapter() })`. Tailwind v4 is CSS-first (no `tailwind.config`); the global stylesheet is `src/routes/layout.css` (also referenced by prettier).
+- **Relative imports use explicit extensions** (e.g. `import type { Cell } from './types.ts'`) — `rewriteRelativeImportExtensions` is on.
+- **Prettier style**: tabs, single quotes, `trailingComma: 'none'`, print width 100.
 
-Retrieves full documentation content for specific sections. Accepts single or multiple sections.
-After calling the list-sections tool, you MUST analyze the returned documentation sections (especially the use_cases field) and then use the get-documentation tool to fetch ALL documentation sections that are relevant for the user's task.
+## Gotchas
 
-### 3. svelte-autofixer
-
-Analyzes Svelte code and returns issues and suggestions.
-You MUST use this tool whenever writing Svelte code before sending it to the user. Keep calling it until no issues or suggestions are returned.
-
-### 4. playground-link
-
-Generates a Svelte Playground link with the provided code.
-After completing the code, ask the user if they want a playground link. Only call this tool after user confirmation and NEVER if code was written to files in their project.
+- `npm run check` currently reports ~133 errors in `src/routes/(sur-le-toit)/sur-le-toit/solve-maze.js` and `old/` files. These are pre-existing/legacy; do not treat them as your change's failures.
+- Vitest requires explicit assertions (`expect: { requireAssertions: true }`).
