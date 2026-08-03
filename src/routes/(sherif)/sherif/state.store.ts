@@ -1,4 +1,4 @@
-import { computed, writable } from "@amadeus-it-group/tansu";
+import { batch, computed, writable } from "@amadeus-it-group/tansu";
 import type { CellPos, Cell, Place } from './types.ts';
 import { places, grid } from "./data";
 
@@ -10,7 +10,7 @@ for (const place of Object.values(places)) {
 
 
 const placesArray = Object.values(places);
-export let beginGame$ = writable(false);
+export const beginGame$ = writable(false);
 
 function getRandomPlace() {
 	const {x, y} = placesArray[Math.floor(Math.random() * placesArray.length)];
@@ -33,78 +33,68 @@ export const sheriffMoves$ = computed(() => {
 	const cell = grid[y][x];
 
 	const moves = ['1', '2', '3', '4'];
-	const result: Record<string, Place> = {};
+	const result: {path: string, place: Place}[] = [];
 	for(const moveNb of moves) {
-		const newCell = cell[moveNb as keyof Cell];
-		result[moveNb] = placesByPos[`${newCell.x}_${newCell.y}`];
+		const newCell = cell[moveNb];
+		result.push({path: moveNb, place: placesByPos[`${newCell.x}_${newCell.y}`]})
 
 	}
 
 	return result;
 });
 
-const moves = [
-	[2, 3, 4, 1],
-	[3, 4, 1, 2],
+const diceMoves = [
+	["2", "3", "4", "1"],
+	["3", "4", "1", "2"],
+	["4", "1", "2", "3"],
+	["2", "4", "1", "3"],
+	["2", "3", "4", "1"],
+	["4", "1", "2", "3"],
 ];
 
+export const dice$ = writable(0);
 
-const banditMoves = {
-	1: {
-		1: 0,
-		2: 0,
-		3: 0,
-		4: 0,
-	},
-	2: {
-		1: 0,
-		2: 0,
-		3: 0,
-		4: 0,
-	},
-	3: {
-		1: 0,
-		2: 0,
-		3: 0,
-		4: 0,
-	},
-	4: {
-		1: 0,
-		2: 0,
-		3: 0,
-		4: 0,
+export const banditMoves$ = computed(() => {
+	const dice = dice$();
+
+	const {x, y} = bandit$();
+	const cell = grid[y][x];
+
+	const moves = diceMoves[dice];
+	console.log("(DEBUG)   [state.store.ts:64]: moves: ", moves);
+	const result: {path: string, place: Place}[] = [];
+	for(const moveNb of moves) {
+		const newCell = cell[moveNb];
+		result.push({path: moveNb, place: placesByPos[`${newCell.x}_${newCell.y}`]})
+
 	}
+
+	return result;
+});
+
+
+function rollDice() {
+	dice$.set(Math.floor(Math.random() * 6));
 }
-for (let n = 1; n <= 4; n++) {
-	const array = ["1", "2", "3", "4"];
-	for (let i = 3; i > 0; i--) {
-		const j = Math.floor(Math.random() * (i + 1));
-		[array[i], array[j]] = [array[j], array[i]];
-	}
-	for (let i = 1; i <= 4; i++) {
-		banditMoves[n][i] = array[i - 1];
-	}
-}
-console.log("banditMoves", banditMoves);
 
-let diceValue = Math.floor(Math.random() * 4) + 1;
-export const banditMovesActu$ = writable(banditMoves[diceValue]);
-
-const allowedDirs: Array<keyof Cell> = ['1', '2', '3', '4'];
+const allowedDirs: string[] = ['1', '2', '3', '4'];
 export function handleGlobalKeyDown(event: KeyboardEvent) {
 	const lastKey = event.key;
-	if ((allowedDirs as string[]).includes(lastKey)) {
-		const sheriff = sherif$();
-		const next = grid[sheriff.y][sheriff.x][lastKey as keyof Cell];
-		sherif$.set(next);
+	if (allowedDirs.includes(lastKey)) {
 
-		const bandit = bandit$();
-		const banditDir = banditMoves[diceValue][lastKey as keyof Cell];
-		const nextBandit = grid[bandit.y][bandit.x][banditDir as keyof Cell];
-		bandit$.set(nextBandit);
-		
-		diceValue = Math.floor(Math.random() * 4) + 1;
-		banditMovesActu$.set(banditMoves[diceValue]);
+		batch(() => {
+			const sheriff = sherif$();
+			const next = grid[sheriff.y][sheriff.x][lastKey];
+			sherif$.set(next);
+			
+			const bandit = bandit$();
+			const banditMoves = banditMoves$();
+			const pathNb = banditMoves[+lastKey - 1].path;
+			const nextBandit = grid[bandit.y][bandit.x][pathNb];
+			bandit$.set(nextBandit);
+	
+			rollDice();
+		});
 	}
 }
 

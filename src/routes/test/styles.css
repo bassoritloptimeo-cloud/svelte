@@ -15,7 +15,9 @@ button:hover {
 	margin: 11px;
 }
 button:active {
+	font-size: 1.3rem;
 	box-shadow: none;
+	margin: 10px;
 }
 h3 {
 	font-size: 2rem;
