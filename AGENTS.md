@@ -16,7 +16,7 @@ Verify with `npm run check` and `npm run lint` after changes.
 
 Two independent games, each fully self-contained under a route group (groups only affect URLs):
 - `src/routes/(sherif)/sherif/` — "Shérif et bandit" board game (URL `/sherif`). Game data + grid live in `data.ts`, logic in `state.store.ts`, types in `types.ts`.
-- `src/routes/(sur-le-toit)/sur-le-toit/` — 3D maze game (URL `/sur-le-toit`). Includes a legacy `old/` folder.
+- `src/routes/(sur-le-toit)/sur-le-toit/` — 3D maze game (URL `/sur-le-toit`).
 
 ## Conventions
 
@@ -28,5 +28,4 @@ Two independent games, each fully self-contained under a route group (groups onl
 
 ## Gotchas
 
-- `npm run check` currently reports ~133 errors in `src/routes/(sur-le-toit)/sur-le-toit/solve-maze.js` and `old/` files. These are pre-existing/legacy; do not treat them as your change's failures.
 - Vitest requires explicit assertions (`expect: { requireAssertions: true }`).
