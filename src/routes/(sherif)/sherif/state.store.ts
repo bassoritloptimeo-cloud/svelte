@@ -26,22 +26,23 @@ export const sherif$ = writable<CellPos>({ x: 0, y: 0 });
 
 export const bandit$ = writable<CellPos>({ x: 0, y: 0 });
 
-export const sheriffMoves$ = computed(() => {
+// export const sheriffMoves$ = computed(() => {
 
 
-	const {x, y} = sherif$();
-	const cell = grid[y][x];
+// 	const {x, y} = sherif$();
+// 	const cell = grid[y][x];
 
-	const moves = ['1', '2', '3', '4'];
-	const result: {path: string, place: Place}[] = [];
-	for(const moveNb of moves) {
-		const newCell = cell[moveNb];
-		result.push({path: moveNb, place: placesByPos[`${newCell.x}_${newCell.y}`]})
+// 	const moves = ['1', '2', '3', '4'];
+// 	const result: {path: string, place: Place}[] = [];
+// 	for(const moveNb of moves) {
+// 		const newCell = cell[moveNb];
+// 		result.push({path: moveNb, place: placesByPos[`${newCell.x}_${newCell.y}`]})
 
-	}
+// 	}
 
-	return result;
-});
+// 	return result;
+// });
+
 
 const diceMoves = [
 	["2", "3", "4", "1"],
@@ -51,6 +52,26 @@ const diceMoves = [
 	["2", "3", "4", "1"],
 	["4", "1", "2", "3"],
 ];
+
+export const sheriffMoves$ = computed(() => {
+	const {x, y} = sherif$();
+	const cellS = grid[y][x];
+	const {x: xB, y: yB} = bandit$();
+	const cellB = grid[yB][xB];
+
+	const moves = ['1', '2', '3', '4'];
+	const result: {path: string, placeS: Place, placeB: Place}[] = [];
+	const dice = dice$();
+	for(const moveNb of moves) {
+		const newCellSherif = cellS[moveNb];
+		const newCellBandit = cellB[diceMoves[dice][+moveNb - 1]];
+		result.push({path: moveNb, placeS: placesByPos[`${newCellSherif.x}_${newCellSherif.y}`], placeB: placesByPos[`${newCellBandit.x}_${newCellBandit.y}`]})
+
+	}
+
+	return result;
+});
+
 
 export const dice$ = writable(0);
 

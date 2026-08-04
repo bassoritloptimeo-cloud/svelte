@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, banditMoves$} from "./state.store";
+	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
 	import Avatar from "./components/Avatar.svelte";
@@ -33,20 +33,15 @@
 		<button onclick={position}>Commencer le jeu</button>
 		{#if $beginGame$}
 			<div class="relatives-moves">
-				{#each $sheriffMoves$ as {path, place} (path)}
+				{#each $sheriffMoves$ as {path, placeS, placeB} (path)}
 					<div>
 						<p class="moves_possibilities">{path}</p>
 					</div>
 					<div>
-						<p class="moves_possibilities">{place.nom}</p>
-					</div>
-				{/each}
-				{#each $banditMoves$ as {path, place} (path)}
-					<div>
-						<p class="moves_possibilities">{path}</p>
+						<p class="moves_possibilities">{placeS.nom}</p>
 					</div>
 					<div>
-						<p class="moves_possibilities">{place.nom}</p>
+						<p class="moves_possibilities">{placeB.nom}</p>
 					</div>
 				{/each}
 			</div>
@@ -59,12 +54,11 @@
 <style>
 	.relatives-moves {
 		display: grid;
-		grid-template-columns: auto 1fr;
+    	grid-template-columns: auto auto 1fr;
 	}
 	.moves_possibilities {
 		display: inline-block;
 		border: 2px solid rgb(100, 20, 20);
-		font-size: 1.75rem;
 		padding: 5px 10px 5px 10px;
 	}
 </style>
