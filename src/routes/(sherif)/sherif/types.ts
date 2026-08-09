@@ -10,3 +10,41 @@ export interface Place {
 	x: number
 	y: number
 }
+
+export interface SherifInventory {
+	star: number
+	procuration: number
+	deliveryNote: number
+	axe: number
+	notebook: number
+	telegram: number
+	poster: number
+	hammer: number
+	file: number
+	handcuffs: number
+	trunkKey: number
+	goldSack: number
+	money: number
+	revolver: number
+	barber: number
+	shaved: number
+}
+
+export interface BanditInventory {
+	razor: number
+	pencil: number
+	canvasBag: number
+	woodenBox: number
+	knife: number
+	crowbar: number
+	oldRifle: number
+	canteen: number
+	pastorRobe: number
+	key: number
+	suitcase: number
+	goldSack: number
+	matches: number
+	money: number
+	dynamite: number
+	combination: number
+}

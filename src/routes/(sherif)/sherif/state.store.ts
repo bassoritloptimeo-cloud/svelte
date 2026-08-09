@@ -1,5 +1,5 @@
 import { batch, computed, writable } from "@amadeus-it-group/tansu";
-import type { CellPos, Cell, Place } from './types.ts';
+import type { CellPos, Place, SherifInventory, BanditInventory } from './types.ts';
 import { places, grid } from "./data";
 
 const placesByPos: Record<string, Place> = {};
@@ -93,15 +93,15 @@ export const banditMoves$ = computed(() => {
 	return result;
 });
 
-export const sherifInventory$ = writable({
+export const sherifInventory$ = writable<SherifInventory>({
 	star: 0,
 	procuration: 0,
 	deliveryNote: 0,
 	axe: 0,
 	notebook: 0,
 	telegram: 0,
-	poster: 0,
-	hammer: 0,
+	poster: 1,
+	hammer: 1,
 	file: 0,
 	handcuffs: 0,
 	trunkKey: 0,
@@ -112,11 +112,11 @@ export const sherifInventory$ = writable({
 	shaved: 0
 });
 
-export const banditInventory$ = writable({
+export const banditInventory$ = writable<BanditInventory>({
 	razor: 0,
 	pencil: 0,
-	canvasBag: 0,
-	woodenBox: 0,
+	canvasBag: 1,
+	woodenBox: 2,
 	knife: 0,
 	crowbar: 0,
 	oldRifle: 0,
@@ -130,6 +130,17 @@ export const banditInventory$ = writable({
 	dynamite: 0,
 	combination: 0
 });
+
+export const text$ = writable<string[]>([]);
+
+export const clearText = () => text$.set([]);
+
+export function addText(text: string) {
+	text$.update(textList => {
+		textList.push(text);
+		return textList;
+	});
+}
 
 function rollDice() {
 	dice$.set(Math.floor(Math.random() * 6));

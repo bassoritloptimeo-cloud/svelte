@@ -1,8 +1,9 @@
 <script lang="ts">
-	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$ } from "./state.store";
+	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
 	import Avatar from "./components/Avatar.svelte";
+	import Inventory from "./components/Inventory.svelte";
 	
 	
 </script>
@@ -45,6 +46,10 @@
 					</div>
 				{/each}
 			</div>
+			<Inventory 
+				sherifInventory={$sherifInventory$}
+				banditInventory={$banditInventory$}
+			></Inventory>
 
 		{/if}
 	</div>
