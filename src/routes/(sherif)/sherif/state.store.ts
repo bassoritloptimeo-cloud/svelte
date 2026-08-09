@@ -93,6 +93,43 @@ export const banditMoves$ = computed(() => {
 	return result;
 });
 
+export const sherifInventory$ = writable({
+	star: 0,
+	procuration: 0,
+	deliveryNote: 0,
+	axe: 0,
+	notebook: 0,
+	telegram: 0,
+	poster: 0,
+	hammer: 0,
+	file: 0,
+	handcuffs: 0,
+	trunkKey: 0,
+	goldSack: 0,
+	money: 0,
+	revolver: 0,
+	barber: 0,
+	shaved: 0
+});
+
+export const banditInventory$ = writable({
+	razor: 0,
+	pencil: 0,
+	canvasBag: 0,
+	woodenBox: 0,
+	knife: 0,
+	crowbar: 0,
+	oldRifle: 0,
+	canteen: 0,
+	pastorRobe: 0,
+	key: 0,
+	suitcase: 0,
+	goldSack: 0,
+	matches: 0,
+	money: 0,
+	dynamite: 0,
+	combination: 0
+});
 
 function rollDice() {
 	dice$.set(Math.floor(Math.random() * 6));
