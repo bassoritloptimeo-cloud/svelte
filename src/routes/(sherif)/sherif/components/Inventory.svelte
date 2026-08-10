@@ -15,7 +15,6 @@
 		<h4>Sherif</h4>
 		<div class="avatar-inventory">
 			{#each Object.entries(sherifInventory) as [key, value] (key)}
-				
 				{#if value !== 0}
 					<div class="key-inventory">
 						<p>{inventoryTranslations[key]}</p>
