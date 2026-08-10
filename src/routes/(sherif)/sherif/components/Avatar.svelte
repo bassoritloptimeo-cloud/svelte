@@ -22,13 +22,20 @@
 <style>
 	.Avatar {
 		position: absolute;
-		filter: drop-shadow(-10px 0px 8px red);
 		transition: 500ms;
 		height: 10%;
 
 		img {
 			height: 100%;
 		}
+	}
+
+	.sherif {
+		filter: drop-shadow(-10px 0px 8px green);
+	}
+
+	.bandit {
+		filter: drop-shadow(-10px 0px 8px red);
 	}
 
 	.avatar-background {
