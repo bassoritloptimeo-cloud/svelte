@@ -4,9 +4,10 @@
 	interface Props {
 		sherifInventory: SherifInventory
 		banditInventory: BanditInventory
+		inventoryTranslations: Record<string, string>
 	}
 
-	const { sherifInventory, banditInventory }: Props = $props();
+	const { sherifInventory, banditInventory, inventoryTranslations }: Props = $props();
 </script>
 
 <div class="inventory">
@@ -14,9 +15,10 @@
 		<h4>Sherif</h4>
 		<div class="avatar-inventory">
 			{#each Object.entries(sherifInventory) as [key, value] (key)}
+				
 				{#if value !== 0}
 					<div class="key-inventory">
-						<p>{key}</p>
+						<p>{inventoryTranslations[key]}</p>
 					</div>
 					<div class="value-inventory">
 						<p>{value}</p>
@@ -31,7 +33,7 @@
 			{#each Object.entries(banditInventory) as [key, value] (key)}
 				{#if value !== 0}
 					<div class="key-inventory">
-						<p>{key}</p>
+						<p>{inventoryTranslations[key]}</p>
 					</div>
 					<div class="value-inventory">
 						<p>{value}</p>

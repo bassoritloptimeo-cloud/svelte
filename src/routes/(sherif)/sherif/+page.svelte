@@ -4,7 +4,7 @@
     import "./styles.css";
 	import Avatar from "./components/Avatar.svelte";
 	import Inventory from "./components/Inventory.svelte";
-	
+	import { inventoryTranslations$ } from "./traductions";
 	
 </script>
 
@@ -49,6 +49,7 @@
 			<Inventory 
 				sherifInventory={$sherifInventory$}
 				banditInventory={$banditInventory$}
+				inventoryTranslations={$inventoryTranslations$}
 			></Inventory>
 
 		{/if}
