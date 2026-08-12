@@ -16,11 +16,16 @@
 <style>
 	p {
 		color: rgb(0, 255, 0);
+		white-space: nowrap;
+		overflow: hidden;
+
 	}
 
 	.bottom {
 		background-color: rgb(0, 0, 0);
-		padding: 20px;
-		width: fit-content;
+		height: 100%;
+		width: 100%;
+		margin: 5px;
+		padding: 10px;
 	}
 </style>

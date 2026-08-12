@@ -17,11 +17,11 @@ export const events: Record<string, ActionFn> = {
 		);
 	},
 	note5: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un rasoir');
+		readText('Le bandit a un rasoir');
 		if (bandit$.get().razor > 0) runNote('40');
 	},
 	note6: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a une hache');
+		readText('Le shérif a une hache');
 		if (sherif$.get().axe > 0) runNote('21');
 	},
 	note7: (readText) => {
@@ -43,14 +43,14 @@ export const events: Record<string, ActionFn> = {
 		);
 	},
 	note12: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a déjà rencontré le barbier');
+		readText('Le shérif a déjà rencontré le barbier');
 		if (sherif$.get().barber > 0) runNote('35');
 	},
 	note13: (readText) => {
 		readText("le bandit s'empare du sac d'or.");
 	},
 	note14: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a les clés de la malle');
+		readText('Le shérif a les clés de la malle');
 		if (sherif$.get().trunkKey > 0) runNote('17');
 	},
 	note15: (readText) => {
@@ -59,18 +59,18 @@ export const events: Record<string, ActionFn> = {
 		);
 	},
 	note16: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif sait où se trouve son étoile');
+		readText('Le shérif sait où se trouve son étoile');
 		if (sherif$.get().starKnown > 0) runNote('49');
 	},
 	note17: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif est accompagné du convoyeur de fonds');
+		readText('Le shérif est accompagné du convoyeur de fonds');
 		if (sherif$.get().convoyeur > 0) runNote('23');
 	},
 	note18: (readText) => {
 		readText('le bandit détourne la tête.');
 	},
 	note19: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a des allumettes');
+		readText('Le bandit a des allumettes');
 		if (bandit$.get().matches > 0) runNote('46');
 	},
 	note20: (readText) => {
@@ -97,18 +97,18 @@ export const events: Record<string, ActionFn> = {
 		);
 	},
 	note27: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un vieux fusil');
+		readText('Le bandit a un vieux fusil');
 		if (bandit$.get().oldRifle > 0) runNote('52');
 	},
 	note28: (readText) => {
 		readText('le bandit trouve un couteau.');
 	},
 	note29: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a une procuration');
+		readText('Le shérif a une procuration');
 		if (sherif$.get().procuration > 0) runNote('8');
 	},
 	note30: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a de la dynamite');
+		readText('Le bandit a de la dynamite');
 		if (bandit$.get().dynamite > 0) runNote('19');
 	},
 	note31: (readText, sherif$) => {
@@ -126,7 +126,7 @@ export const events: Record<string, ActionFn> = {
 		readText('le shérif trouve une hache.');
 	},
 	note35: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a 10 $');
+		readText('Le shérif a 10 $');
 		if (sherif$.get().money >= 10) runNote('63');
 	},
 	note36: (readText, sherif$) => {
@@ -142,18 +142,18 @@ export const events: Record<string, ActionFn> = {
 		readText('le bandit trouve un vieux fusil');
 	},
 	note39: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif sait qui est le meilleur copain de son fils');
+		readText('Le shérif sait qui est le meilleur copain de son fils');
 		if (sherif$.get().sonFriendKnown > 0) runNote('79');
 	},
 	note40: (readText) => {
 		readText('le bandit trébuche. Il laisse échapper le rasoir qui tombe dans la rivière.');
 	},
 	note41: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit est déguisé en pasteur');
+		readText('Le bandit est déguisé en pasteur');
 		if (bandit$.get().pastorRobe > 0) runNote('22');
 	},
 	note42: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a un carnet');
+		readText('Le shérif a un carnet');
 		if (sherif$.get().notebook > 0) runNote('15');
 	},
 	note43: (readText) => {
@@ -173,7 +173,7 @@ export const events: Record<string, ActionFn> = {
 		if (bandit$.get().combination > 0) runNote('73');
 	},
 	note47: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un pied-de-biche');
+		readText('Le bandit a un pied-de-biche');
 		if (bandit$.get().crowbar > 0) runNote('26');
 	},
 	note48: (readText) => {
@@ -194,7 +194,7 @@ export const events: Record<string, ActionFn> = {
 		readText('le bandit laisse tomber le fusil.');
 	},
 	note53: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un habit de pasteur');
+		readText('Le bandit a un habit de pasteur');
 		if (bandit$.get().pastorRobe > 0) runNote('82');
 	},
 	note54: (readText) => {
@@ -203,25 +203,25 @@ export const events: Record<string, ActionFn> = {
 		);
 	},
 	note55: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a un marteau');
+		readText('Le shérif a un marteau');
 		if (sherif$.get().hammer > 0) runNote('65');
 	},
 	note56: (readText) => {
 		readText('le bandit ouvre la valise. Elle est vide.');
 	},
 	note57: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a 10 $');
+		readText('Le bandit a 10 $');
 		if (bandit$.get().money >= 10) runNote('41');
 	},
 	note58: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a un bon de livraison');
+		readText('Le shérif a un bon de livraison');
 		if (sherif$.get().deliveryNote > 0) runNote('60');
 	},
 	note59: (readText) => {
 		readText('le shérif trouve une affiche. « Wanted : Jack Silvergun »');
 	},
 	note60: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a une affiche');
+		readText('Le shérif a une affiche');
 		if (sherif$.get().poster > 0) runNote('44');
 	},
 	note61: (readText, _sherif$, bandit$, runNote) => {
@@ -229,7 +229,7 @@ export const events: Record<string, ActionFn> = {
 		if (bandit$.get().pastorRobe > 0) runNote('10');
 	},
 	note62: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a une clé');
+		readText('Le bandit a une clé');
 		if (bandit$.get().key > 0) runNote('20');
 	},
 	note63: (readText) => {
@@ -257,11 +257,11 @@ export const events: Record<string, ActionFn> = {
 		readText('son fils accourt et lui remet ses menottes.');
 	},
 	note70: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un crayon');
+		readText('Le bandit a un crayon');
 		if (bandit$.get().pencil > 0) runNote('33');
 	},
 	note71: (readText, sherif$, _bandit$, runNote) => {
-		readText('si le shérif a un télégramme');
+		readText('Le shérif a un télégramme');
 		if (sherif$.get().telegram > 0) runNote('72');
 	},
 	note72: (readText, sherif$, _bandit$, runNote) => {
@@ -273,7 +273,7 @@ export const events: Record<string, ActionFn> = {
 		if (sherif$.get().goldDeposited > 0) runNote('13');
 	},
 	note74: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a un récipient');
+		readText('Le bandit a un récipient');
 		if (bandit$.get().canteen > 0) runNote('43');
 	},
 	note75: (readText) => {
@@ -304,7 +304,7 @@ export const events: Record<string, ActionFn> = {
 		readText('le bandit se déguise en pasteur.');
 	},
 	note83: (readText, _sherif$, bandit$, runNote) => {
-		readText('si le bandit a une valise');
+		readText('Le bandit a une valise');
 		if (bandit$.get().suitcase > 0) runNote('56');
 	}
 };
