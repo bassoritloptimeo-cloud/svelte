@@ -60,5 +60,6 @@ export type ActionFn = (
 	readText: (text: string) => void,
 	sherifInventory$: Writable<SherifInventory>,
 	banditInventory$: Writable<BanditInventory>,
-	runNote: (note: string) => void
+	runNote: (note: string) => void,
+	addInventory: (owner: 'sherif' | 'bandit', item: string, amount?: number) => void
 ) => void;

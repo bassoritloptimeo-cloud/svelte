@@ -157,6 +157,8 @@ export function handleGlobalKeyDown(event: KeyboardEvent) {
 
 
 			clearText();
+			console.log("Text sherif", placesByPos[`${next.x}_${next.y}`].numeroNoir + "");
+			console.log("Text bandit", placesByPos[`${nextBandit.x}_${nextBandit.y}`].numeroRouge + "");
 			runNote(placesByPos[`${next.x}_${next.y}`].numeroNoir + "");
 			runNote(placesByPos[`${nextBandit.x}_${nextBandit.y}`].numeroRouge + "");
 			console.log("text$", text$());
@@ -176,9 +178,23 @@ export function readText(text: string) {
 	});
 }
 
+function addInventory(Avatar: string, object: string, quantity = 1) {
+	if (Avatar === "sherif") {
+		sherifInventory$.update((inventory) => ({
+			...inventory,
+			[object]: inventory[object as keyof SherifInventory] + quantity
+		}));
+	} else {
+		banditInventory$.update((inventory) => ({
+			...inventory,
+			[object]: inventory[object as keyof BanditInventory] + quantity
+		}));
+	}
+}
+
 function runNote(noteNb: string) {
 	const actionFn = events[`note${noteNb}`];
 
-	actionFn(readText, sherifInventory$, banditInventory$, runNote);
+	actionFn(readText, sherifInventory$, banditInventory$, runNote, addInventory);
 	
 }

@@ -1,15 +1,18 @@
 import type { ActionFn } from './types.ts';
 
 export const events: Record<string, ActionFn> = {
-	note1: (readText) => {
-		readText('le bandit trouve un rasoir.');
+	note1: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un rasoir.');
+		addInventory('bandit', 'razor', 1);
 	},
-	note2: (readText, _sherif$, bandit$, runNote) => {
-		readText('le bandit trouve une caisse en bois.');
+	note2: (readText, _sherif$, bandit$, runNote, addInventory) => {
+		readText('Le bandit trouve une caisse en bois.');
+		addInventory('bandit', 'woodenBox', 1);
 		if (bandit$.get().knife > 0) runNote('64');
 	},
-	note3: (readText) => {
-		readText('le bandit trouve un crayon.');
+	note3: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un crayon.');
+		addInventory('bandit', 'pencil', 1);
 	},
 	note4: (readText) => {
 		readText(
@@ -24,18 +27,19 @@ export const events: Record<string, ActionFn> = {
 		readText('Le shérif a une hache');
 		if (sherif$.get().axe > 0) runNote('21');
 	},
-	note7: (readText) => {
-		readText('le bandit trouve un sac en toile.');
+	note7: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un sac en toile.');
+		addInventory('bandit', 'canvasBag', 1);
 	},
 	note8: (readText, sherif$) => {
-		readText('le shérif montre sa procuration au convoyeur de fonds qui le suit.');
+		readText('Le shérif montre sa procuration au convoyeur de fonds qui le suit.');
 		sherif$.update((inventory) => ({ ...inventory, convoyeur: 1 }));
 	},
 	note9: (readText) => {
 		readText('sa femme lui apprend que son fils a pris ses menottes pour jouer.');
 	},
 	note10: (readText) => {
-		readText('le pasteur lui dit que son habit a disparu. Il remet au shérif un bon de livraison.');
+		readText('Le pasteur lui dit que son habit a disparu. Il remet au shérif un bon de livraison.');
 	},
 	note11: (readText) => {
 		readText(
@@ -46,8 +50,9 @@ export const events: Record<string, ActionFn> = {
 		readText('Le shérif a déjà rencontré le barbier');
 		if (sherif$.get().barber > 0) runNote('35');
 	},
-	note13: (readText) => {
+	note13: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("le bandit s'empare du sac d'or.");
+		addInventory('bandit', 'goldSack', 1);
 	},
 	note14: (readText, sherif$, _bandit$, runNote) => {
 		readText('Le shérif a les clés de la malle');
@@ -67,7 +72,7 @@ export const events: Record<string, ActionFn> = {
 		if (sherif$.get().convoyeur > 0) runNote('23');
 	},
 	note18: (readText) => {
-		readText('le bandit détourne la tête.');
+		readText('Le bandit détourne la tête.');
 	},
 	note19: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a des allumettes');
@@ -76,32 +81,38 @@ export const events: Record<string, ActionFn> = {
 	note20: (readText) => {
 		readText("le bandit ouvre la porte de la prison (jail). Il n'y a personne.");
 	},
-	note21: (readText) => {
+	note21: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("le shérif rend la hache au bûcheron qui l'avait perdue.");
+		addInventory('sherif', 'axe', -1);
 	},
-	note22: (readText) => {
+	note22: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText('il achète des allumettes.');
+		addInventory('bandit', 'matches', 1);
 	},
-	note23: (readText) => {
+	note23: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("le shérif ouvre le coffre et y prend le sac d'or.");
+		addInventory('sherif', 'goldSack', 1);
 	},
 	note24: (readText) => {
-		readText('le bandit joue au poker et il gagne 10 $.');
+		readText('Le bandit joue au poker et il gagne 10 $.');
 	},
-	note25: (readText) => {
+	note25: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("le boutiquier donne au shérif le carnet qu'il avait commandé.");
+		addInventory('sherif', 'notebook', 1);
 	},
-	note26: (readText) => {
+	note26: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText(
 			"le bandit essaye d'ouvrir la porte de l'armurerie (guns), mais le pied de biche se casse en deux."
 		);
+		addInventory('bandit', 'crowbar', -1);
 	},
 	note27: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a un vieux fusil');
 		if (bandit$.get().oldRifle > 0) runNote('52');
 	},
-	note28: (readText) => {
-		readText('le bandit trouve un couteau.');
+	note28: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un couteau.');
+		addInventory('bandit', 'knife', 1);
 	},
 	note29: (readText, sherif$, _bandit$, runNote) => {
 		readText('Le shérif a une procuration');
@@ -112,18 +123,20 @@ export const events: Record<string, ActionFn> = {
 		if (bandit$.get().dynamite > 0) runNote('19');
 	},
 	note31: (readText, sherif$) => {
-		readText('le shérif apprend que le fils du croque-mort est le meilleur copain de son fils.');
+		readText('Le shérif apprend que le fils du croque-mort est le meilleur copain de son fils.');
 		sherif$.update((inventory) => ({ ...inventory, sonFriendKnown: 1 }));
 	},
-	note32: (readText) => {
-		readText('le bandit trouve un pied-de-biche.');
+	note32: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un pied-de-biche.');
+		addInventory('bandit', 'crowbar', 1);
 	},
 	note33: (readText, _sherif$, bandit$, runNote) => {
 		readText("si le bandit a le sac d'or");
 		if (bandit$.get().goldSack > 0) runNote('54');
 	},
-	note34: (readText) => {
-		readText('le shérif trouve une hache.');
+	note34: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le shérif trouve une hache.');
+		addInventory('sherif', 'axe', 1);
 	},
 	note35: (readText, sherif$, _bandit$, runNote) => {
 		readText('Le shérif a 10 $');
@@ -131,22 +144,24 @@ export const events: Record<string, ActionFn> = {
 	},
 	note36: (readText, sherif$) => {
 		readText(
-			'le shérif trouve son adjoint qui lui indique que son étoile est dans le tiroir du bureau du sherif office..'
+			'Le shérif trouve son adjoint qui lui indique que son étoile est dans le tiroir du bureau du sherif office..'
 		);
 		sherif$.update((inventory) => ({ ...inventory, starKnown: 1 }));
 	},
 	note37: (readText) => {
-		readText('le shérif trouve le barbier et lui dit de regagner son salon.');
+		readText('Le shérif trouve le barbier et lui dit de regagner son salon.');
 	},
-	note38: (readText) => {
-		readText('le bandit trouve un vieux fusil');
+	note38: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve un vieux fusil');
+		addInventory('bandit', 'oldRifle', 1);
 	},
 	note39: (readText, sherif$, _bandit$, runNote) => {
 		readText('Le shérif sait qui est le meilleur copain de son fils');
 		if (sherif$.get().sonFriendKnown > 0) runNote('79');
 	},
-	note40: (readText) => {
-		readText('le bandit trébuche. Il laisse échapper le rasoir qui tombe dans la rivière.');
+	note40: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trébuche. Il laisse échapper le rasoir qui tombe dans la rivière.');
+		addInventory('bandit', 'razor', -1);
 	},
 	note41: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit est déguisé en pasteur');
@@ -157,41 +172,47 @@ export const events: Record<string, ActionFn> = {
 		if (sherif$.get().notebook > 0) runNote('15');
 	},
 	note43: (readText) => {
-		readText('le bandit remplit sa gourde.');
+		readText('Le bandit remplit sa gourde.');
 	},
-	note44: (readText) => {
+	note44: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText(
-			'le shérif sait qui il doit arrêter. Il échange le bon de livraison contre un revolver chargé.'
+			'Le shérif sait qui il doit arrêter. Il échange le bon de livraison contre un revolver chargé.'
 		);
+		addInventory('sherif', 'deliveryNote', -1);
+		addInventory('sherif', 'revolver', 1);
 	},
 	note45: (readText, sherif$, _bandit$, runNote) => {
 		readText("si le shérif sait qui se cache sous le pont, il l'appelle par son prénom");
 		if (sherif$.get().sonUnderBridgeKnown > 0) runNote('69');
 	},
 	note46: (readText, _sherif$, bandit$, runNote) => {
-		readText('le bandit fait exploser la porte de la banque et se précipite vers le coffre.');
+		readText('Le bandit fait exploser la porte de la banque et se précipite vers le coffre.');
 		if (bandit$.get().combination > 0) runNote('73');
 	},
 	note47: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a un pied-de-biche');
 		if (bandit$.get().crowbar > 0) runNote('26');
 	},
-	note48: (readText) => {
-		readText('le bandit trouve une gourde.');
+	note48: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve une gourde.');
+		addInventory('bandit', 'canteen', 1);
 	},
-	note49: (readText) => {
-		readText('le shérif récupère son étoile.');
+	note49: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le shérif récupère son étoile.');
+		addInventory('sherif', 'star', 1);
 	},
-	note50: (readText) => {
-		readText('le shérif est présentable, Mrs Deagle le reçoit et lui donne une procuration.');
+	note50: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le shérif est présentable, Mrs Deagle le reçoit et lui donne une procuration.');
+		addInventory('sherif', 'procuration', 1);
 	},
 	note51: (readText) => {
 		readText(
 			"on remet au shérif un télégramme, lui indiquant l'arrivée par la diligence d'une malle contenant un sac d'or."
 		);
 	},
-	note52: (readText) => {
-		readText('le bandit laisse tomber le fusil.');
+	note52: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit laisse tomber le fusil.');
+		addInventory('bandit', 'oldRifle', -1);
 	},
 	note53: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a un habit de pasteur');
@@ -207,7 +228,7 @@ export const events: Record<string, ActionFn> = {
 		if (sherif$.get().hammer > 0) runNote('65');
 	},
 	note56: (readText) => {
-		readText('le bandit ouvre la valise. Elle est vide.');
+		readText('Le bandit ouvre la valise. Elle est vide.');
 	},
 	note57: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a 10 $');
@@ -218,7 +239,7 @@ export const events: Record<string, ActionFn> = {
 		if (sherif$.get().deliveryNote > 0) runNote('60');
 	},
 	note59: (readText) => {
-		readText('le shérif trouve une affiche. « Wanted : Jack Silvergun »');
+		readText('Le shérif trouve une affiche. « Wanted : Jack Silvergun »');
 	},
 	note60: (readText, sherif$, _bandit$, runNote) => {
 		readText('Le shérif a une affiche');
@@ -233,28 +254,33 @@ export const events: Record<string, ActionFn> = {
 		if (bandit$.get().key > 0) runNote('20');
 	},
 	note63: (readText) => {
-		readText('le shérif se fait faire la barbe.');
+		readText('Le shérif se fait faire la barbe.');
 	},
 	note64: (readText, _sherif$, bandit$, runNote) => {
 		readText('il ouvre la caisse avec son couteau.');
 		if (bandit$.get().canvasBag > 0) runNote('68');
 	},
-	note65: (readText) => {
+	note65: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText(
-			'le shérif donne le marteau au forgeron. Pour le remercier, celui-ci lui offre une lime.'
+			'Le shérif donne le marteau au forgeron. Pour le remercier, celui-ci lui offre une lime.'
 		);
+		addInventory('sherif', 'hammer', -1);
+		addInventory('sherif', 'file', 1);
 	},
-	note66: (readText) => {
+	note66: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("le bandit trouve un habit de pasteur dans l'église.");
+		addInventory('bandit', 'pastorRobe', 1);
 	},
 	note67: (readText) => {
 		readText("le bandit contemple, pensif, la statue de l'ancien shérif.");
 	},
-	note68: (readText) => {
+	note68: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText("dans la caisse, il a trouvé quelques batons de dynamite qu'il met dans son sac.");
+		addInventory('bandit', 'dynamite', 1);
 	},
-	note69: (readText) => {
+	note69: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
 		readText('son fils accourt et lui remet ses menottes.');
+		addInventory('sherif', 'handcuffs', 1);
 	},
 	note70: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a un crayon');
@@ -276,32 +302,36 @@ export const events: Record<string, ActionFn> = {
 		readText('Le bandit a un récipient');
 		if (bandit$.get().canteen > 0) runNote('43');
 	},
-	note75: (readText) => {
-		readText('le shérif trouve un marteau.');
+	note75: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le shérif trouve un marteau.');
+		addInventory('sherif', 'hammer', 1);
 	},
-	note76: (readText) => {
-		readText('le shérif trouve le chauffeur de la diligence qui lui remet la clé de la malle.');
+	note76: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le shérif trouve le chauffeur de la diligence qui lui remet la clé de la malle.');
+		addInventory('sherif', 'trunkKey', 1);
 	},
 	note77: (readText, sherif$, _bandit$, runNote) => {
-		readText("si le shérif a le sac d'or");
+		readText("Le shérif a le sac d'or");
 		if (sherif$.get().goldSack > 0) runNote('81');
 	},
-	note78: (readText) => {
-		readText('le bandit trouve une clef.');
+	note78: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve une clef.');
+		addInventory('bandit', 'key', 1);
 	},
 	note79: (readText, sherif$) => {
 		readText('il apprend par le copain de son fils, que celui-ci se cache sous le pont de pierre.');
 		sherif$.update((inventory) => ({ ...inventory, sonUnderBridgeKnown: 1 }));
 	},
-	note80: (readText) => {
-		readText('le bandit trouve une petite valise.');
+	note80: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
+		readText('Le bandit trouve une petite valise.');
+		addInventory('bandit', 'suitcase', 1);
 	},
 	note81: (readText, sherif$) => {
 		readText("Il dépose le sac d'or dans le coffre de la banque.");
 		sherif$.update((inventory) => ({ ...inventory, goldDeposited: 1 }));
 	},
 	note82: (readText) => {
-		readText('le bandit se déguise en pasteur.');
+		readText('Le bandit se déguise en pasteur.');
 	},
 	note83: (readText, _sherif$, bandit$, runNote) => {
 		readText('Le bandit a une valise');
