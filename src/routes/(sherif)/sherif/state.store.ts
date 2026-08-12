@@ -93,58 +93,48 @@ export const banditMoves$ = computed(() => {
 });
 
 export const sherifInventory$ = writable<SherifInventory>({
-	star: 0,
-	procuration: 0,
-	deliveryNote: 0,
-	axe: 0,
-	notebook: 0,
-	telegram: 0,
-	poster: 1,
-	hammer: 1,
-	file: 0,
-	handcuffs: 0,
-	trunkKey: 0,
-	goldSack: 0,
-	money: 0,
-	revolver: 0,
-	barber: 0,
-	shaved: 0,
-	starKnown: 0,
-	convoyeur: 0,
-	sonFriendKnown: 0,
-	sonUnderBridgeKnown: 0,
-	goldDeposited: 0
+	star: 10,
+	procuration: 10,
+	deliveryNote: 10,
+	axe: 10,
+	notebook: 10,
+	telegram: 10,
+	poster: 10,
+	hammer: 10,
+	file: 10,
+	handcuffs: 10,
+	trunkKey: 10,
+	goldSack: 10,
+	money: 10,
+	revolver: 10,
+	barber: 10,
+	shaved: 10,
+	starKnown: 10,
+	convoyeur: 10,
+	sonFriendKnown: 10,
+	sonUnderBridgeKnown: 10,
+	goldDeposited: 10
 });
 
 export const banditInventory$ = writable<BanditInventory>({
-	razor: 0,
-	pencil: 0,
-	canvasBag: 1,
-	woodenBox: 2,
-	knife: 0,
-	crowbar: 0,
-	oldRifle: 0,
-	canteen: 0,
-	pastorRobe: 0,
-	key: 0,
-	suitcase: 0,
-	goldSack: 0,
-	matches: 0,
-	money: 0,
-	dynamite: 0,
-	combination: 0
+	razor: 10,
+	pencil: 10,
+	canvasBag: 10,
+	woodenBox: 10,
+	knife: 10,
+	crowbar: 10,
+	oldRifle: 10,
+	canteen: 10,
+	pastorRobe: 10,
+	key: 10,
+	suitcase: 10,
+	goldSack: 10,
+	matches: 10,
+	money: 10,
+	dynamite: 10,
+	combination: 10
 });
 
-export const text$ = writable<string[]>([]);
-
-export const clearText = () => text$.set([]);
-
-export function addText(text: string) {
-	text$.update((textList) => {
-		textList.push(text);
-		return textList;
-	});
-}
 
 function rollDice() {
 	dice$.set(Math.floor(Math.random() * 6));
@@ -158,20 +148,32 @@ export function handleGlobalKeyDown(event: KeyboardEvent) {
 			const sheriff = sherif$();
 			const next = grid[sheriff.y][sheriff.x][lastKey];
 			sherif$.set(next);
-
+			
 			const bandit = bandit$();
 			const banditMoves = banditMoves$();
 			const pathNb = banditMoves[+lastKey - 1].path;
 			const nextBandit = grid[bandit.y][bandit.x][pathNb];
 			bandit$.set(nextBandit);
 
+
+			clearText();
+			runNote(placesByPos[`${next.x}_${next.y}`].numeroNoir + "");
+			runNote(placesByPos[`${nextBandit.x}_${nextBandit.y}`].numeroRouge + "");
+			console.log("text$", text$());
 			rollDice();
 		});
 	}
 }
 
-function readText(text: string) {
-	
+export const text$ = writable<string[]>([]);
+
+export const clearText = () => text$.set([]);
+
+export function readText(text: string) {
+	text$.update((textList) => {
+		textList.push(text);
+		return textList;
+	});
 }
 
 function runNote(noteNb: string) {

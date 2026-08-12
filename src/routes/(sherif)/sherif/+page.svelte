@@ -1,9 +1,10 @@
 <script lang="ts">
-	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$ } from "./state.store";
+	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$, text$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
 	import Avatar from "./components/Avatar.svelte";
 	import Inventory from "./components/Inventory.svelte";
+	import Text from "./components/text.svelte";
 	import { inventoryTranslations$ } from "./traductions";
 	
 </script>
@@ -51,16 +52,21 @@
 				banditInventory={$banditInventory$}
 				inventoryTranslations={$inventoryTranslations$}
 			></Inventory>
-
 		{/if}
 	</div>
-	
+	<div>
+		{#if $beginGame$}
+			<Text
+				text={$text$}
+			></Text>
+		{/if}
+	</div>
 </div>
 
 <style>
 	.relatives-moves {
 		display: grid;
-    	grid-template-columns: auto auto 1fr;
+    	grid-template-columns: auto auto auto;
 	}
 	.moves_possibilities {
 		display: inline-block;

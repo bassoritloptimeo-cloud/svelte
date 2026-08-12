@@ -7,8 +7,8 @@ export type Cell = Record<string, CellPos>;
 export interface Place {
 	id: string;
 	nom: string;
-	numero_noir: number;
-	numero_rouge: number;
+	numeroNoir: number;
+	numeroRouge: number;
 	x: number;
 	y: number;
 }

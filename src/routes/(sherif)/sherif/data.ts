@@ -4,192 +4,192 @@ export const places: Record<string, Place> = {
 	maison_haut_gauche: {
 		id: 'maison_haut_gauche',
 		nom: 'Maison avec fleurs (en haut à gauche)',
-		numero_noir: 71,
-		numero_rouge: 53,
+		numeroNoir: 71,
+		numeroRouge: 53,
 		x: 0,
 		y: 0
 	},
 	gare: {
 		id: 'gare',
 		nom: 'Station (Gare)',
-		numero_noir: 14,
-		numero_rouge: 70,
+		numeroNoir: 14,
+		numeroRouge: 70,
 		x: 1,
 		y: 0
 	},
 	maison_haut_centre: {
 		id: 'maison_haut_centre',
 		nom: 'Petite maison (à côté de la gare)',
-		numero_noir: 9,
-		numero_rouge: 18,
+		numeroNoir: 9,
+		numeroRouge: 18,
 		x: 2,
 		y: 0
 	},
 	hotel: {
 		id: 'hotel',
 		nom: 'Hôtel (Méridional)',
-		numero_noir: 12,
-		numero_rouge: 1,
+		numeroNoir: 12,
+		numeroRouge: 1,
 		x: 3,
 		y: 0
 	},
 	sheriff: {
 		id: 'sheriff',
 		nom: 'Bureau du Shérif (Sheriff Office)',
-		numero_noir: 16,
-		numero_rouge: 27,
+		numeroNoir: 16,
+		numeroRouge: 27,
 		x: 0,
 		y: 1
 	},
 	diligence: {
 		id: 'diligence',
 		nom: 'Diligence et cheval',
-		numero_noir: 29,
-		numero_rouge: 80,
+		numeroNoir: 29,
+		numeroRouge: 80,
 		x: 1,
 		y: 1
 	},
 	banque: {
 		id: 'banque',
 		nom: 'Banque (Bank)',
-		numero_noir: 77,
-		numero_rouge: 30,
+		numeroNoir: 77,
+		numeroRouge: 30,
 		x: 2,
 		y: 1
 	},
 	primeur: {
 		id: 'primeur',
 		nom: 'Marchand de légumes (Vegetables)',
-		numero_noir: 25,
-		numero_rouge: 57,
+		numeroNoir: 25,
+		numeroRouge: 57,
 		x: 3,
 		y: 1
 	},
 	epicerie: {
 		id: 'epicerie',
 		nom: 'Épicerie (Grocery)',
-		numero_noir: 76,
-		numero_rouge: 7,
+		numeroNoir: 76,
+		numeroRouge: 7,
 		x: 0,
 		y: 2
 	},
 	fontaine: {
 		id: 'fontaine',
 		nom: 'Fontaine',
-		numero_noir: 75,
-		numero_rouge: 74,
+		numeroNoir: 75,
+		numeroRouge: 74,
 		x: 1,
 		y: 2
 	},
 	prison: {
 		id: 'prison',
 		nom: 'Prison (Jail)',
-		numero_noir: 59,
-		numero_rouge: 62,
+		numeroNoir: 59,
+		numeroRouge: 62,
 		x: 2,
 		y: 2
 	},
 	cabane_droite: {
 		id: 'cabane_droite',
 		nom: 'Cabane en bois (à droite de la prison)',
-		numero_noir: 6,
-		numero_rouge: 38,
+		numeroNoir: 6,
+		numeroRouge: 38,
 		x: 3,
 		y: 2
 	},
 	pont_bois: {
 		id: 'pont_bois',
 		nom: 'Grand pont en bois (à gauche)',
-		numero_noir: 42,
-		numero_rouge: 5,
+		numeroNoir: 42,
+		numeroRouge: 5,
 		x: 0,
 		y: 3
 	},
 	armurier: {
 		id: 'armurier',
 		nom: 'Armurier (Guns)',
-		numero_noir: 58,
-		numero_rouge: 47,
+		numeroNoir: 58,
+		numeroRouge: 47,
 		x: 1,
 		y: 3
 	},
 	cabane_peche: {
 		id: 'cabane_peche',
 		nom: 'Cabane de pêche / Puits',
-		numero_noir: 34,
-		numero_rouge: 28,
+		numeroNoir: 34,
+		numeroRouge: 28,
 		x: 2,
 		y: 3
 	},
 	pont_pierre: {
 		id: 'pont_pierre',
 		nom: 'Pont en pierre / Tunnel (à droite)',
-		numero_noir: 45,
-		numero_rouge: 48,
+		numeroNoir: 45,
+		numeroRouge: 48,
 		x: 3,
 		y: 3
 	},
 	pompes_funebres: {
 		id: 'pompes_funebres',
 		nom: 'Pompes funèbres (Funerals)',
-		numero_noir: 31,
-		numero_rouge: 5,
+		numeroNoir: 31,
+		numeroRouge: 5,
 		x: 0,
 		y: 4
 	},
 	forge: {
 		id: 'forge',
 		nom: 'Forge (Maréchal-ferrant)',
-		numero_noir: 55,
-		numero_rouge: 32,
+		numeroNoir: 55,
+		numeroRouge: 32,
 		x: 1,
 		y: 4
 	},
 	statue: {
 		id: 'statue',
 		nom: 'Statue de cowboy',
-		numero_noir: 67,
-		numero_rouge: 78,
+		numeroNoir: 67,
+		numeroRouge: 78,
 		x: 2,
 		y: 4
 	},
 	poste: {
 		id: 'poste',
 		nom: 'Bureau de poste (Post Office)',
-		numero_noir: 51,
-		numero_rouge: 3,
+		numeroNoir: 51,
+		numeroRouge: 3,
 		x: 3,
 		y: 4
 	},
 	saloon: {
 		id: 'saloon',
 		nom: 'Saloon',
-		numero_noir: 37,
-		numero_rouge: 24,
+		numeroNoir: 37,
+		numeroRouge: 24,
 		x: 0,
 		y: 5
 	},
 	cimetiere: {
 		id: 'cimetiere',
 		nom: 'Cimetière',
-		numero_noir: 61,
-		numero_rouge: 83,
+		numeroNoir: 61,
+		numeroRouge: 83,
 		x: 1,
 		y: 5
 	},
 	eglise: {
 		id: 'eglise',
 		nom: 'Église',
-		numero_noir: 36,
-		numero_rouge: 66,
+		numeroNoir: 36,
+		numeroRouge: 66,
 		x: 2,
 		y: 5
 	},
 	ecole: {
 		id: 'ecole',
 		nom: 'École (School)',
-		numero_noir: 39,
-		numero_rouge: 4,
+		numeroNoir: 39,
+		numeroRouge: 4,
 		x: 3,
 		y: 5
 	}
