@@ -74,7 +74,6 @@
 		height: 300px;;
 		display: grid;
     	grid-template-columns: auto 1fr;
-		min-width: calc(100vh * 1075 / 1464);
 		overflow-y: auto;
 	}
 
