@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { SherifInventory, BanditInventory } from '../types.ts';
+	import '../../test/styles.css';
 
 	interface Props {
 		sherifInventory: SherifInventory

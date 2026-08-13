@@ -31,46 +31,60 @@
 		></Avatar>
 
 	</div>
-	<div class="option">
-		<button onclick={position}>Commencer le jeu</button>
-		{#if $beginGame$}
-			<div class="relatives-moves">
-				{#each $sheriffMoves$ as {path, placeS, placeB} (path)}
+	<div class="wallpaper">
+		<div class="option">
+			<button onclick={position}>Commencer le jeu</button>
+			{#if $beginGame$}
+				<div class="bottom-element">
 					<div>
-						<p class="moves_possibilities">{path}</p>
+						<h2>>> Mouvement</h2>
 					</div>
-					<div>
-						<p class="moves_possibilities">{placeS.nom}</p>
+					<div class="relatives-moves">
+						<div class="sherifM">
+							<div class="sherifName">
+								<div class="circle-sherif"></div>
+								<h2>Sherif</h2>
+							</div>
+							{#each $sheriffMoves$ as {path, placeS} (path)}
+								<div>
+									<p class="moves_possibilities">{path + ". " + placeS.nom}</p>
+								</div>
+							{/each}
+						</div>
+						<div class="banditM">
+							<div class="banditName">
+								<div class="circle-bandit"></div>
+								<h2>Bandit</h2>
+							</div>
+							{#each $sheriffMoves$ as {path, placeB} (path)}
+								<div>
+									<p class="moves_possibilities">{path + ". " + placeB.nom}</p>
+								</div>
+							{/each}
+						</div>
 					</div>
-					<div>
-						<p class="moves_possibilities">{placeB.nom}</p>
-					</div>
-				{/each}
-			</div>
-			<Inventory 
-				sherifInventory={$sherifInventory$}
-				banditInventory={$banditInventory$}
-				inventoryTranslations={$inventoryTranslations$}
-			></Inventory>
-		{/if}
-	</div>
-	<div>
-		{#if $beginGame$}
-			<Text
-				text={$text$}
-			></Text>
-		{/if}
+
+					<Inventory 
+						sherifInventory={$sherifInventory$}
+						banditInventory={$banditInventory$}
+						inventoryTranslations={$inventoryTranslations$}
+					></Inventory>
+				</div>
+			{/if}
+		</div>
+		<div>
+			{#if $beginGame$}
+				<Text
+					text={$text$}
+				></Text>
+			{/if}
+		</div>
 	</div>
 </div>
 
 <style>
 	.relatives-moves {
 		display: grid;
-    	grid-template-columns: auto auto auto;
-	}
-	.moves_possibilities {
-		display: inline-block;
-		border: 2px solid rgb(100, 20, 20);
-		padding: 5px 10px 5px 10px;
+    	grid-template-columns: auto auto;
 	}
 </style>
