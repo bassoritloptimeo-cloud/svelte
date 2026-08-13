@@ -43,7 +43,7 @@
 						<div class="sherifM">
 							<div class="sherifName">
 								<div class="circle-sherif"></div>
-								<h2>Sherif</h2>
+								<h2 class="sherif-Title">Sherif</h2>
 							</div>
 							{#each $sheriffMoves$ as {path, placeS} (path)}
 								<div>
@@ -54,7 +54,7 @@
 						<div class="banditM">
 							<div class="banditName">
 								<div class="circle-bandit"></div>
-								<h2>Bandit</h2>
+								<h2 class="bandit-Title">Bandit</h2>
 							</div>
 							{#each $sheriffMoves$ as {path, placeB} (path)}
 								<div>
@@ -64,12 +64,12 @@
 						</div>
 					</div>
 
-					<Inventory 
-						sherifInventory={$sherifInventory$}
-						banditInventory={$banditInventory$}
-						inventoryTranslations={$inventoryTranslations$}
-					></Inventory>
 				</div>
+				<Inventory 
+					sherifInventory={$sherifInventory$}
+					banditInventory={$banditInventory$}
+					inventoryTranslations={$inventoryTranslations$}
+				></Inventory>
 			{/if}
 		</div>
 		<div>
