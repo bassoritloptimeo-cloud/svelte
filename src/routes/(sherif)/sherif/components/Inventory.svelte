@@ -15,8 +15,8 @@
 	<h2>>> Inventaire</h2>
 	<div class="inventory-container">
 		<div class="inventory">
-			<div class="sherif-Inventory">
-				<h2 class="sherifM sherif-Title title-category">Sherif</h2>
+			<div class="sherif-inventory">
+				<h2 class="sherifM sherif-title title-category">Sherif</h2>
 				<div class="avatar-inventory">
 					{#each Object.entries(sherifInventory) as [key, value] (key)}
 						{#if value !== 0}
@@ -30,8 +30,8 @@
 					{/each}
 				</div>
 			</div>
-			<div class="bandit-Inventory">
-				<h2 class="banditM bandit-Title title-category">Bandit</h2>
+			<div class="bandit-inventory">
+				<h2 class="banditM bandit-title title-category">Bandit</h2>
 				<div class="avatar-inventory">
 					{#each Object.entries(banditInventory) as [key, value] (key)}
 						{#if value !== 0}
@@ -66,12 +66,13 @@
 	}
 
 	.inventory-container {
+		height: 100%;
 		display: flex;
   		justify-content: center;
 	}
 
 	.inventory {
-		height: 300px;;
+		max-height: 300px;
 		display: grid;
     	grid-template-columns: auto 1fr;
 		overflow-y: auto;
@@ -94,11 +95,11 @@
 		padding: 5px 10px 5px 10px;
 	}
 
-	.sherif-Inventory {
+	.sherif-inventory {
 		margin-right: 5px;
 	}
 
-	.bandit-Inventory {
+	.bandit-inventory {
 		width: fit-content;
 		margin-left: 5px;
 	}

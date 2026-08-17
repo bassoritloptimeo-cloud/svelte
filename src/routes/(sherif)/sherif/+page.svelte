@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$, text$ } from "./state.store";
+	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$, text$, banditMoves$ } from "./state.store";
 	import { placePositions, placeByPos } from "./data";
     import "./styles.css";
 	import Avatar from "./components/Avatar.svelte";
@@ -17,72 +17,78 @@
 
 
 <div class="container">
-	<div class="play_contener">
-		<img src="sherif/map.jpg" alt="Carte du monde" class="map">
-		<Avatar 
-			name="sherif" 
-			left={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.left} 
-			top={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.top}
-		></Avatar>
-		<Avatar 
-			name="bandit" 
-			left={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.left} 
-			top={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.top}
-		></Avatar>
+	<div class="play_container">
+		<div class="map_container">
+			<img src="sherif/map.jpg" alt="Carte du monde" class="map">
+			<Avatar 
+				name="sherif" 
+				left={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.left} 
+				top={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.top}
+			></Avatar>
+			<Avatar 
+				name="bandit" 
+				left={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.left} 
+				top={placePositions[placeByPos[`${$bandit$.x},${$bandit$.y}`]]?.top}
+			></Avatar>
+		</div>
 
 	</div>
 	<div class="wallpaper">
-		<div class="option">
+		<div class="buttons">
 			<button onclick={position}>Commencer le jeu</button>
-			{#if $beginGame$}
-				<div class="bottom-element">
-					<div>
-						<h2>>> Mouvement</h2>
-					</div>
-					<div class="relatives-moves">
-						<div class="sherifM">
-							<div class="sherifName">
-								<div class="circle-sherif"></div>
-								<h2 class="sherif-Title">Sherif</h2>
-							</div>
-							{#each $sheriffMoves$ as {path, placeS} (path)}
-								<div>
-									<p class="moves_possibilities">{path + ". " + placeS.nom}</p>
-								</div>
-							{/each}
-						</div>
-						<div class="banditM">
-							<div class="banditName">
-								<div class="circle-bandit"></div>
-								<h2 class="bandit-Title">Bandit</h2>
-							</div>
-							{#each $sheriffMoves$ as {path, placeB} (path)}
-								<div>
-									<p class="moves_possibilities">{path + ". " + placeB.nom}</p>
-								</div>
-							{/each}
-						</div>
-					</div>
-
+		</div>
+		{#if $beginGame$}
+			<div class="bottom-element">
+				<div>
+					<h2>>> Mouvement</h2>
 				</div>
-				<Inventory 
-					sherifInventory={$sherifInventory$}
-					banditInventory={$banditInventory$}
-					inventoryTranslations={$inventoryTranslations$}
-				></Inventory>
-			{/if}
-		</div>
+				<div class="relatives-moves">
+					<div class="sherifM">
+						<div class="sherifName">
+							<div class="circle-sherif"></div>
+							<h2 class="sherif-title">Sherif</h2>
+						</div>
+						{#each $sheriffMoves$ as {path, place} (path)}
+							<div>
+								<p class="moves_possibilities">{path + ". " + place.nom}</p>
+							</div>
+						{/each}
+					</div>
+					<div class="banditM">
+						<div class="banditName">
+							<div class="circle-bandit"></div>
+							<h2 class="bandit-title">Bandit</h2>
+						</div>
+						{#each $banditMoves$ as {path, place} (path)}
+							<div>
+								<p class="moves_possibilities">{path + ". " + place.nom}</p>
+							</div>
+						{/each}
+					</div>
+				</div>
+
+			</div>
+			<Inventory 
+				sherifInventory={$sherifInventory$}
+				banditInventory={$banditInventory$}
+				inventoryTranslations={$inventoryTranslations$}
+			></Inventory>
 		<div>
-			{#if $beginGame$}
-				<Text
-					text={$text$}
-				></Text>
-			{/if}
+			<Text
+				text={$text$}
+			></Text>
 		</div>
+		{/if}
 	</div>
 </div>
 
 <style>
+
+	.map_container {
+		position: relative;
+		display: inline-block;
+	}
+
 	.relatives-moves {
 		display: grid;
     	grid-template-columns: auto auto;

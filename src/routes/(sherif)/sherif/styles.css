@@ -1,9 +1,8 @@
 .wallpaper {
 	background-color: rgba(11, 9, 1);
+	height: 100vh;
+	overflow: auto;
 }
-
-
-
 
 .bottom-element {
 	background-color: rgba(55, 43, 5);
@@ -91,19 +90,18 @@ button:active {
 
 }
 
-.play_contener {
-	position: relative;
+.play_container {
 	height: 100%;
 	overflow: hidden;
 	min-width: calc(100vh * 1075 / 1464);
 	overflow-y: auto;
 }
 
-.sherif-Title {
+.sherif-title {
 	color: rgb(255, 255, 255);
 }
 
-.bandit-Title {
+.bandit-title {
 	color: rgb(248 113 113);
 }
 

@@ -63,3 +63,8 @@ export type ActionFn = (
 	runNote: (note: string) => void,
 	addInventory: (owner: 'sherif' | 'bandit', item: string, amount?: number) => void
 ) => void;
+
+export interface Destination {
+	path: string;
+	place: Place;
+}

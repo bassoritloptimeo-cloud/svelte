@@ -1,5 +1,5 @@
 import { batch, computed, writable } from '@amadeus-it-group/tansu';
-import type { CellPos, Place, SherifInventory, BanditInventory } from './types.ts';
+import type { CellPos, Place, SherifInventory, BanditInventory, Destination } from './types.ts';
 import { places, grid } from './data';
 import { events } from './events.ts';
 
@@ -53,20 +53,15 @@ const diceMoves = [
 
 export const sheriffMoves$ = computed(() => {
 	const { x, y } = sherif$();
-	const cellS = grid[y][x];
-	const { x: xB, y: yB } = bandit$();
-	const cellB = grid[yB][xB];
+	const cell = grid[y][x];
 
 	const moves = ['1', '2', '3', '4'];
-	const result: { path: string; placeS: Place; placeB: Place }[] = [];
-	const dice = dice$();
+	const result: Destination[] = [];
 	for (const moveNb of moves) {
-		const newCellSherif = cellS[moveNb];
-		const newCellBandit = cellB[diceMoves[dice][+moveNb - 1]];
+		const newCellSherif = cell[moveNb];
 		result.push({
 			path: moveNb,
-			placeS: placesByPos[`${newCellSherif.x}_${newCellSherif.y}`],
-			placeB: placesByPos[`${newCellBandit.x}_${newCellBandit.y}`]
+			place: placesByPos[`${newCellSherif.x}_${newCellSherif.y}`],
 		});
 	}
 
@@ -77,13 +72,12 @@ export const dice$ = writable(0);
 
 export const banditMoves$ = computed(() => {
 	const dice = dice$();
-
 	const { x, y } = bandit$();
 	const cell = grid[y][x];
 
 	const moves = diceMoves[dice];
 	console.log('(DEBUG)   [state.store.ts:64]: moves: ', moves);
-	const result: { path: string; place: Place }[] = [];
+	const result: Destination[] = [];
 	for (const moveNb of moves) {
 		const newCell = cell[moveNb];
 		result.push({ path: moveNb, place: placesByPos[`${newCell.x}_${newCell.y}`] });
