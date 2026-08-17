@@ -54,7 +54,7 @@ button:active {
 
 .container {
 	display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: 1fr 1fr;
     height: 100vh;
 	overflow: hidden;
 }

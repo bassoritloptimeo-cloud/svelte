@@ -320,7 +320,7 @@ export const events: Record<string, ActionFn> = {
 			readText('Le shérif a un bon de livraison');
 			runNote('60');
 		} else {
-			readText("Le shérif n's pas de bon de livraison");
+			readText("Le shérif n'a pas de bon de livraison");
 		}
 	},
 	note59: (readText, _sherif$, _bandit$, _runNote, addInventory) => {
