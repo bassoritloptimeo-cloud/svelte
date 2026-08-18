@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { base } from '$app/paths';
+
 	interface Props {
 		name: "sherif" | "bandit"
 		left: number
@@ -16,7 +18,7 @@
 
 <div class="Avatar sherif" class:sherif={name === 'sherif'} class:bandit={name === 'bandit'} style:top={`${top}%`} style:left={`${left}%`}>
 	<div class="avatar-background"></div>
-	<img src={`sherif/${name}.png`} alt={labels[name]}>
+	<img src={`${base}/sherif/${name}.png`} alt={labels[name]}>
 </div>
 
 <style>

@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { position, sherif$, bandit$, beginGame$, handleGlobalKeyDown, sheriffMoves$, sherifInventory$, banditInventory$, text$, banditMoves$ } from "./state.store";
+	import { base } from "$app/paths";
 	import { placePositions, placeByPos } from "./data";
     import "../../global.css";
     import "./styles.css";
@@ -20,7 +21,7 @@
 <div class="jeu-sherif container">
 	<div class="play_container">
 		<div class="map_container">
-			<img src="sherif/map.jpg" alt="Carte du monde" class="map">
+			<img src={`${base}/sherif/map.jpg`} alt="Carte du monde" class="map">
 			<Avatar 
 				name="sherif" 
 				left={placePositions[placeByPos[`${$sherif$.x},${$sherif$.y}`]]?.left} 
