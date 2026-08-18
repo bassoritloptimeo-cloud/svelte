@@ -1,0 +1,30 @@
+a {
+    text-decoration: underline;
+    color: blue;
+
+    &:hover {
+        color: rgb(0, 132, 255);
+    }
+}
+
+button {
+    border: 1px solid lightgrey;
+    padding-top: 6px;
+	padding-bottom: 6px;
+	padding-left: 8px;
+	padding-right: 8px;
+    border-radius: 12px;
+	box-shadow: 4px 4px 5px 0px rgba(0, 0, 0, 0.7);
+}
+
+button:hover {
+	
+}
+
+button:active {
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 7px;
+	padding-right: 7px;
+	box-shadow: none;
+}
