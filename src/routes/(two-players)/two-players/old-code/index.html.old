@@ -1,0 +1,156 @@
+<html>
+	<head>
+		<title>Jeu</title>
+		<meta charset="UTF-8" />
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    	<link rel="stylesheet" href="./styles.css"/>
+    	<script src="./html.js"></script>
+	</head>
+	<body>
+		<div class="plateau">
+			<div class="boutons">
+				<div class="commencer">
+					<button onclick="vsAmi()" class="demarrage">Commencer</button>
+					<button onclick="vsOrdi()" class="vsOrdi">Jouer contre l'ordinateur</button>
+				</div>
+				<div class="parametres">
+					<img class="icone" src="./img/gear.svg" width="40px">
+					<br>
+					<label for="pet-select">Taille de la grille :</label>
+					<select id="pet-select" name="pets">
+						<option value="4">4x4</option>
+						<option value="5" selected>5x5 (par défaut)</option>
+						<option value="6">6x6</option>
+						<option value="7">7x7</option>
+						<option value="8">8x8</option>
+					</select>
+					<br>
+					<br>
+					<input class="editeur-checkbox" type="checkbox" name="case1">Editeur de position
+					<h3>Noms des joueurs</h3>
+					<div class=name-select>
+						<input class="nom-joueur1 joueur1 name1"></input>
+						<input class="nom-joueur2 joueur2 name2"></input>
+					</div>
+					<div class="beginner_Block"></div>
+					<h3>Choisir le trait</h3>
+					<div class = "beginner">
+						<button class="trait_joueur1" onclick="choisirTrait(1)">Trait au vert</button>
+						<button class="alea_trait" onclick="choisirTrait(false)">Trait aléatoire</button>
+						<button class="trait_joueur2" onclick="choisirTrait(-1)">Trait au rouge</button>
+					</div>
+					<div class="beginner">
+						<h4>trait : <span class="trait alea">aléatoire</span></h4>
+					</div>
+				</div>
+			</div>
+			<div class="play-container">
+				<h2 class="niveau-ordi"></h2>
+				<div class="bouton-principal">
+					<button onclick="recommencerJeu()" class="reinitialiser">Nouvelle partie</button>
+					<button onclick="validEdition()" class="valEdit">Valider l'édition</button>
+				</div>
+				<div class="legende"></div>
+				<div class="evaluation">
+					<h4 class="evalInstantanee eval">Evaluation instantanée: <span class="evalInstantanee-value"></span></h4>
+					<h4 class="evalAdversaire eval">Evaluation de l'advsersaire: <span class="evalAdversaire-value"></span></h4>
+					<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value"></span></h4>
+				</div>
+				<div class="board-container">
+					<div id="board"></div>
+				</div>
+				<div class="couleurEdition desactiveEditeur">
+					<button class="vertSelect" onclick="ajout(1)">Ajout de points verts</button>
+					<button class="reversTrait" onclick="traitEdition();">Changer le trait</button>
+					<button class="rougeSelect"onclick="ajout(-1)">Ajout de points rouges</button>
+				</div>
+				<div class="infoNeg">
+					<h5>Temps de Calcul: <span class="tCalc"></span></h5>
+					<h5><span class="vCalc"></span></h5>
+				</div>
+				<div class="retour">
+					<button onclick="paramJeu(true)" class="menu-bouton">
+						<div>Retour au menu</div>
+						<img class="icone" src="./img/retour.svg" width="20px">
+					</button>
+				</div>
+				<div class="info"></div>
+				<div class="fleches">
+					<button onclick="moveCurseur(-1)" class="move">&#8592;</button>
+					<button onclick="moveCurseur(1)" class="move">&#8594;</button>
+				</div>
+				<div class="infoNegamax"></div>
+				<button class="menu_content" onclick="openMenu()">
+					<img class="icone" src="./img/menu.svg" width="50px">
+				</button>
+			</div>
+		</div>
+		<dialog id="dialog1" onkeydown="validerDialog(event, 'niveauValid');">
+			<div class = "slider_conteneur">
+				<label class="niveau">Niveau de jeu</label>
+				<input
+					type="range"
+					name="note"
+					min="1"
+					max="10"
+					step="1"
+					value="5"
+					class="niveauOrdi"
+					oninput="afficherNiveauDialog()"
+				/>
+				<p class="slider_value">Valeur actuelle : <span class="valeur-niveau">5</span></p>
+			</div>
+			<div class="valider">
+				<button onclick="commencerOrdi()">Valider</button>
+			</div>
+		</dialog>
+		<dialog id="dialog_Menu" onkeydown="validerDialog(event, 'menuValid');">
+			<div class = "slider_conteneur">
+				<div class="options">
+					<div class="label_content">
+						<label for="abset-move-annotation">
+							<input class="eval-checkbox" type="checkbox" name="case1">Activer l'évaluation
+					  	</label>
+					</div>
+					<div class="label_content">
+						<label>
+							<input class="mCoup" type="checkbox" name="case1">Montrer le meilleur coup
+						</label>
+					</div>
+					<div class="label_content">
+						<label>
+							<input class="dCoup" type="checkbox" name="case1">Afficher le dernier coup
+						</label>
+					</div>
+					<div class="label_content">
+						<label>
+							<input class="evalEnnemi" type="checkbox" name="case1">Montrer l'évaluation calculée
+						</label>
+					</div>
+					<div class="label_content">
+						<label for="abset-move-annotation">
+							<input class="negInfo-checkbox" type="checkbox" name="case1">Afficher les informations negamax
+					  	</label>
+					</div>
+					<label for="pet-select">Nombre de coeurs actifs :</label>
+					<select id="pet-select" name="pets" class="thread-Select">
+						<option value="2" class="C2">2</option>
+						<option value="4" class="C4">4</option>
+						<option value="6" class="C6">6</option>
+						<option value="8" class="C8">8</option>
+						<option value="10" class="C10">10</option>
+						<option value="12" class="C12">12</option>
+						<option value="14" class="C14">14</option>
+						<option value="16" class="C16">16</option>
+					</select>
+				</div>
+				<div class="actifs"></div>
+				<button onclick="validModif(true)">Valider</button>
+			</div>
+		</dialog>
+		<script src="./worker.js"></script>
+		<script src="./code.js"></script>
+		<script src="./tests.js"></script>
+		<script src="./alphaBetaWorker.js"></script>
+	</body>
+</html>

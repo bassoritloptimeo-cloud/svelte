@@ -1,0 +1,349 @@
+const htmlState = {
+	htmlBoard: [],
+	meilleurCoup: [],
+};
+
+function creerCell(cell, noLigne, noCol) {
+	let valeur = globalState.board[noLigne][noCol];
+	if (valeur === 0) {
+		valeur = "";
+	}
+	if (htmlState.meilleurCoup.length) {
+		console.warn("meilleur coup", htmlState.meilleurCoup);
+	}
+	const couleur = globalState.board[noLigne][noCol] > 0 ? "joueur1" : "joueur2";
+	const classPeutJouer = couleur === globalState.trait ? "possible" : "";
+	return `<td class="bord-cell" data-id="${noLigne},${noCol}" onclick="clickCase(event)"><div class="billes"></div></td>`;
+}
+function creerLigne(ligne, noLigne) {
+	return `<tr>${ligne.map((cell, noCol) => creerCell(cell, noLigne, noCol)).join('')}</tr>`;
+}
+
+function creerTable() {
+	const board = globalState.board;
+	return `
+		<table class="board">
+			<tbody>
+				${board.map(creerLigne).join('')}
+			</tbody>
+		</table>
+	`;
+}
+function afficherTable() {
+	// console.log("afficherTable", globalState);
+	const html = creerTable();
+	const boardElement = document.querySelector('#board');
+	const htmlBoard = htmlState.htmlBoard;
+	boardElement.innerHTML = html;
+
+	const trs = [...boardElement.querySelectorAll("tr")];
+	for (let y = 0; y < trs.length; y++)  {
+		const ligne = htmlBoard[y] = [];
+		const tds = [...trs[y].querySelectorAll("td")];
+		for (let x = 0; x < tds.length; x++) {
+			ligne.push(tds[x]);
+		}
+	}
+	// console.log('afficherTable, globalState = ', globalState);
+}
+function majTable() {
+	const {board, trait, dernierCoup} = globalState;
+	const {htmlBoard} = htmlState;
+	// console.log("📢[html.js:44]: trait: ", trait);
+	const nbLignes = board.length;
+	const nbCols = board[0].length;
+	for (let y = 0; y < nbLignes; y++) {
+		const ligne = htmlBoard[y];
+		for (let x = 0; x < nbCols; x++) {
+			let caseClick;
+			const td = ligne[x];
+			const points = board[y][x];
+			const pointsAbs = Math.abs(points);
+			couleur = Math.sign(points);
+			let classCouleur;
+			if (globalState.editeurValide) {
+				classCouleur = couleur === 1 ? "joueur1" : couleur === -1 ? "joueur2" : "";
+			} else {
+				classCouleur = couleur === 1 ? "joueur1" : couleur === -1 ? "joueur2" : "inert";
+			}
+			let classInactive;
+			if (globalState.editeurValide) {
+				classInactive = "possible";
+			} else {
+				classInactive = couleur === trait ? "possible" : "inert";
+			}
+			if (globalState.dernierCoupValid && dernierCoup.y === y && dernierCoup.x === x) {
+				caseClick = "dernierClick";
+			} else {
+				console.error("globalState.dernierCoupValid", globalState.dernierCoupValid);
+			}
+			td.className = `bord-cell cell-${pointsAbs} ${classCouleur} ${classInactive} ${caseClick}`;
+			const divBilles = td.querySelector('div.billes');
+			const divs = [...divBilles.querySelectorAll('div')];
+			for (let i = 0; i < pointsAbs; i++) {
+				if (!divs[i]) {
+					divBilles.appendChild(creerBille(i));
+				}
+			}
+			for (let i = Math.abs(points); i < divs.length; i++) {
+				const div = divs[i];
+				div.parentNode.removeChild(div);
+			}
+		}
+		if (htmlState.meilleurCoup.length) {
+			console.log("Montrer meilleur coup");
+			// console.warn("" + htmlState.meilleurCoup[0] + htmlState.meilleurCoup[1]);
+			document.querySelector(`[data-id="${htmlState.meilleurCoup[0] + "," + htmlState.meilleurCoup[1]}"]`).classList.add("meilleurCase");
+		}
+	}
+
+	// console.log("globalState.casesControle.joueur1, globalState.casesControle.joueur2", globalState.casesControle.joueur1, globalState.casesControle.joueur2);
+	if (globalState.casesControle.joueur1 && globalState.casesControle.joueur2) {
+		console.warn("traitMAP", trait);
+		afficherFond(globalState.trait);
+	}
+
+}
+
+function legendeCreation([joueur1, joueur2]) {
+	document.querySelector(".legende").innerHTML = `
+		<div class="joueur1">${joueur1}</div>
+		<div class="joueur2">${joueur2}</div>
+	`
+}
+
+function creerBille(index) {
+	const bille = document.createElement("div");
+	bille.className = `bille bille-${index + 1}`;
+	return bille;
+}
+
+function afficherFond(trait) {
+	// console.warn("afficherFond", trait);
+	trait = trouverTrait(trait);
+	document.querySelector(".plateau").className = `plateau ${trait}`;
+}
+function affichageTrait(trait) {
+	const nomJoueurTrait = trait > 0 ? nomsJoueur[0] : nomsJoueur[1];
+	const classTrait = trait > 0 ? "joueur1" : "joueur2";
+	console.warn("trait", trait);
+	document.querySelector(".info").innerHTML = `<h3 class="trait ${classTrait}">Trait à ${nomJoueurTrait}</h3>`;
+}
+function paramJeu(pageParametre) {
+	if (!pageParametre) {
+		document.querySelector(".play-container").style.display = "block";
+		document.querySelector(".boutons").style.display = "none";
+	} else {
+		coupsJoues = [];
+		nomsJoueur = [];
+		document.querySelector("#dialog1").close();
+		document.querySelector(".play-container").style.display = "none";
+		document.querySelector(".boutons").style.display = "block";
+		document.querySelector(".plateau").classList.remove("joueur1", "joueur2");
+		document.querySelector(".niveau-ordi").innerHTML = "";
+		menuJeu(true);
+	}
+}
+
+function menuJeu(pageParametre) {
+	// console.warn(pageParametre);
+	if (!pageParametre) {
+		document.querySelector(".menu_content").style.display = "inline-block";
+	} else {
+		document.querySelector(".menu_content").style.display = "none";
+	}
+}
+
+
+function joueurGagnant(gagnant) {
+	const nomGagnant = gagnant === "joueur1" ? nomsJoueur[0] : nomsJoueur[1];
+	// console.log("joueurGagnant", `<h1 class="vainqueur ${gagnant}">Le gagnant est ${gagnant}</h1>`);
+	document.querySelector(".info").innerHTML = `<h1 class="vainqueur ${gagnant}">Le gagnant est ${nomGagnant}</h1>`;
+}
+
+let minColor = [0, 238, 255];
+let maxColor = [255, 0, 0];
+function afficherNiveauDialog() {
+	profondeurAnalyse = document.querySelector(".valeur-niveau").innerHTML = document.querySelector(".niveauOrdi").value;
+	let color = [];
+	for (let i = 0; i < 3; i++) {
+		if (minColor < maxColor) {
+			color.push(Math.floor(minColor[i] + (maxColor[i] - minColor[i]) * profondeurAnalyse / 10));
+		} else {
+			color.push(Math.floor(minColor[i] - (maxColor[i] - minColor[i]) * profondeurAnalyse / 10));
+		}
+	}
+	console.warn("couleur", color);
+	document.querySelector(".niveauOrdi").style.accentColor = `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+}
+
+/*
+.test a été enlevé !!!!!!!
+function creerTest() {
+	document.querySelector(".test").innerHTML = `<button onclick="test()">Test</button>`;
+}
+*/
+function affichageNiveau() {
+	document.querySelector(".niveau-ordi").innerHTML = `<div>Niveau de l'ordinateur : ${profondeurAnalyse}</div>`;
+}
+
+function openMenu() {
+	console.warn("openMenu");
+	document.querySelector("#dialog_Menu").showModal();
+}
+
+function afficherEvaluation(type) {
+	if (type.add) {
+		document.querySelector(`.${type.name}`).style.display = "flex";
+		document.querySelector(`.${type.name}-value`).innerHTML = `${Math.round(type.value * 10) / 100}`;
+	} else {
+		console.log("type.name", type.name);
+		console.warn(document.querySelector(`.${type.name}`));
+		document.querySelector(`.${type.name}`).style.display = "none";
+	}
+}
+/*
+document.addEventListener("keydown", function (event) {
+	if (event.key === "Escape") {
+		console.log("Escape key pressed");
+		paramJeu(true);
+	}
+});
+*/
+function majCalcul(temps, vitesse) {
+	let vitesseAff;
+	console.log("vitesee", vitesse);
+	let unite;
+	if (vitesse) {
+		if (vitesse < 10000) {
+			unite = "Kn/s";
+			vitesseAff = `${vitesse.toFixed(1) + " "}`;
+		} else {
+			vitesse /= 1000;
+			vitesseAff = `${vitesse.toFixed(1) + " "}`;
+			unite = "Mn/s";
+		}
+		document.querySelector(".vCalc").innerHTML = `${vitesseAff + unite}`;
+	} else {
+		document.querySelector(".vCalc").innerHTML = ". . .";
+	}
+	document.querySelector(`.tCalc`).innerHTML = `${temps}ms`;
+}
+function afficherInfoCalcul(afficher) {
+	if (afficher) {
+		document.querySelector(".infoNeg").style.display = "flex";
+	} else {
+		document.querySelector(".infoNeg").style.display = "none";
+	}
+}
+function validModif(valid) {
+	document.querySelector("#dialog_Menu").close();
+	if (valid) {
+		MAX_WORKERS = document.querySelector(".thread-Select").value;
+		const obj = {
+			evaluationValid: document.querySelector(".eval-checkbox").checked,
+			coupValid: document.querySelector(".mCoup").checked,
+			dernierCoupValid: document.querySelector(".dCoup").checked,
+			evalEnnemmiValid: document.querySelector(".evalEnnemi").checked,
+			negInfo: document.querySelector(".negInfo-checkbox").checked,
+		};
+
+		Object.assign(globalState, obj);
+		Object.assign(initState, obj);
+
+		if (globalState.evaluationValid) {
+			globalState.evaluation = evaluer(globalState);
+			afficherEvaluation({name: "evalInstantanee", value: globalState.evaluation, add: true});
+		} else {
+			afficherEvaluation({name: "evalInstantanee", add: false});
+			console.warn("cacher evaluation", globalState.evaluationValid);
+			// document.querySelector(".evaluation").innerHTML = "";
+		}
+		if (!globalState.evalEnnemmiValid) {
+			afficherEvaluation({name: "evalAdversaire", add: false});
+		}
+		if (globalState.coupValid) {
+			console.log("nomsJoueur", nomsJoueur);
+			profondeurOrdi = profondeurAnalyse;
+			profondeurAnalyse = 10;
+			nomsJoueursTemporaires = [...nomsJoueur];
+			nomsJoueur = globalState.trait === 1 ? [robotName, "joueur1"] : ["joueur2", robotName];
+			coupOrdinateur(globalState.trait);
+			gererGagnant();
+		} else {
+			afficherEvaluation({name: "evalAide", add: false});
+		}
+		afficherInfoCalcul(globalState.negInfo);
+		majTable();
+	}
+}
+function validerDialog(e, dialogValid) {
+	if (e.key === "Enter") {
+		e.preventDefault();
+		if (dialogValid === "niveauValid") {
+			commencerOrdi();
+		} else {
+			validModif(false)
+		}
+	}
+}
+function editeurCouleur(active) {
+	let classRename = "couleurEdition ";
+	if (active) {
+		classRename += "activeEditeur";
+	} else {
+		classRename += "desactiveEditeur";
+	}
+	document.querySelector(".couleurEdition").className = classRename;
+}
+function pointeur(couleur) {
+	document.querySelector(".board").style.cursor = "pointer";
+}
+function gestionElementEditeur(editeur) {
+	if (editeur) {
+		document. querySelector(".menu_content").style.display = "none";
+		document. querySelector(".fleches").style.display = "none";
+		document.querySelector(".valEdit").style.display = "flex";
+		document.querySelector(".reinitialiser").style.display = "none";
+	} else {
+		document. querySelector(".menu_content").style.display = "flex";
+		document. querySelector(".fleches").style.display = "flex";
+		document.querySelector(".valEdit").style.display = "none";
+		document.querySelector(".reinitialiser").style.display = "flex";
+	}
+}
+function traitEdition() {
+	if (globalState.editeurValide) {
+		console.log("changertrait");
+		changerTrait(globalState);
+		globalState.editeurTrait = globalState.trait;
+		affichageTrait(globalState.trait);
+		majTable();
+		console.error("globalState.trait", globalState.trait, globalState.editeurTrait);
+	}
+}
+
+function choisirTrait(traitChoisi) {
+	if (traitChoisi) {
+		const joueur = traitChoisi === 1 ? "joueur1" : "joueur2";
+		document.querySelector(".trait").innerHTML = traitChoisi === 1 ? "vert" : "rouge";
+		document.querySelector(".trait").className = `trait ${joueur}`;
+		globalState.traitInit = traitChoisi;
+	} else {
+		document.querySelector(".trait").innerHTML = "aléatoire";
+		document.querySelector(".trait").className = `trait alea`;
+		globalState.traitInit = undefined;
+	}
+}
+function activateableThreads(thread_MAX) {
+	console.warn("thread_MAX", thread_MAX);
+	const threadsActive = document.querySelector(".thread-Select");
+	threadsActive.value = thread_MAX;
+	if (thread_MAX < 8) {
+		for (let i = thread_MAX + 2; i <= 16; i += 2) {
+			const classSelect = "C" + i;
+			document.querySelector(`.${classSelect}`).className = "invalid";
+			document.querySelector(`#pet-select option[value="${i}"]`).disabled = true;
+		}
+	}
+}

@@ -1,0 +1,21 @@
+function test() {
+    const testState = {
+        board: [
+			[0, 0, 0, 0, 0],
+            [0, 0, 0, -3, 0],
+            [0, 0, 0, 0, 0],
+            [0, 3, 0, 0, 0],
+            [0, 0, 0, 0, 0],
+        ],
+        casesControle: {
+            joueur1: 1,
+            joueur2: 1 
+        },
+        trait: 1,
+    }
+    console.log("testState", testState);
+    globalState = testState;
+    majTable();
+    affichageTrait(globalState.trait);
+	jeuRobot();
+}

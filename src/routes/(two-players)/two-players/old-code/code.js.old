@@ -1,0 +1,715 @@
+const select = document.getElementById('pet-select');
+let selectedValue;
+let jeuOrdi = false;
+const robotName = "Robot";
+let enterValid = true;
+select.addEventListener('change', () => {
+  	selectedValue = select.options[select.selectedIndex].value;
+	console.log('Valeur sélectionnée :', selectedValue);
+});
+let ennemieRobot;
+// const delay = 500;
+let nbRows = 5;
+let nbCols = 5;
+let profondeurOrdi = 1;
+let profondeurAnalyse = 1;
+let calculdebut;
+const directions = [
+	[1, 0],
+	[0, 1],
+	[-1, 0],
+	[0, -1]
+];
+console.log("navigator.hardwareConcurrency", navigator.hardwareConcurrency);
+let globalState = {
+	board: [],
+	trait: undefined, // 1 -> vert, -1 -> rouge
+	traitInit: undefined,
+	dernierCoup: {y: undefined, x: undefined},
+	casesControle: {joueur1: 1, joueur2: 1},
+	evaluationValid: false,
+	evaluation: undefined,
+	evalEnnemmiValid: undefined,
+	coupValid: false,
+	editeurValide: false,
+	dernierCoupValid: false,
+	couleurSelect: 0,
+	boardEdition: undefined,
+	editeurTrait: 0,
+	negInfo: false,
+	nbClone: 0,
+};
+let nomsJoueur;
+let nomsJoueursTemporaires;
+
+document.addEventListener("DOMContentLoaded", () => {
+	activateableThreads(navigator.hardwareConcurrency);
+});
+
+function pause(ms) {
+	const promise = new Promise(function(resolve) {
+		setTimeout(function() {
+			resolve();
+        }, ms);
+    });
+    return promise;
+}
+let initState;
+function placement(couleur, board, premPlace = [-2, -2]) {
+	if (!globalState.boardEdition) {
+		let cell = [...premPlace];
+		while (Math.abs(cell[0] - premPlace[0]) < 2 && Math.abs(cell[1] - premPlace[1]) < 2) {
+			cell = [Math.floor(Math.random() * nbRows), Math.floor(Math.random() * nbCols)];
+		}
+		if (couleur === "joueur1") {
+			board[cell[0]][cell[1]] = 3;
+		} else {
+			board[cell[0]][cell[1]] = -3;
+		}
+		return cell;
+	}
+}
+function initGame(contreOrdi) {
+	curseur = 0;
+	console.error("globalState.editeurTrait", globalState.editeurTrait);
+	globalState.editeurValide = document.querySelector(".editeur-checkbox").checked;
+	jeuOrdi = contreOrdi;
+	finDeVariante = true;
+	coupsJoues = [];
+	globalState.dernierCoup = {y: undefined, x: undefined};
+	globalState.dernierCoupValid = document.querySelector(".dCoup").checked;
+	// console.clear();
+	if (selectedValue !== undefined) {
+		nbRows = selectedValue;
+		nbCols = selectedValue;
+	}
+	if (!contreOrdi) {
+		ennemieRobot = false;
+		nomsJoueur = [document.querySelector(".nom-joueur1").value, document.querySelector(".nom-joueur2").value];
+		if (nomsJoueur[0] === "" || nomsJoueur[1] === "") {
+			nomsJoueur = ["joueur1", "joueur2"];
+		}
+	} else {
+		ennemieRobot = true;
+		if (document.querySelector(".nom-joueur1").value) {
+			nomsJoueur = [document.querySelector(".nom-joueur1").value, robotName];
+		} else if (document.querySelector(".nom-joueur2").value) {
+			nomsJoueur = [robotName, document.querySelector(".nom-joueur2").value];
+		} else {
+			nomsJoueur = ["joueur1", robotName];
+		}
+		console.log("nbRows", nbRows);
+	}
+	tabEval = preCalculs(nbRows);
+	console.log("globalState", globalState);
+	globalState.board = [];
+	globalState.casesControle.joueur1 = 1;
+	globalState.casesControle.joueur2 = 1;
+	const board = globalState.board;
+	console.error("globalState.traitInit", globalState.traitInit);
+	if (!globalState.traitInit) {
+		globalState.trait = Math.random() < 0.5 ? 1 : -1;
+	} else {
+		globalState.trait = globalState.traitInit;
+	}
+	console.log("trait", globalState.trait);
+	if (globalState.boardEdition) {
+		console.warn("globalState.boardEdition", globalState.boardEdition);
+		globalState.board = structuredClone(globalState.boardEdition);
+		globalState.trait = globalState.editeurTrait;
+	} else {
+		for (let i = 0; i < nbRows; i++) {
+			const ligne = [];
+			board.push(ligne);
+			for (let j = 0; j < nbCols; j++) {
+				ligne.push(0);
+			}
+		}
+	}
+	const joueurs = Math.random() < 0.5 ? ["joueur1", "joueur2"] : ["joueur2", "joueur1"];
+	/*
+	if (contreOrdi) {
+		creerTest();
+		}
+		*/
+		paramJeu(false);
+		menuJeu(false);
+		legendeCreation(nomsJoueur);
+	if (!globalState.editeurValide) {
+		const cell = placement(joueurs[0], board);
+		placement(joueurs[1], board, cell);
+		afficherTable();
+		majTable();
+		if (!globalState.boardEdition) {
+			affichageTrait(globalState.trait);
+		} else {
+			globalState.trait = globalState.editeurTrait;
+		}
+		initState = structuredClone(globalState);
+		jeuRobot();
+		editeurCouleur(false);
+		gestionElementEditeur(false);
+	} else {
+		afficherTable();
+		majTable();
+		affichageTrait(globalState.trait);
+		editeurCouleur(true);
+		gestionElementEditeur(true);
+	}
+	globalState.boardEdition = undefined;
+}
+function recommencerJeu() {
+	console.warn("ennemieRobot =", ennemieRobot);
+	initGame(ennemieRobot);
+}
+function vsOrdi() {
+	console.log("📢[code.js:107]: vsOrdi: ", vsOrdi);
+	const dialog = document.querySelector('#dialog1');
+	enterValid = false;
+	dialog.showModal();
+	document.querySelector(".niveauOrdi").value = profondeurAnalyse;
+	profondeurOrdi = profondeurAnalyse;
+	afficherNiveauDialog();
+}
+
+function commencerOrdi() {
+	console.log("📢[code.js:116]: commencerOrdi: ", commencerOrdi);
+	profondeurAnalyse = +document.querySelector(".valeur-niveau").textContent;
+	const dialog = document.querySelector('#dialog1');
+	console.log("📢[code.js:118]: dialog1: ", dialog);
+	dialog.close();
+	enterValid = true;
+	affichageNiveau();
+	initGame(true);
+}
+
+function vsAmi() {
+	// debugger;
+	initGame(false);
+}
+
+async function explosion(explosions) {
+	const exploEnChaine = [];
+	for (explo of explosions) {
+		let y = explo[0];
+		let x = explo[1];
+		globalState.board[y][x] = 0;
+		// globalState.board[y][x].couleur = undefined;
+		const yM = y;
+		const xM = x;
+		for (const direction of directions) {
+			y += direction[0];
+			x += direction[1];
+			if (globalState.board?.[y]?.[x] !== undefined) {
+				if (globalState.board[y][x] >= 3) {
+					exploEnChaine.push([y, x]);
+				} else {
+					globalState.board[y][x] += state.trait;
+				}
+			}
+			y = yM;
+			x = xM;
+		}
+	}
+	if (exploEnChaine.length !== 0) {
+		await explosion(exploEnChaine);
+	} else {
+		bilanTerritoire(globalState);
+	}
+	majTable();
+	await pause(delay);
+}
+
+function changerTrait(state) {
+	state.trait *= -1;
+}
+
+function trouverTrait (trait) {
+	return trait === 1 ? "joueur1" : "joueur2";
+}
+function bilanTerritoire(state) {
+	state.casesControle.joueur1 = 0;
+	state.casesControle.joueur2 = 0;
+	for (let i = 0; i < nbRows; i++) {
+		for (let j = 0; j < nbCols; j++) {
+			const points = state.board[i][j];
+			if (points > 0) {
+				state.casesControle.joueur1++;
+			} else if (points < 0) {
+				state.casesControle.joueur2++;
+			}
+		}
+	}
+	if (state.casesControle.joueur1 === 0) {
+		return "joueur2";
+	} else if (state.casesControle.joueur2 === 0) {
+		return "joueur1";
+	}
+}
+
+function gererGagnant() {
+	const gagnant = bilanTerritoire(globalState);
+	if (gagnant) {
+		joueurGagnant(gagnant);
+		return true;
+	}
+	return false;
+}
+
+let coupsJoues = [];
+async function clickCase(event) {
+	const cell = event.currentTarget;
+	let coordonnees = cell.dataset['id'].split(',');
+	coordonnees = [+coordonnees[0], +coordonnees[1]];
+	console.warn("coordonnees", coordonnees);
+	if (globalState.editeurValide) {
+		ajoutPointEdition({state: globalState, coordonnees});
+		majTable();
+	} else {
+		curseur++;
+		if (finDeVariante) {
+			console.warn("cordonnées GOOD");
+			coupsJoues.push({coordonnees});
+		}
+		await ajoutPoint({state: globalState, coordonnees, estAsync: true});
+		majTable();
+	
+		if (gererGagnant()) {
+			return;
+		}
+		if (globalState.evaluationValid) {
+			globalState.evaluation = evaluer(globalState);
+			afficherEvaluation({name: "evalInstantanee", value: globalState.evaluation, add: true});
+		}
+		if (document.querySelector(".evalAide").style.display = "flex") {
+			afficherEvaluation({name: "evalAide", add: false});
+		}
+		if (!ennemieRobot) {
+			afficherInfoCalcul(false);
+		}
+		changerTrait(globalState);
+		affichageTrait(globalState.trait);
+		majTable();
+		await jeuRobot();
+	}
+}
+async function coupAlphabeta({state, coordonnees, estAsync}) {
+	curseur++;
+	coupsJoues.push({coordonnees});
+	console.log("coupsJoues", coupsJoues);
+	await ajoutPoint({state, coordonnees, estAsync});
+	if (globalState.evaluationValid) {
+		globalState.evaluation = evaluer(globalState);
+		afficherEvaluation({name: "evalInstantanee", value: globalState.evaluation, add: true});
+	}
+}
+async function ajoutPoint({state, coordonnees, estAsync}) {
+	const {resoudreExplosions} = donnerEvalFns(tabEval, directions);
+	let [y, x] = coordonnees;
+	const board = state.board;
+	const couleur = Math.sign(board[y][x]);
+	if (couleur === state.trait) {
+		globalState.dernierCoup.y = y;
+		globalState.dernierCoup.x = x;
+		board[y][x] += couleur;
+		let cells = [[y, x]];
+		while (cells.length) {
+			const explosions = cells.some(([y, x]) => Math.abs(board[y][x]) >= 4);
+			// console.log("📢[code.js:235]: explosions: ", explosions);
+			if (explosions) {
+				if (estAsync) {
+					majTable();
+					await pause(500);
+				}
+			}
+			const newCells = [];
+			for (const cell of cells) {
+				newCells.push(...resoudreExplosions(state, cell));
+			}
+			cells = newCells;
+		}
+	}
+}
+
+function ajoutPointEdition({state, coordonnees}) {
+	console.warn("coordonnees", coordonnees);
+	let y = coordonnees[0];
+	let x = coordonnees[1];
+	const board = state.board;
+	const couleur = globalState.couleurSelect;
+	const couleurActu = Math.sign(board[y][x]);
+	if (couleur !== couleurActu) {
+		board[y][x] = couleur;
+	} else if (board[y][x] < 3 && board[y][x] > -3) {
+		board[y][x] += couleur;
+	} else {
+		board[y][x] = 0;
+	}
+}
+
+document.addEventListener("keydown", function (event) {
+	if (event.code === "ArrowLeft") {
+    	moveCurseur(-1);
+  	} else if (event.code === "ArrowRight") {
+    	moveCurseur(1);
+  	}
+});
+
+let curseur = 0;
+let finDeVariante = true;
+function moveCurseur(avance) {
+	// debugger;
+	console.log("coupsJoues", coupsJoues);
+	console.log("avance", avance);
+	curseur += avance;
+	if (curseur !== coupsJoues.length) {
+		finDeVariante = false;
+	} else {
+		finDeVariante = true;
+	}
+	console.log("fin de variante", finDeVariante);
+	if (curseur < 0) {
+		curseur = 0;
+		globalState = initState;
+		console.warn("initState", initState);
+		majTable();
+	} else if (curseur > coupsJoues.length) {
+		curseur = coupsJoues.length;
+	} else {
+		let trait = curseur % 2 === 0 ? initState.trait : initState.trait * -1;
+		afficherFond(trait);
+		if (curseur - 1 >= 0 && globalState.evalEnnemmiValid) {
+			const evaluation = coupsJoues[curseur - 1].eval;
+			console.error("evaluationMEM", coupsJoues, curseur - 1, evaluation);
+			if (evaluation) {
+				afficherEvaluation({name: "evalAdversaire", value: evaluation, add: true});
+			}
+		}
+		// changerTrait(globalState);
+	}
+	globalState = structuredClone(initState);
+	const {ajoutPointMinmax} = donnerEvalFns(tabEval, directions);
+	console.log("initState", initState);
+	if (curseur => 0 || curseur < coupsJoues.length - 1) {
+		for (let i = 0; i < curseur; i++) {
+			console.log("curseur modif", curseur, coupsJoues.length, i);
+			globalState.dernierCoup.y = coupsJoues[i].coordonnees[0];
+			globalState.dernierCoup.x = coupsJoues[i].coordonnees[1];
+			ajoutPointMinmax({state: globalState, coordonnees: coupsJoues[i].coordonnees});
+			changerTrait(globalState);
+		}
+		majTable();
+	}
+}
+
+function evalMemoire(evaluation) {
+	// debugger;
+	console.warn("curseur", curseur);
+	coupsJoues[curseur - 1].eval = evaluation;
+	console.log("coupsJoues", coupsJoues);
+}
+
+function ajout(couleur) {
+	globalState.couleurSelect = couleur;
+	pointeur(couleur);
+}
+
+function validEdition() {
+	globalState.boardEdition = structuredClone(globalState.board);
+	document.querySelector(".editeur-checkbox").checked = false;
+	globalState.editeurTrait = globalState.trait;
+	console.log("valid édition");
+	initGame(jeuOrdi);
+}
+// ________________________________________________________________________________________________________________________________________________________________________________________
+
+// Calcul ordinateur
+
+
+async function jeuRobot() {
+	const ajouer = globalState.trait === 1 ? nomsJoueur[0] : nomsJoueur[1];
+	if (ajouer === robotName) {
+		await coupOrdinateur(globalState.trait);
+		gererGagnant();
+	}
+}
+
+function creerNoeud(state) {
+	const {board, ...rest} = state;
+	const newBoard = [];
+	for (let i = 0; i < board.length; i++) {
+		const ligne = board[i];
+		const newLigne = [];
+		newBoard.push(newLigne);
+		for (let j = 0; j < ligne.length; j++) {
+			newLigne.push(ligne[j]);
+		}
+	}
+	return {board: newBoard, ...structuredClone(rest)};
+}
+
+// let nbEvaluation = 0;
+/*
+function evaluer(stateForComputer) {
+	let {board} = stateForComputer;
+	let nombreCasesPossiblesJoueur1 = 0;
+	let nombreCasesPossiblesJoueur2 = 0;
+	let evaluation = 0;
+	let  bonusJoueur1 = 0;
+	let  bonusJoueur2 = 0;
+	const tailleJ = board.length;
+	for (let j = 0; j < tailleJ; j++) {
+		const ligne = board[j];
+		const tailleI = ligne.length;
+		for (let i = 0; i < tailleI; i++) {
+			const cell = ligne[i];
+			const points = cell;
+			const estAuCentre = j > 0 && i > 0 && j < (tailleJ - 1) && i < (tailleI - 1);
+			if (cell > 0) {
+				nombreCasesPossiblesJoueur1++;
+				if (estAuCentre) {
+					if (Math.sign(cell) === 1) {
+						bonusJoueur1 += 0.25 * points;
+					}
+				}
+			} else if (cell < 0) {
+				nombreCasesPossiblesJoueur2++;
+				if (estAuCentre) {
+					bonusJoueur2 += 0.25 * points;
+				}
+			}
+		}
+	}
+	
+	if (!nombreCasesPossiblesJoueur1) {
+		return -MAX_EVAL;
+	} else if (!nombreCasesPossiblesJoueur2) {
+		return MAX_EVAL;
+	}
+	evaluation = (nombreCasesPossiblesJoueur1 + bonusJoueur1) - (nombreCasesPossiblesJoueur2 + bonusJoueur2);
+	// nbEvaluation++;
+	return evaluation;
+}
+*/
+
+
+let tabEval = [];
+
+function preCalculs(tailleGrille) {
+	const milieu = (tailleGrille - 1) / 2;
+	const BASE_VALUE_OFFSET = 0.75;
+	const ROUNDING_FACTOR = 10;
+	const centerValue = Math.round(BASE_VALUE_OFFSET + Math.sqrt(2 * Math.pow(milieu, 2)) * ROUNDING_FACTOR);
+	let evals = [];
+	for (let i = 0; i < tailleGrille; i++) {
+		const distI = Math.abs(milieu - i);
+		let lineEval = [];
+		for (let j = 0; j < tailleGrille; j++) {
+			const distJ = Math.abs(milieu - j);
+			console.log("i", i, "j", j, "distI", distI, "distJ", distJ);
+			lineEval.push(Math.round((centerValue - Math.sqrt(Math.pow(distI, 2) + Math.pow(distJ, 2))) * ROUNDING_FACTOR) / ROUNDING_FACTOR);
+		}
+		evals.push(lineEval);
+	}
+	console.warn(evals);
+	return evals;
+}
+
+
+async function coupOrdinateur(trait) {
+	const {donnerEnfants, jouer} = donnerEvalFns(tabEval, directions);
+	await pause(100);
+	console.warn("profondeurAnalyse", profondeurAnalyse);
+	const ajouer = globalState.trait === 1 ? nomsJoueur[0] : nomsJoueur[1];
+	calculdebut = new Date();
+	const stateForComputer = creerNoeud(globalState);
+	const casesPossibles = donnerEnfants(stateForComputer);
+	if (casesPossibles) {
+		console.log("📢[code.js:639]: nomsJoueur[0]: ", nomsJoueur[0]);
+		let meilleurCase = await trouverMeilleurCoup(stateForComputer, profondeurAnalyse, nomsJoueur[0] === robotName);
+		const tempsDeCalcul = new Date() - calculdebut;
+		if (globalState.negInfo && tempsDeCalcul) {
+			majCalcul(tempsDeCalcul, globalState.nbClone / tempsDeCalcul);
+		} else {
+			majCalcul(tempsDeCalcul);
+		}
+		globalState.nbClone = 0;
+		if (!globalState.coupValid) {
+			await pause(750 - tempsDeCalcul);
+			console.warn("Temps total avec pause : ", new Date() - calculdebut, "ms");
+			await coupAlphabeta({state: globalState, coordonnees: meilleurCase, estAsync: true});
+			changerTrait(globalState);
+			affichageTrait(globalState.trait);
+		} else {
+			globalState.coupValid = false;
+			profondeurAnalyse = profondeurOrdi;
+			nomsJoueur = nomsJoueursTemporaires;
+			htmlState.meilleurCoup = [...meilleurCase];
+		}
+		majTable();
+		htmlState.meilleurCoup = [];
+	}
+}
+
+let MAX_WORKERS = (navigator.hardwareConcurrency);
+function createPoolWorker() {
+    // Détection du nombre de cœurs disponibles (par défaut 4)
+    
+    // sconst MAX_WORKERS = 1;
+    const poolWorkers = [];
+    
+    // On crée les Workers au démarrage
+    for (let i = 0; i < MAX_WORKERS - 1; i++) {
+        poolWorkers.push(new Worker('./worker.js'));
+    }
+	return {
+		poolWorkers,
+		destroy() {
+			poolWorkers.forEach(worker => worker.terminate());
+		}
+	};
+}
+
+
+// Fonction utilitaire pour distribuer les tâches aux Workers disponibles
+function gererCalculParallele(workers, taches) {
+    console.log("📢[code.js:600]: gererCalculParallele: ");
+    return new Promise((resolve) => {
+        const resultatsFinaux = [];
+        let indexTache = 0;
+        let tachesTerminees = 0;
+
+        if (taches.length === 0) resolve([]);
+
+        function lancerTacheSurWorker(worker) {
+            console.log("📢[code.js:609]: lancerTacheSurWorker: ");
+            // S'il n'y a plus de tâches dans la file d'attente, on arrête
+            if (indexTache >= taches.length) return;
+
+            const idActuel = indexTache++;
+            const tacheActuelle = taches[idActuel];
+
+            // On configure la réception du résultat pour ce Worker
+            worker.onmessage = function(evenement) {
+				const {type, evaluation, n} = evenement.data;
+				globalState.nbClone += n;
+				if (type === 'RESULTAT') {
+					console.log("📢[code.js:616]: coup trouvé: ", tacheActuelle.coup, evenement.data.evaluation);
+                    resultatsFinaux.push({ 
+                        coup: tacheActuelle.coup, 
+                        evaluation: evaluation,
+						n,
+                    });
+                    tachesTerminees++;
+
+                    if (tachesTerminees === taches.length) {
+                        // Toutes les branches ont été calculées !
+                        resolve(resultatsFinaux);
+                    } else {
+                        // Le worker est libre, on lui donne la tâche suivante
+                        lancerTacheSurWorker(worker);
+                    }
+                }
+            };
+
+            // On envoie la tâche au Worker
+            worker.postMessage({ type: 'CALCULER', donnees: tacheActuelle });
+        }
+
+        // Au départ, on lance tous nos workers disponibles sur les premières tâches
+        workers.forEach(worker => lancerTacheSurWorker(worker));
+    });
+}
+
+async function trouverMeilleurCoup(noeud, profondeur, estJoueurMaximisant) {
+	console.error("estJoueurMaximisant", estJoueurMaximisant);
+	const {donnerEnfants, jouer} = donnerEvalFns(tabEval, directions);
+	const coups = donnerEnfants(noeud);
+	
+	// 1. On prépare la liste des tâches (les branches du premier niveau)
+	const listeTaches = coups.map(coup => {
+		const noeudEnfant = jouer(noeud, coup);
+		return {
+			coup,
+			noeudEnfant,
+			tabEval,
+			directions,
+			profondeur: profondeur - 1,
+			alpha: -Infinity,
+			beta: Infinity,
+			prochainJoueurMax: !estJoueurMaximisant
+		};
+	});
+
+	// 2. On distribue ces tâches à nos Workers en parallèle et on attend (await)
+	const {poolWorkers, destroy} = createPoolWorker();
+	const resultats = await gererCalculParallele(poolWorkers, listeTaches);
+	console.log("📢[code.js:663]: destroy: ");
+	destroy();
+
+	// 3. On analyse les résultats pour choisir le meilleur coup
+	let meilleurCoup = undefined;
+	let meilleureEvaluation = estJoueurMaximisant ? -Infinity : +Infinity;
+
+	for (const res of resultats) {
+		const { coup, evaluation } = res;
+		console.log("Évaluation reçue pour le coup :", coup, "-> Score :", evaluation);
+
+		if (
+			(!estJoueurMaximisant && evaluation < meilleureEvaluation) ||
+			(estJoueurMaximisant && evaluation > meilleureEvaluation)) {
+				meilleureEvaluation = evaluation;
+				meilleurCoup = coup;
+		}
+	}
+
+	console.log("Recherche parallèle terminée. Meilleur coup :", meilleurCoup);
+	const ajouer = globalState.trait === 1 ? nomsJoueur[0] : nomsJoueur[1];
+	if (globalState.evalEnnemmiValid && ajouer === robotName) {
+		afficherEvaluation({name: "evalAdversaire", value: meilleureEvaluation, add: true});
+		evalMemoire(meilleureEvaluation);
+	}
+	if (globalState.coupValid && globalState.evaluationValid) {
+		afficherEvaluation({name: "evalAide", value: meilleureEvaluation, add: true});
+	}
+
+	
+	// (Garde ici tes fonctions de mise à jour de globalState et d'affichage)
+	
+	return meilleurCoup;
+}
+
+
+
+
+
+// A changer
+
+function evaluer(stateForComputer) {
+	let {board} = stateForComputer;
+	let evaluation = 0;
+	let nombreCasesPossiblesJoueur1 = 0;
+	let nombreCasesPossiblesJoueur2 = 0;
+	const tailleJ = board.length;
+	for (let j = 0; j < tailleJ; j++) {
+		const ligne = board[j];
+		const tailleI = ligne.length;
+		for (let i = 0; i < tailleI; i++) {
+			const cell = ligne[i];
+			evaluation += cell * tabEval[i][j];
+			if (cell > 0) {
+				nombreCasesPossiblesJoueur1++;
+			} else if (cell < 0) {
+				nombreCasesPossiblesJoueur2++;
+			}
+		}
+	}
+	
+	if (!nombreCasesPossiblesJoueur1) {
+		return -MAX_EVAL;
+	} else if (!nombreCasesPossiblesJoueur2) {
+		return MAX_EVAL;
+	}
+	// nbEvaluation++;
+	return evaluation;
+}

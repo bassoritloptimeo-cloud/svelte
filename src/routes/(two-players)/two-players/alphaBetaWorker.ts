@@ -1,0 +1,52 @@
+// alphaBetaWorker.js
+
+export function createMinMax({
+	evaluer,
+	estFeuille,
+	donnerEnfants,
+	jouer,
+}) {
+
+    
+    return function alphabetaSequentiel(noeud, profondeur, alpha, beta, estJoueurMaximisant) {
+        if (profondeur === 0 || estFeuille(noeud)) {
+            return evaluer(noeud);
+        }
+
+        let score;
+        const coups = donnerEnfants(noeud);
+        const enfantsTris = [];
+        
+        // Pré-évaluation rapide pour le tri des coups
+        for (const coup of coups) {
+            const enfant = jouer(noeud, coup);
+            enfantsTris.push(enfant);
+            enfant.eval = evaluer(enfant);
+        }
+        
+        if (estJoueurMaximisant) {
+            enfantsTris.sort((a, b) => b.eval - a.eval);
+            score = -Infinity;
+            for (let enfant of enfantsTris) {
+                const valeurEval = alphabetaSequentiel(enfant, profondeur - 1, alpha, beta, false);
+                score = Math.max(score, valeurEval);
+                if (score >= beta) {
+                    return score;
+                }
+                alpha = Math.max(alpha, score);
+            }
+        } else {
+            enfantsTris.sort((a, b) => a.eval - b.eval);
+            score = Infinity;
+            for (let enfant of enfantsTris) {
+                const valeurEval = alphabetaSequentiel(enfant, profondeur - 1, alpha, beta, true);
+                score = Math.min(score, valeurEval);
+                if (alpha >= score) {
+                    return score;
+                }
+                beta = Math.min(beta, score);
+            }
+        }
+        return score;
+    }
+}
