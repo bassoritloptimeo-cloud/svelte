@@ -4,6 +4,7 @@ import type { Cell, Trait } from "./types";
 export const gameStarted$ = writable(false);
 export const player1$ = writable('');
 export const player2$ = writable('');
+export const level$ = writable(5);
 
 export const petSelect$ = writable("5");
 export const board$ = writable([]);
@@ -33,6 +34,22 @@ export const traitInitText$ = computed(() => {
 		return "Aléatoire";
 	}
 });
+
+const minColor = [0, 238, 255];
+const maxColor = [255, 0, 0];
+export const levelColor$ = computed(() => {
+	const level = level$();
+	const color = [];
+	for (let i = 0; i < 3; i++) {
+		if (minColor < maxColor) {
+			color.push(Math.floor(minColor[i] + (maxColor[i] - minColor[i]) * level / 10));
+		} else {
+			color.push(Math.floor(minColor[i] - (maxColor[i] - minColor[i]) * level / 10));
+		}
+	}
+	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
+});
+
 
 export function vsAmi() {
 	
@@ -67,14 +84,6 @@ export function moveCurseur(color?: number) {
 }
 
 export function openMenu() {
-
-}
-
-export function validerDialog(isValid: boolean) {
-
-}
-
-export function afficherNiveauDialog() {
 
 }
 

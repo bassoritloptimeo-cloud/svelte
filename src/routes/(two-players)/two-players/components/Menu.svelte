@@ -1,12 +1,20 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
 	import { petSelect$, player1$, player2$, traitInit$, traitInitText$, vsAmi, vsOrdi } from "../code";
+	import StartDialog from './StartDialog.svelte';
+
+	let startDialog;
+
+	function startComputerGame() {
+		startDialog.open();
+	}
+
 </script>
 
 <div class="menu">
 	<div class="commencer">
 		<button onclick={() => vsAmi()} class="demarrage">Commencer</button>
-		<button onclick={() => vsOrdi()} class="vsOrdi">Jouer contre l'ordinateur</button>
+		<button onclick={() => startComputerGame()} class="vsOrdi">Jouer contre l'ordinateur</button>
 	</div>
 	<div class="parametres">
 		<img class="icone" src={asset('/two-players/gear.svg')} width="40px" alt="gear icon">
@@ -48,3 +56,4 @@
 		</div>
 	</div>
 </div>
+<StartDialog bind:this={startDialog} />
