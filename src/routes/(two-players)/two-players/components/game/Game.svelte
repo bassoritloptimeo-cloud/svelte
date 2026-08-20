@@ -1,10 +1,11 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { ajout, moveCurseur, openMenu, paramJeu, recommencerJeu, traitEdition, validEdition } from "../code";
+	import { ajout, moveCurseur, openMenu, paramJeu, recommencerJeu, traitEdition, validEdition } from "../../code";
+	import Board from './Board.svelte';
 </script>
 
 <div class="play-container">
-	<h2 class="niveau-ordi"></h2>
+	<h2 class="niveau-ordi">sdfgsdjf</h2>
 	<div class="bouton-principal">
 		<button onclick={() => recommencerJeu()} class="reinitialiser">Nouvelle partie</button>
 		<button onclick={() => validEdition()} class="valEdit">Valider l'édition</button>
@@ -16,7 +17,7 @@
 		<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value"></span></h4>
 	</div>
 	<div class="board-container">
-		<div id="board"></div>
+		<Board />
 	</div>
 	<div class="couleurEdition desactiveEditeur">
 		<button class="vertSelect" onclick={() => ajout(1)}>Ajout de points verts</button>

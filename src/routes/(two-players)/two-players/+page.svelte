@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { gameStarted$ } from "./code";
 
-	import Game from './components/Game.svelte';
+	import Game from './components/game/Game.svelte';
 	import Menu from './components/Menu.svelte';
 	import SettingsDialog from "./components/SettingsDialog.svelte";
 	

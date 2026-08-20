@@ -1,9 +1,9 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { petSelect$, player1$, player2$, traitInit$, traitInitText$, vsAmi, vsOrdi } from "../code";
+	import { gridSize$, player1$, player2$, traitInit$, traitInitText$, startGame, vsOrdi } from "../code";
 	import StartDialog from './StartDialog.svelte';
 
-	let startDialog;
+	let startDialog: StartDialog;
 
 	function startComputerGame() {
 		startDialog.open();
@@ -13,14 +13,14 @@
 
 <div class="menu">
 	<div class="commencer">
-		<button onclick={() => vsAmi()} class="demarrage">Commencer</button>
+		<button onclick={() => startGame()} class="demarrage">Commencer</button>
 		<button onclick={() => startComputerGame()} class="vsOrdi">Jouer contre l'ordinateur</button>
 	</div>
 	<div class="parametres">
 		<img class="icone" src={asset('/two-players/gear.svg')} width="40px" alt="gear icon">
 		<br>
 		<label for="pet-select">Taille de la grille :</label>
-		<select name="pets" bind:value={$petSelect$}>
+		<select name="pets" bind:value={$gridSize$}>
 			<option value="4">4x4</option>
 			<option value="5">5x5 (par défaut)</option>
 			<option value="6">6x6</option>

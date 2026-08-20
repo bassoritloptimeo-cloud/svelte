@@ -226,9 +226,6 @@ td.joueur2 .bille {
 .menu-bouton:active {
 	background-color: rgb(141, 141, 141);
 }
-.play-container {
-	display: none;
-}
 .bouton-principal {
 	display: flex;
 	justify-content: space-evenly;
