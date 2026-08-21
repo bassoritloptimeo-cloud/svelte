@@ -1,11 +1,11 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { ajout, moveCurseur, openMenu, paramJeu, recommencerJeu, traitEdition, validEdition } from "../../code";
+	import { ajout, moveCurseur, openMenu, recommencerJeu, traitEdition, validEdition, gameStarted$ } from "../../code";
 	import Board from './Board.svelte';
 </script>
 
 <div class="play-container">
-	<h2 class="niveau-ordi">sdfgsdjf</h2>
+	<h2 class="niveau-ordi">(niveau ordi)</h2>
 	<div class="bouton-principal">
 		<button onclick={() => recommencerJeu()} class="reinitialiser">Nouvelle partie</button>
 		<button onclick={() => validEdition()} class="valEdit">Valider l'édition</button>
@@ -29,7 +29,7 @@
 		<h5><span class="vCalc"></span></h5>
 	</div>
 	<div class="retour">
-		<button onclick={() => paramJeu(true)} class="menu-bouton">
+		<button onclick={(() => $gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
 			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu">
 		</button>

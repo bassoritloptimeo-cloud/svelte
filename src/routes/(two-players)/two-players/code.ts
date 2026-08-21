@@ -1,6 +1,6 @@
 import { batch, computed, writable } from "@amadeus-it-group/tansu";
 import type { Cell, Trait } from "./types";
-import { randomNumber } from "$lib/game/utils";
+import { randomNumber, distance } from "$lib/game/utils";
 
 export const gameStarted$ = writable(false);
 export const player1$ = writable('');
@@ -51,7 +51,7 @@ export const levelColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
-
+const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
 	const board: number[][] = [];
 	const gridSize = +gridSize$();
@@ -63,11 +63,12 @@ export function startGame() {
 		}
 	}
 
+
 	const gridSizeMinusOne = gridSize - 1;
-	const cell1 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
+	const cell1: [number, number] = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
 	// const cell1 = [2, 2];
-	let cell2 = [...cell1];
-	while ((Math.abs(cell2[0] - cell1[0]) < 2) && (Math.abs(cell2[1] - cell1[1]) < 2)) {
+	let cell2: [number, number] = [...cell1];
+	while (distance(cell1, cell2) < distanceMin) {
 		cell2 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
 	}
 	const factor = randomNumber(0, 1) ? 1 : -1;

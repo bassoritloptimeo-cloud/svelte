@@ -1,3 +1,8 @@
+:root {
+	--player1-color: green;
+	--player2-color: red;
+}
+
 * {
 	box-sizing: border-box;
 }
@@ -86,11 +91,7 @@ button:active {
 	display: flex;
 	justify-content: center;
 }
-.board {
-	display: inline-block;
-	background-color: rgb(255, 255, 255);
-	cursor: not-allowed;
-}
+
 .parametres {
 	height: 100%;
 	width: 100%;
@@ -124,90 +125,7 @@ button:active {
 .inert {
 	pointer-events: none;
 }
-.billes {
-	width: 100%;
-	height: 100%;
-	position: relative;
-}
-.bille {
-	--taille-bille: 17px;
-	width: var(--taille-bille);
-	height: var(--taille-bille);
-	border-radius: 50%;
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	transition: all 0.15s linear;
-}
-td.joueur1 .bille {
-	background-color: var(--joueur1);
-}
-td.joueur2 .bille {
-	background-color: var(--joueur2);
-}
-.cell-1 .bille-1 {
-	transform: translate(-50%, -50%);
-}
-.cell-2 .bille-1 {
-	transform: translate(-125%, -50%);
-}
-.cell-2 .bille-2 {
-	transform: translate(25%, -50%);
-}
-.cell-3 .bille-1 {
-	transform: translate(-125%, -100%);
-}
-.cell-3 .bille-2 {
-	transform: translate(25%, -100%);
-}
-.cell-3 .bille-3 {
-	transform: translate(-50%, 0%);
-}
-.cell-4 .bille-1 {
-	transform: translate(-125%, -100%);
-}
-.cell-4 .bille-2 {
-	transform: translate(25%, -100%);
-}
-.cell-4 .bille-3 {
-	transform: translate(-125%, 50%);
-}
-.cell-4 .bille-4 {
-	transform: translate(25%, 50%);
-}
-.cell-5 .bille-1 {
-	transform: translate(-125%, -100%);
-}
-.cell-5 .bille-2 {
-	transform: translate(25%, -100%);
-}
-.cell-5 .bille-3 {
-	transform: translate(-125%, 50%);
-}
-.cell-5 .bille-4 {
-	transform: translate(25%, 50%);
-}
-.cell-5 .bille-5 {
-	transform: translate(-50%, -25%);
-}
-.cell-6 .bille-1 {
-	transform: translate(50, -50);
-}
-.cell-6 .bille-2 {
-	transform: translate(0, -50);
-}
-.cell-6 .bille-3 {
-	transform: translate(-50, -50);
-}
-.cell-6 .bille-4 {
-	transform: translate(50, 50);
-}
-.cell-6 .bille-5 {
-	transform: translate(0, 50);
-}
-.cell-6 .bille-6 {
-	transform: translate(-50, 50);
-}
+
 .name-select {
 	display: flex;
 	justify-content: space-evenly;

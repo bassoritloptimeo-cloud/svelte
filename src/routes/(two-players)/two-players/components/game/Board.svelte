@@ -1,13 +1,14 @@
 <script lang="ts">
-	import { board$ } from "../../code";
+	import { board$, trait$ } from "../../code";
+	import Cell from "./Cell.svelte";
+
+	const traitClass = $derived($trait$ === 1 ? "trait-player1" : "trait-player2")
 </script>
 
-<div class="Board">
-	{#each $board$ as line, j (j)}
-		{#each line as cell, i (`${i}_${j}`)}
-			<div class="cell">
-				{cell ? cell : ''}
-			</div>
+<div class={`Board ${traitClass}`}>
+	{#each $board$ as line, y (y)}
+		{#each line as cell, x (`${x}_${y}`)}
+			<Cell points={cell} {x} {y} />
 		{/each}
 	{/each}
 </div>
@@ -22,15 +23,18 @@
 		background-color: #000;
 		gap: 1px;
 		border: 2px solid #000;
-  	}
 
-	.cell {
-		/* Centrage du contenu */
-		display: flex;
-		justify-content: center; /* Centrage horizontal */
-		align-items: center;     /* Centrage vertical */
-		background-color: white;
 
-	}	
+		& :global(.cell-0) {
+			pointer-events: none;
+		}
+		&.trait-player1 :global(.player2) {
+			pointer-events: none;
+		}
+	
+		&.trait-player2 :global(.player1) {
+			pointer-events: none;
+		}
+	}
 </style>
 
