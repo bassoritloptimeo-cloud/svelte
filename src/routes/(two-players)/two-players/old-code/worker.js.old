@@ -1,0 +1,168 @@
+const MAX_EVAL = 1000000;
+
+// On écoute les messages envoyés par le thread principal
+self.onmessage = function(evenement) {
+    const { type, donnees } = evenement.data;
+
+    console.log("📢[worker.js:7]: type: ", type);
+    if (type === 'CALCULER') {
+        const { noeudEnfant, profondeur, alpha, beta, prochainJoueurMax, tabEval, directions } = donnees;
+        console.log("📢[worker.js:9]: donnees: ", donnees);
+        
+        importScripts('./alphaBetaWorker.js');
+        const {donnerEnfants, estFeuille, evaluer, jouer, donnerN} = donnerEvalFns(tabEval, directions);
+        const alphabetaSequentiel = createMinMax({donnerEnfants, estFeuille, evaluer, jouer});
+        // On lance le calcul de l'alpha-beta classique sur ce cœur
+        const evaluation = alphabetaSequentiel(noeudEnfant, profondeur, alpha, beta, prochainJoueurMax);
+        
+        // On renvoie le résultat au thread principal
+        self.postMessage({ type: 'RESULTAT', evaluation, n: donnerN() });
+    }
+};
+
+
+function donnerEvalFns(tabEval, directions) {
+    let n = 0;
+
+    function donnerN() {
+        return n;
+    }
+
+    function resoudreExplosions(state, [y, x]) {
+        let newCells = [];
+        const point = state.board[y][x];
+        if (Math.abs(point) >= 4) {
+            state.board[y][x] = 0;
+            let pointCouleur = Math.sign(point);
+            for (const [dy, dx] of directions) {
+                const nx = x + dx;
+                const ny = y + dy;
+                if (state.board?.[ny]?.[nx] != null) {
+                    newCells.push([ny, nx]);
+                    state.board[ny][nx] = pointCouleur * (Math.abs(state.board[ny][nx]) + 1);
+                }
+            }
+        }
+        return newCells;
+    }
+
+    function ajoutPointMinmax({state, coordonnees}) {
+        let y = coordonnees[0];
+        let x = coordonnees[1];
+        const board = state.board;
+        const couleur = Math.sign(board[y][x]);
+        board[y][x] += couleur;
+        let cells = [[y, x]];
+        while (cells.length) {
+            // console.log("📢[code.js:235]: explosions: ", explosions);
+            const newCells = [];
+            for (const cell of cells) {
+                newCells.push(...resoudreExplosions(state, cell));
+            }
+            cells = newCells;
+        }
+    }
+
+    function evaluer(stateForComputer) {
+        let {board} = stateForComputer;
+        let evaluation = 0;
+        let nombreCasesPossiblesJoueur1 = 0;
+        let nombreCasesPossiblesJoueur2 = 0;
+        const tailleJ = board.length;
+        for (let j = 0; j < tailleJ; j++) {
+            const ligne = board[j];
+            const tailleI = ligne.length;
+            for (let i = 0; i < tailleI; i++) {
+                const cell = ligne[i];
+                evaluation += cell * tabEval[i][j];
+                if (cell > 0) {
+                    nombreCasesPossiblesJoueur1++;
+                } else if (cell < 0) {
+                    nombreCasesPossiblesJoueur2++;
+                }
+            }
+        }
+        if (!nombreCasesPossiblesJoueur1) {
+            return -MAX_EVAL;
+        } else if (!nombreCasesPossiblesJoueur2) {
+            return MAX_EVAL;
+        }
+        
+        return evaluation;
+    }
+    
+    function estFeuille(noeud) {
+        let board = noeud.board;
+        let joueur1 = false;
+        let joueur2 = false;
+        for (const lignes of board) {
+            for (const points of lignes) {
+                if (points > 0) {
+                    joueur1 = true;
+                    if (joueur1 && joueur2) {
+                        return false;
+                    }
+                } else if (points < 0) {
+                    joueur2 = true;
+                    if (joueur1 && joueur2) {
+                        return false;
+                    }
+                }
+            }
+        }
+        return true;
+    }
+    
+    function donnerEnfants(noeud) {
+        const trait = noeud.trait;
+        const casesPossibles = [];
+        const board = noeud.board;
+        for (let y = 0; y < board.length; y++) {
+            const ligne = board[y];
+            for (let x = 0; x < ligne.length; x++) {
+                if (Math.sign(ligne[x]) === trait) {
+                    casesPossibles.push([y, x]);
+                }
+            }
+        }
+        return casesPossibles;
+        // Renvoie toutes les coordonnees possible
+    }
+    function jouer(noeud, coordonnees) {
+        // console.log ("noeud", noeud);
+        const nouveauNoeud = clonerBoard(noeud);
+        // Joue coordonnees sur nouveauNoeud.board
+        ajoutPointMinmax({state: nouveauNoeud, coordonnees});
+        nouveauNoeud.trait *= -1;
+        
+        return nouveauNoeud;
+    }
+    
+    function clonerBoard(noeud) {
+        n++;
+        let noeudClone = {};
+        noeudClone.board = [];
+        let longueur = noeud.board.length;
+        for (let i = 0; i < longueur; i++) {
+            const ligne  = [];
+            for (let j = 0; j < longueur; j++) {
+                ligne.push(noeud.board[i][j]);
+            }
+            noeudClone.board.push(ligne);
+        }
+        noeudClone.trait = noeud.trait;
+        return noeudClone;
+    }
+
+    return {
+        evaluer,
+        estFeuille,
+        donnerEnfants,
+        jouer,
+        ajoutPointMinmax,
+        resoudreExplosions,
+        donnerN,
+    }
+ 
+}
+

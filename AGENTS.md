@@ -6,9 +6,9 @@
 - `npm run check` — svelte-check typecheck (`svelte-kit sync` runs first; `prepare` script also syncs on install)
 - `npm run lint` — `prettier --check . && eslint .`
 - `npm run format` — `prettier --write .`
-- `npm run test:unit` — vitest (watch by default; use `npm run test:unit -- --run` for one-shot)
+- `npm run tdd` — vitest (watch by default; use `npm run tdd -- --run` for one-shot)
 - `npm run test:e2e` — playwright (spawns `npm run build && npm run preview` on port 4173; matches `**/*.e2e.{ts,js}`)
-- `npm run test` — `test:unit -- --run` then e2e
+- `npm run test` — `tdd -- --run` then e2e
 
 Verify with `npm run check` and `npm run lint` after changes.
 
