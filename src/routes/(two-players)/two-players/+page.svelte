@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { backgroundColor$, gameStarted$, editing$ } from "./code";
+	import { settings$, backgroundColor$, gameStarted$, editing$ } from "./code";
 	
 	import Edition from './components/game/Edition.svelte';
 	import Game from './components/game/Game.svelte';
@@ -18,14 +18,17 @@
 			<Edition />
 		{:else}
 			<Game />
+			{#if $settings$}
+				<SettingsDialog />
+			{/if}
 		{/if}
 	{/if}
+	
 </div>
-<SettingsDialog />
 
 <style>
 	.player1 {
-		background-color: rgb(0, 255, 0);
+		background-color: rgb(0, 220, 0);
 	}
 
 	.player2 {

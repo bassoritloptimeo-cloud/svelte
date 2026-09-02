@@ -226,7 +226,6 @@ dialog::backdrop {
 }
 .menu_content {
 	background-color: rgb(251, 255, 0);
-	display: none;       /* Le div s’ajuste à l’image */
   	border: 1px solid #000;
   	line-height: 0;
 	border-radius: 15px;

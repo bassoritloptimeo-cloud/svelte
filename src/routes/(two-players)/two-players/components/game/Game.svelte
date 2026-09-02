@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { computingSpeed$, gameStarted$, level$, moveCursor, openMenu, player1Name$, player2Name$, restartGame } from "../../code";
+	import { computingSpeed$, gameStarted$, level$, moveCursor, player1Name$, player2Name$, restartGame, settings$ } from "../../code";
 	import Board from './Board.svelte';
 </script>
 
@@ -14,7 +14,10 @@
 			<div class="player player1"></div>
 			{$player1Name$}
 		</h3>
-		<h3>{$player2Name$}</h3>
+		<h3>
+			<div class="player player2"></div>
+			{$player2Name$}
+		</h3>
 	</div>
 	<div class="evaluation">
 		<h4 class="evalInstantanee eval">Evaluation instantanée: <span class="evalInstantanee-value"></span></h4>
@@ -47,29 +50,40 @@
 		<button onclick={() => moveCursor(-1)} class="move">&#8592;</button>
 		<button onclick={() => moveCursor(1)} class="move">&#8594;</button>
 	</div>
-	<button class="menu_content" onclick={() => openMenu()}>
+	<button class="menu_content" 
+		onclick={() => {
+			settings$.set(true);		
+		}}>
 		<img class="icone" src={asset("/two-players/menu.svg")} width="50px" alt="Menu">
 	</button>
 </div>
 
 <style>
 
-	h3 { 
-	 	width: 100px; 
+	h3 {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+	}
+
+	.legende {
+		margin-top: 15px;
 	}
 
 	.player {
 		height: 15px;
 		width: 15px;
 		border-radius: 50%;
+		box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.9);
 	}
 
 	.player1 {
-		background-color: rgb(0, 200, 0);
+		background-color: rgb(0, 180, 0);
 	}
 
 	.player2 {
-		background-color: rgb(200, 0, 0);
+		background-color: rgb(180, 0, 0);
 	}
 
 	.infoNegamax {

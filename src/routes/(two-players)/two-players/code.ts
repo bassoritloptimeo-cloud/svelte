@@ -17,7 +17,7 @@ export const gameStarted$ = writable(false);
 export const player1$ = writable('');
 export const player2$ = writable('');
 export const level$ = writable(5);
-
+export const settings$ = writable(false);
 export const gridSize$ = writable('5');
 export const board$ = writable(<number[][]>[]);
 export const trait$ = writable(<Trait>1);
@@ -36,6 +36,9 @@ export const nbClone$ = writable(0);
 
 export const player1Name$ = computed(() => player1$() || 'Joueur1');
 export const player2Name$ = computed(() => player2$() || 'Joueur2');
+
+export const maxWorkers$ = writable(navigator.hardwareConcurrency);
+export const workerActive$ = writable(maxWorkers$() / 2);
 
 let startCalcul: Date = new Date();
 
@@ -304,9 +307,8 @@ async function computerMove() {
 }
 
 function createPoolWorker() {
-	const maxWorkers = Math.max(1, navigator.hardwareConcurrency - 1);
 	const poolWorkers: Worker[] = [];
-	for (let i = 0; i < maxWorkers; i++) {
+	for (let i = 0; i < workerActive$() - 1; i++) {
 		poolWorkers.push(new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' }));
 	}
 	return {
@@ -368,7 +370,6 @@ export const computingSpeed$ = computed(() => {
 	}
 });
 
-export function validModif(isValid: boolean) {}
 
 let addEditor: number = 0;
 let firstTrait: number = 1;
