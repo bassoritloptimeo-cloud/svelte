@@ -44,7 +44,6 @@ workerSelf.onmessage = (evenement) => {
 		});
 
 		const evaluation = alphabetaSequentiel(noeudEnfant, profondeur, alpha, beta, prochainJoueurMax);
-
 		workerSelf.postMessage({ type: 'RESULTAT', evaluation, n: donnerN() });
 	}
 };

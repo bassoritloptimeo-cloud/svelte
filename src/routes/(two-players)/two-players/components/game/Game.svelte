@@ -1,16 +1,19 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { gameStarted$, moveCursor, openMenu, player1Name$, player2Name$, restartGame } from "../../code";
+	import { computingSpeed$, gameStarted$, level$, moveCursor, openMenu, player1Name$, player2Name$, restartGame } from "../../code";
 	import Board from './Board.svelte';
 </script>
 
 <div class="play-container">
-	<h2 class="niveau-ordi">(niveau ordi)</h2>
+	<h2 class="niveau-ordi">Niveau de l'ordinateur: {$level$}</h2>
 	<div class="bouton-principal">
 		<button onclick={() => restartGame()} class="reinitialiser">Nouvelle partie</button>
 	</div>
 	<div class="legende">
-		<h3>{$player1Name$}</h3>
+		<h3>
+			<div class="player player1"></div>
+			{$player1Name$}
+		</h3>
 		<h3>{$player2Name$}</h3>
 	</div>
 	<div class="evaluation">
@@ -25,6 +28,14 @@
 		<h5>Temps de Calcul: <span class="tCalc"></span></h5>
 		<h5><span class="vCalc">(TODO : Temps calcul)</span></h5>
 	</div>
+		<div class="infoNegamax">
+		<div class="info">
+			Temps: {$computingSpeed$.time}
+		</div>
+		<div class="info">
+			Vitesse: {$computingSpeed$.speed}
+		</div>
+	</div>
 	<div class="retour">
 		<button onclick={(() => $gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
@@ -36,9 +47,43 @@
 		<button onclick={() => moveCursor(-1)} class="move">&#8592;</button>
 		<button onclick={() => moveCursor(1)} class="move">&#8594;</button>
 	</div>
-	<div class="infoNegamax"></div>
 	<button class="menu_content" onclick={() => openMenu()}>
 		<img class="icone" src={asset("/two-players/menu.svg")} width="50px" alt="Menu">
 	</button>
 </div>
+
+<style>
+
+	h3 { 
+	 	width: 100px; 
+	}
+
+	.player {
+		height: 15px;
+		width: 15px;
+		border-radius: 50%;
+	}
+
+	.player1 {
+		background-color: rgb(0, 200, 0);
+	}
+
+	.player2 {
+		background-color: rgb(200, 0, 0);
+	}
+
+	.infoNegamax {
+		flex-direction: column;
+		text-align: center;
+	}
+
+	.info {
+		color: rgb(0, 0, 0);
+		font-weight: 700;
+		margin: 10px;
+	}
+	.niveau-ordi {
+		font-weight: 700;
+	}
+</style>
 

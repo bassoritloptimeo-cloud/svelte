@@ -25,11 +25,11 @@
 
 <style>
 	.player1 {
-		background-color: green;
+		background-color: rgb(0, 255, 0);
 	}
 
 	.player2 {
-		background-color: red;
+		background-color: rgb(255, 0, 0);
 	}
 </style>
 

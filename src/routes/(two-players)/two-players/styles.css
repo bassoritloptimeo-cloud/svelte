@@ -18,6 +18,7 @@ table {
 }
 h3 {
 	text-align: center;
+	margin: 5px;
 }
 h5 {
 	margin: 10px;
@@ -82,10 +83,10 @@ button:active {
 	min-height: 100vh;
 }
 .plateau.joueur1 {
-	background-color: rgb(164, 255, 164);
+	background-color: green;
 }
 .plateau.joueur2 {
-	background-color: rgb(255, 164, 164);
+	background-color: #c70f0f;
 }
 .board-container {
 	display: flex;

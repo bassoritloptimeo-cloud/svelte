@@ -37,6 +37,8 @@ export const nbClone$ = writable(0);
 export const player1Name$ = computed(() => player1$() || 'Joueur1');
 export const player2Name$ = computed(() => player2$() || 'Joueur2');
 
+let startCalcul: Date = new Date();
+
 export const traitInitText$ = computed(() => {
 	const traitInit = traitInit$();
 	if (traitInit === -1) {
@@ -221,7 +223,7 @@ export function openMenu() {}
 
 export function commencerOrdi() {
 	robotTrait = -1;
-	profondeur = Math.max(1, Math.ceil(level$() / 3));
+	profondeur = Math.max(1, level$());
 	if (!player2$()) {
 		player2$.set('Ordinateur');
 	}
@@ -253,6 +255,7 @@ async function computerMove() {
 		return;
 	}
 	robotPlaying = true;
+	nbClone$.set(0);
 	const trait = trait$();
 	const noeud: Noeud = { board: structuredClone(board$()), trait };
 	const { donnerEnfants, jouer } = donnerEvalFns(tabEval, directions);
@@ -275,6 +278,7 @@ async function computerMove() {
 	}));
 
 	const { poolWorkers, destroy } = createPoolWorker();
+	startCalcul = new Date();
 	const resultats = await gererCalculParallele(poolWorkers, listeTaches);
 	destroy();
 
@@ -314,6 +318,7 @@ function createPoolWorker() {
 }
 
 function gererCalculParallele(workers: Worker[], taches: Tache[]): Promise<ResultatTache[]> {
+	startCalcul = new Date();
 	return new Promise((resolve) => {
 		const resultatsFinaux: ResultatTache[] = [];
 		let indexTache = 0;
@@ -352,7 +357,16 @@ function gererCalculParallele(workers: Worker[], taches: Tache[]): Promise<Resul
 
 		workers.forEach((worker) => lancerTacheSurWorker(worker));
 	});
-}
+};
+
+export const computingSpeed$ = computed(() => {
+	const date = new Date().getTime();
+	if (nbClone$() / (date - startCalcul.getTime()) < 10000) {
+		return {speed: Math.round(nbClone$() / (date - startCalcul.getTime()) * 10) / 10 + "Kn/s", time: date - startCalcul.getTime() + "ms"};
+	} else {
+		return {speed: Math.round(nbClone$() / (date - startCalcul.getTime()) / 100) / 10 + "Mn/s", time: date - startCalcul.getTime() + "ms"};
+	}
+});
 
 export function validModif(isValid: boolean) {}
 
