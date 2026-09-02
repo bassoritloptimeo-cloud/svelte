@@ -143,19 +143,24 @@ describe('addPoint', () => {
 
 });
 
-describe('levelColor$', () => {
-	test('returns the minimum color (cyan) at level 0', () => {
-		level$.set(0);
-		expect(levelColor$()).toBe('rgb(0, 238, 255)');
-	});
+test('levelColor$', () => {
 
-	test('interpolates at mid level', () => {
-		level$.set(5);
-		expect(levelColor$()).toBe('rgb(127, 119, 127)');
-	});
+	const minValue = 'rgb(0, 238, 255)';
+	const maxValue = 'rgb(255, 0, 0)';
 
-	test('returns the maximum color (red) at level 10', () => {
-		level$.set(10);
-		expect(levelColor$()).toBe('rgb(255, 0, 0)');
-	});
+	level$.set(-1);
+	expect(levelColor$(), 'manage level under min').toBe(minValue);
+
+	level$.set(0);
+	expect(levelColor$(), "returns the minimum color (cyan) at level 0").toBe(minValue);
+
+	level$.set(5);
+	expect(levelColor$(), 'interpolates at mid level').toBe('rgb(127, 119, 127)');
+
+	level$.set(10);
+	expect(levelColor$(), 'returns the maximum color (red) at level 10').toBe(maxValue);
+
+	level$.set(11);
+	expect(levelColor$(), 'manage level above max').toBe(maxValue);
+
 });

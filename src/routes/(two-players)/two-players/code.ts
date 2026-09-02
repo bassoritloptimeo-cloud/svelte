@@ -1,6 +1,6 @@
 import { batch, computed, writable } from '@amadeus-it-group/tansu';
 import type { Cell, Trait } from './types';
-import { randomNumber, distance, wait } from '$lib/game/utils';
+import { randomNumber, distance, wait, clamp } from '$lib/game/utils';
 import { donnerEvalFns, preCalculs } from './game.ts';
 import type { Coordonnees, Direction, Noeud } from './game.ts';
 
@@ -56,7 +56,7 @@ export const traitInitText$ = computed(() => {
 const minColor = [0, 238, 255];
 const maxColor = [255, 0, 0];
 export const levelColor$ = computed(() => {
-	const level = level$();
+	const level = clamp(0, level$(), 10);
 	const color = [];
 	for (let i = 0; i < 3; i++) {
 		color.push(Math.floor(minColor[i] + ((maxColor[i] - minColor[i]) * level) / 10));
