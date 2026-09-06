@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { settings$, maxWorkers$, workerActive$ } from '../code';
+	import { settings$, maxWorkers$, workerActive$, negInfo$, evaluationValid$, lastValidMove$ } from '../code';
 	import { writable } from 'svelte/store';
 
 	const options$ = writable([2,4, 6, 8, 10, 12, 14, 16]);
@@ -36,18 +36,17 @@
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="dCoup" type="checkbox" name="case1" />Afficher le dernier coup
+					<input class="dCoup" type="checkbox" name="case1" bind:checked={$lastValidMove$} />Afficher le dernier coup
 				</label>
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="evalEnnemi" type="checkbox" name="case1" />Montrer l'évaluation calculée
+					<input class="evalEnnemi" type="checkbox" name="case1" bind:checked={$evaluationValid$} />Montrer l'évaluation calculée
 				</label>
 			</div>
 			<div class="label_content">
 				<label for="abset-move-annotation">
-					<input class="negInfo-checkbox" type="checkbox" name="case1" />Afficher les informations
-					negamax
+					<input class="negInfo-checkbox" type="checkbox" name="case1" bind:checked={$negInfo$} />Afficher les informations negamax
 				</label>
 			</div>
 			<label for="pet-select">Nombre de coeurs actifs :</label>

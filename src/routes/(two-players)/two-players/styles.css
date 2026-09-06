@@ -325,15 +325,7 @@ dialog::backdrop {
 	/* border: 4px solid rgba(28, 102, 167, 0.6) */
 }
 
-.evalInstantanee {
-	display: none;
-}
-.evalAdversaire {
-	display: none;
-}
-.evalAide {
-	display: none;
-}
+
 .infoNeg {
 	display: none;
   	flex-direction: column;

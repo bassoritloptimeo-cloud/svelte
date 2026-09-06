@@ -22,13 +22,13 @@ export const gridSize$ = writable('5');
 export const board$ = writable(<number[][]>[]);
 export const trait$ = writable(<Trait>1);
 export const traitInit$ = writable(<Trait | undefined>undefined);
-export const dernierCoup$ = writable(<Cell>{ x: -1, y: -1 });
+export const lastPlay$ = writable(<Cell>{ x: -1, y: -1 });
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
 export const evalEnnemmiValid$ = writable(<undefined | number>undefined);
 export const coupValid$ = writable(false);
 export const editing$ = writable(false);
-export const dernierCoupValid$ = writable(false);
+export const lastValidMove$ = writable(false);
 export const couleurSelect$ = writable(0);
 export const editeurTrait$ = writable(0);
 export const negInfo$ = writable(false);
@@ -131,6 +131,9 @@ async function playMove({ x, y }: { x: number; y: number }) {
 		pointPlays.push([y, x]);
 		cursor = pointPlays.length;
 	}
+	if (lastValidMove$()) {
+		lastPlay$.set({x, y});
+	}
 	const trait = trait$();
 	await addPoint([[x, y]], board$(), trait, true);
 	trait$.set(trait === 1 ? -1 : 1);
@@ -207,6 +210,9 @@ export async function ajout(add: number) {
 
 export function validEdition() {
 	editing$.set(false);
+	if (trait$() === robotTrait) {
+		void computerMove();
+	}
 }
 export function vsOrdi() {}
 
@@ -225,10 +231,13 @@ export function movecursor(color?: number) {
 export function openMenu() {}
 
 export function commencerOrdi() {
-	robotTrait = -1;
 	profondeur = Math.max(1, level$());
-	if (!player2$()) {
+	if (player1$() && player1$() !== 'Ordinateur') {
+		robotTrait = -1;
 		player2$.set('Ordinateur');
+	} else {
+		robotTrait = 1;
+		player1$.set('Ordinateur');
 	}
 	startGame();
 	if (trait$() === robotTrait) {
@@ -297,6 +306,7 @@ async function computerMove() {
 			meilleurCoup = coup;
 		}
 	}
+	bestEvaluation$.set(meilleureEvaluation);
 	robotPlaying = false;
 
 	if (meilleurCoup) {
@@ -305,6 +315,7 @@ async function computerMove() {
 		await playMove({x, y});
 	}
 }
+export const bestEvaluation$ = writable<number>(0);
 
 function createPoolWorker() {
 	const poolWorkers: Worker[] = [];
@@ -320,7 +331,7 @@ function createPoolWorker() {
 }
 
 function gererCalculParallele(workers: Worker[], taches: Tache[]): Promise<ResultatTache[]> {
-	startCalcul = new Date();
+	// startCalcul = new Date();
 	return new Promise((resolve) => {
 		const resultatsFinaux: ResultatTache[] = [];
 		let indexTache = 0;

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { asset } from '$app/paths';
-	import { computingSpeed$, gameStarted$, level$, moveCursor, player1Name$, player2Name$, restartGame, settings$ } from "../../code";
+	import { computingSpeed$, gameStarted$, level$, moveCursor, player1Name$, player2Name$, restartGame, settings$, negInfo$, bestEvaluation$, evaluationValid$ } from "../../code";
 	import Board from './Board.svelte';
 </script>
 
@@ -20,32 +20,29 @@
 		</h3>
 	</div>
 	<div class="evaluation">
-		<h4 class="evalInstantanee eval">Evaluation instantanée: <span class="evalInstantanee-value"></span></h4>
-		<h4 class="evalAdversaire eval">Evaluation de l'advsersaire: <span class="evalAdversaire-value"></span></h4>
-		<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value"></span></h4>
+		{#if $evaluationValid$}
+			<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value">{$bestEvaluation$}</span></h4>
+		{/if}
 	</div>
 	<div class="board-container">
 		<Board />
 	</div>
-	<div class="infoNeg">
-		<h5>Temps de Calcul: <span class="tCalc"></span></h5>
-		<h5><span class="vCalc">(TODO : Temps calcul)</span></h5>
-	</div>
+	{#if $negInfo$}
 		<div class="infoNegamax">
-		<div class="info">
-			Temps: {$computingSpeed$.time}
+			<div class="info">
+				Temps: {$computingSpeed$.time}
+			</div>
+			<div class="info">
+				Vitesse: {$computingSpeed$.speed}
+			</div>
 		</div>
-		<div class="info">
-			Vitesse: {$computingSpeed$.speed}
-		</div>
-	</div>
+	{/if}
 	<div class="retour">
 		<button onclick={(() => $gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
 			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu">
 		</button>
 	</div>
-	<div class="info"></div>
 	<div class="fleches">
 		<button onclick={() => moveCursor(-1)} class="move">&#8592;</button>
 		<button onclick={() => moveCursor(1)} class="move">&#8594;</button>

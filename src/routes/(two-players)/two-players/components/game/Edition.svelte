@@ -10,11 +10,6 @@
 		<button onclick={() => validEdition()} class="valEdit">Valider l'édition</button>
 	</div>
 	<div class="legende"></div>
-	<div class="evaluation">
-		<h4 class="evalInstantanee eval">Evaluation instantanée: <span class="evalInstantanee-value"></span></h4>
-		<h4 class="evalAdversaire eval">Evaluation de l'advsersaire: <span class="evalAdversaire-value"></span></h4>
-		<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value"></span></h4>
-	</div>
 	<div class="board-container">
 		<Board />
 	</div>

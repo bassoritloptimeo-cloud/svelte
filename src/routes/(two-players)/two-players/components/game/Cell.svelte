@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clickCell } from "../../code";
+	import { clickCell, lastPlay$, lastValidMove$ } from "../../code";
 
 	interface Props {
 		points: number;
@@ -10,11 +10,11 @@
 	const { points, x, y }: Props = $props(); 
 	const absPoints = $derived(Math.abs(points));
 	const colorClass = $derived(points < 0 ? "player2" : points > 0 ? "player1" : "");
+	const play = $derived($lastValidMove$ && $lastPlay$.x === x && $lastPlay$.y === y ? "lastPlay" : "");
 
 </script>
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<div role="button" tabindex="0" class={`cell cell-${absPoints} ${colorClass}`} onclick={() => clickCell({ x, y })}>
+<div role="button" tabindex="0" class={`cell cell-${absPoints} ${colorClass} ${play}`} onclick={() => clickCell({ x, y })}>
 	{#each { length: absPoints } as _, i (i)}
 		<div class={`bullet bullet-${i + 1}`}></div>
 	{/each}
@@ -119,5 +119,9 @@
 	}
 	.cell-6 .bullet-6 {
 		transform: translate(-50, 50);
+	}
+
+	.lastPlay {
+		border: 4px solid #339ad8;
 	}
 </style>
