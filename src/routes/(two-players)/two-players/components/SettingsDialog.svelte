@@ -52,7 +52,7 @@
 			<label for="pet-select">Nombre de coeurs actifs :</label>
 			<select id="pet-select" name="pets" class="thread-Select" bind:value={$workerActive$}>
 				{#each $options$ as $option$, x (x)}
-					{#if $option$ < $maxWorkers$}
+					{#if $option$ <= $maxWorkers$}
 						<option value={$option$}>{$option$}</option>
 					{:else}
 						<option value={$option$} class="unselectable">{$option$}</option>

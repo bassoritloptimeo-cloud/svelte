@@ -5,6 +5,9 @@
 </script>
 
 <div class="play-container">
+	{#if condition}
+		 <!-- content here -->
+	{/if}
 	<h2 class="niveau-ordi">Niveau de l'ordinateur: {$level$}</h2>
 	<div class="bouton-principal">
 		<button onclick={() => restartGame()} class="reinitialiser">Nouvelle partie</button>
