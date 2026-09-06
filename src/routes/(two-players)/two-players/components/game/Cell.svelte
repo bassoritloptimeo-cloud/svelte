@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { clickCell, lastPlay$, lastValidMove$ } from "../../code";
+	import { afterFirstPlay$, clickCell, lastPlay$, lastValidMove$,  } from "../../code";
 
 	interface Props {
 		points: number;
@@ -10,7 +10,7 @@
 	const { points, x, y }: Props = $props(); 
 	const absPoints = $derived(Math.abs(points));
 	const colorClass = $derived(points < 0 ? "player2" : points > 0 ? "player1" : "");
-	const play = $derived($lastValidMove$ && $lastPlay$.x === x && $lastPlay$.y === y ? "lastPlay" : "");
+	const play = $derived($lastValidMove$ && $lastPlay$.x === x && $lastPlay$.y === y && $afterFirstPlay$ ? "lastPlay" : "");
 
 </script>
 

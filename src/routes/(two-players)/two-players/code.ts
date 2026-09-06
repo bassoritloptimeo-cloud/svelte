@@ -100,6 +100,7 @@ export function startGame() {
 		board$.set(board);
 		gameStarted$.set(true);
 	});
+	pointPlays = [];
 }
 export function restartGame() {
 	startGame();
@@ -186,6 +187,8 @@ export async function addPoint(
 	}
 	board$.set(board);
 }
+
+
 
 export function addPointEdition(contact: number[], board: number[][]) {
 	// debugger;
@@ -390,7 +393,7 @@ let tabEval: number[][] = [];
 let robotTrait: Trait | undefined = undefined;
 let profondeur = 1;
 let robotPlaying = false;
-const pointPlays: number[][] = [];
+let pointPlays: number[][] = [];
 
 export function moveCursor(avance: number) {
 	// debugger;
@@ -409,8 +412,13 @@ export function moveCursor(avance: number) {
 				addPoint([[x, y]], board$(), trait, false);
 				trait = trait === 1 ? -1 : 1;
 			}
+			lastPlay$.set({y: pointPlays[cursor - 1][0], x: pointPlays[cursor - 1][1]});
 		});
 		trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
 	}
 	console.log('cursor', cursor, avance);
 }
+
+export const afterFirstPlay$ = computed(() => {
+	return pointPlays.length !== 0;
+});
