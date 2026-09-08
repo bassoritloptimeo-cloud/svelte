@@ -26,7 +26,7 @@ export const lastPlay$ = writable(<Cell>{ x: -1, y: -1 });
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
 export const evalEnnemmiValid$ = writable(<undefined | number>undefined);
-export const coupValid$ = writable(false);
+export const BestcoupValid$ = writable(false);
 export const editing$ = writable(false);
 export const lastValidMove$ = writable(false);
 export const couleurSelect$ = writable(0);
@@ -233,6 +233,10 @@ export function movecursor(color?: number) {
 */
 export function openMenu() {}
 
+export function findBestPlay() {
+	void computerMove();
+}
+
 export function commencerOrdi() {
 	profondeur = Math.max(1, level$());
 	if (player1$() && player1$() !== 'Ordinateur') {
@@ -314,10 +318,15 @@ async function computerMove() {
 
 	if (meilleurCoup) {
 		const [y, x] = meilleurCoup;
-		await wait(waitMove);
-		await playMove({x, y});
+		if (!BestcoupValid$()) {
+			await wait(waitMove);
+			await playMove({x, y});
+		} else {
+			bestPlay$.set({x, y});
+		}
 	}
 }
+export const bestPlay$ = writable({x: -1, y: -1});
 export const bestEvaluation$ = writable<number>(0);
 
 function createPoolWorker() {

@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { settings$, maxWorkers$, workerActive$, negInfo$, evaluationValid$, lastValidMove$ } from '../code';
+	import { settings$, maxWorkers$, workerActive$, negInfo$, evaluationValid$, lastValidMove$, BestcoupValid$, findBestPlay } from '../code';
 	import { writable } from 'svelte/store';
 
 	const options$ = writable([2,4, 6, 8, 10, 12, 14, 16]);
@@ -18,6 +18,9 @@
 
 	function valider() {
 		dialog?.close();
+		if (BestcoupValid$()) {
+			findBestPlay();
+		}
 	}
 </script>
 
@@ -31,7 +34,7 @@
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="mCoup" type="checkbox" name="case1" />Montrer le meilleur coup
+					<input class="mCoup" type="checkbox" name="case1" bind:checked={$BestcoupValid$} />Montrer le meilleur coup
 				</label>
 			</div>
 			<div class="label_content">

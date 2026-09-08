@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { afterFirstPlay$, clickCell, lastPlay$, lastValidMove$,  } from "../../code";
+	import { afterFirstPlay$, clickCell, lastPlay$, lastValidMove$, bestPlay$ } from "../../code";
 
 	interface Props {
 		points: number;
@@ -11,10 +11,11 @@
 	const absPoints = $derived(Math.abs(points));
 	const colorClass = $derived(points < 0 ? "player2" : points > 0 ? "player1" : "");
 	const play = $derived($lastValidMove$ && $lastPlay$.x === x && $lastPlay$.y === y && $afterFirstPlay$ ? "lastPlay" : "");
+	const isTheBestPlay = $derived($bestPlay$.x === x && $bestPlay$.y === y ? "bestPlay": "");
 
 </script>
 
-<div role="button" tabindex="0" class={`cell cell-${absPoints} ${colorClass} ${play}`} onclick={() => clickCell({ x, y })}>
+<div role="button" tabindex="0" class={`cell cell-${absPoints} ${colorClass} ${play} ${isTheBestPlay}`} onclick={() => clickCell({ x, y })}>
 	{#each { length: absPoints } as _, i (i)}
 		<div class={`bullet bullet-${i + 1}`}></div>
 	{/each}
@@ -123,5 +124,9 @@
 
 	.lastPlay {
 		border: 4px solid #339ad8;
+	}
+
+	.bestPlay {
+		background-color: yellow;
 	}
 </style>
