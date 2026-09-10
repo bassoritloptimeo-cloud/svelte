@@ -26,7 +26,7 @@ export const lastPlay$ = writable(<Cell>{ x: -1, y: -1 });
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
 export const evalEnnemmiValid$ = writable(<undefined | number>undefined);
-export const BestcoupValid$ = writable(false);
+export const showBestPlay$ = writable(false);
 export const editing$ = writable(false);
 export const lastValidMove$ = writable(false);
 export const couleurSelect$ = writable(0);
@@ -318,7 +318,7 @@ async function computerMove() {
 
 	if (meilleurCoup) {
 		const [y, x] = meilleurCoup;
-		if (!BestcoupValid$()) {
+		if (!showBestPlay$()) {
 			await wait(waitMove);
 			await playMove({x, y});
 		} else {
