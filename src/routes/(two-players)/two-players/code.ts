@@ -38,7 +38,7 @@ export const player1Name$ = computed(() => player1$() || 'Joueur1');
 export const player2Name$ = computed(() => player2$() || 'Joueur2');
 
 export const maxWorkers$ = writable(navigator.hardwareConcurrency);
-export const workerActive$ = writable(maxWorkers$() / 2);
+export const workersNumber$ = writable(maxWorkers$() / 2);
 
 let startCalcul: Date = new Date();
 
@@ -331,7 +331,7 @@ export const bestEvaluation$ = writable<number>(0);
 
 function createPoolWorker() {
 	const poolWorkers: Worker[] = [];
-	for (let i = 0; i < workerActive$() - 1; i++) {
+	for (let i = 0; i < workersNumber$() - 1; i++) {
 		poolWorkers.push(new Worker(new URL('./worker.ts', import.meta.url), { type: 'module' }));
 	}
 	return {
