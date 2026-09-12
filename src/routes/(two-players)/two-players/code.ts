@@ -37,8 +37,8 @@ export const nbClone$ = writable(0);
 export const player1Name$ = computed(() => player1$() || 'Joueur1');
 export const player2Name$ = computed(() => player2$() || 'Joueur2');
 
-export const maxWorkers$ = writable(navigator.hardwareConcurrency);
-export const workersNumber$ = writable(maxWorkers$() / 2);
+export const maxWorkers = navigator.hardwareConcurrency;
+export const workersNumber$ = writable(maxWorkers / 2);
 
 let startCalcul: Date = new Date();
 

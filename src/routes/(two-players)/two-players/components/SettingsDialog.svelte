@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount, tick } from 'svelte';
-	import { evaluationValid$, findBestPlay, lastValidMove$, maxWorkers$, negInfo$, settings$, showBestPlay$, workersNumber$ } from '../code';
+	import { evaluationValid$, findBestPlay, lastValidMove$, maxWorkers, negInfo$, settings$, showBestPlay$, workersNumber$ } from '../code';
 
 	const options = [2, 4, 6, 8, 10, 12, 14, 16];
 
@@ -54,7 +54,7 @@
 			<label for="pet-select">Nombre de coeurs actifs :</label>
 			<select id="pet-select" name="pets" class="thread-Select" bind:value={$workersNumber$}>
 				{#each options as option, x (x)}
-					<option value={option} disabled={option > $maxWorkers$}>{option}</option>
+					<option value={option} disabled={option > maxWorkers}>{option}</option>
 				{/each}
 			</select>
 		</div>
