@@ -6,41 +6,50 @@
 * {
 	box-sizing: border-box;
 }
+
 body {
 	margin: 0;
 }
+
 h1 {
 	text-align: center;
 }
+
 table {
 	border-collapse: collapse;
 	text-align: center;
 }
+
 h3 {
 	text-align: center;
 	margin: 5px;
 }
+
 h5 {
 	margin: 10px;
 }
+
 button {
-	background-color: rgb(166, 219, 166);
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	background-color: rgb(166 219 166);
+	box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
 	border-radius: 15px;
 	padding: 0.5rem 1.7rem;
 }
 
 .board {
 	margin: auto;
-	box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+	box-shadow: rgb(0 0 0 / 35%) 0 5px 15px;
 }
+
 .bord-cell {
 	--size: 75px;
+
 	width: var(--size);
 	height: var(--size);
 	border: 2px solid black;
 	padding: 0;
 }
+
 .legende {
 	display: flex;
 	flex-direction: column;
@@ -48,46 +57,53 @@ button {
 	align-items: center;
 	height: 50px;
 }
+
 .menu {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
 	align-items: center;
 }
+
 .reinitialisation {
-	background-color: rgb(166, 219, 166);
+	background-color: rgb(166 219 166);
 	height: 30px;
 	border-radius: 50px;
 	border: none;
 }
+
 button:hover {
-	background-color: rgb(115, 214, 115);
+	background-color: rgb(115 214 115);
 	color: white;
 }
+
 button:active {
-	background-color: rgb(126, 235, 126);
+	background-color: rgb(126 235 126);
 	box-shadow: none;
 }
+
 .possible {
 	cursor: pointer;
 }
+
 .possible:hover {
-	background-color: rgb(238, 245, 238);
+	background-color: rgb(238 245 238);
 }
-button:active {
-	box-shadow: none;
-}
+
 .plateau {
-    margin: 0;
-    padding: 1rem;
+	margin: 0;
+	padding: 1rem;
 	min-height: 100vh;
 }
+
 .plateau.joueur1 {
 	background-color: green;
 }
+
 .plateau.joueur2 {
 	background-color: #c70f0f;
 }
+
 .board-container {
 	display: flex;
 	justify-content: center;
@@ -98,31 +114,35 @@ button:active {
 	width: 100%;
 	padding: 1rem;
 	margin: 20px;
-	border-top-width: 10px;
-	border-right-width: 0;
-	border-bottom-width: 0;
-	border-left-width: 0;
-    border-style: solid;
-    border-color: darkgrey;
+	border-width: 10px 0 0;
+	border-style: solid;
+	border-color: darkgrey;
 }
+
 .joueur1 {
 	--joueur1: green;
+
 	color: var(--joueur1);
 }
+
 .name1 {
 	border: 2px;
-    border-style: solid;
+	border-style: solid;
 	border-radius: 8px;
 }
+
 .joueur2 {
 	--joueur2: red;
+
 	color: var(--joueur2);
 }
+
 .name2 {
 	border: 2px;
-    border-style: solid;
+	border-style: solid;
 	border-radius: 8px;
 }
+
 .inert {
 	pointer-events: none;
 }
@@ -131,76 +151,90 @@ button:active {
 	display: flex;
 	justify-content: space-evenly;
 }
+
 .retour {
 	margin: 10px;
 	display: flex;
 	justify-content: space-evenly;
 }
+
 .menu-bouton {
-	background-color: rgb(146, 146, 146);
+	display: flex;
+	justify-content: space-evenly;
+	background-color: rgb(146 146 146);
 }
+
 .menu-bouton:hover {
-	background-color: rgb(128, 128, 128);
+	background-color: rgb(128 128 128);
 }
+
 .menu-bouton:active {
-	background-color: rgb(141, 141, 141);
+	background-color: rgb(141 141 141);
 }
+
 .bouton-principal {
 	display: flex;
 	justify-content: space-evenly;
 }
+
 .commencer {
 	width: 100%;
 	display: flex;
 	justify-content: space-evenly;
 }
+
 .menu-bouton .icone {
 	margin-left: 10px;
 }
-.menu-bouton {
-	display: flex;
-	justify-content: space-evenly;
-}
+
 .fleches {
 	margin-top: 30px;
 	display: flex;
 	justify-content: center;
 	gap: 35px;
 }
+
 .move {
-	background-color: rgb(0, 221, 210);
+	background-color: rgb(0 221 210);
 }
+
 .move:hover {
-	background-color: rgb(0, 179, 173);
+	background-color: rgb(0 179 173);
 }
+
 .move:active {
-	background-color: rgb(0, 197, 190);
+	background-color: rgb(0 197 190);
 }
+
 .niveau {
 	color: blue;
 }
+
 .slider {
 	width: 200px;
-	background-color: transparent;
-	background: transparent;       /* couleur de la barre */
+	background: transparent; /* couleur de la barre */
 }
 
 /* La barre (track) */
 .slider::-moz-range-track {
 	height: 6px;
 	background: #4caf50;
+
 	/* couleur de la barre */
 	border-radius: 3px;
 }
+
 .slider_value {
 	color: blue;
 }
+
 .slider_conteneur {
 	display: flex;
 	flex-direction: column;
 	align-items: center;
 	margin: 20px;
 }
+
 .niveauOrdi {
 	width: 100px;
 	height: 20%;
@@ -209,34 +243,41 @@ button:active {
 	margin: 20px;
 	transition: all 0.3s linear;
 }
+
 .valider {
 	display: flex;
 	justify-content: center;
 }
+
 .niveau-ordi {
 	margin-bottom: 15px;
 	text-align: center;
 	font-weight: bold;
 	color: blue;
 }
+
 dialog::backdrop {
 	background-color: #5ca79d;
 	opacity: 0.7;
 	filter: blur(200px);
 }
+
 .menu_content {
-	background-color: rgb(251, 255, 0);
-  	border: 1px solid #000;
-  	line-height: 0;
+	background-color: rgb(251 255 0);
+	border: 1px solid #000;
+	line-height: 0;
 	border-radius: 15px;
 	padding: 5px;
-} 
+}
+
 .menu_content:hover {
-	background-color: rgb(157, 160, 0);
+	background-color: rgb(157 160 0);
 }
+
 .menu_content:active {
-	background-color: rgb(173, 176, 0);
+	background-color: rgb(173 176 0);
 }
+
 .options {
 	margin-bottom: 30px;
 }
@@ -247,9 +288,9 @@ dialog::backdrop {
 
 .evaluation {
 	display: flex;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
 	margin-top: 15px;
 	font-weight: bold;
@@ -259,31 +300,39 @@ dialog::backdrop {
 .meilleurCase {
 	background-color: yellow;
 }
+
 .eval {
 	margin: 15px;
 }
+
 .vertSelect {
-	background-color: rgb(0, 220, 0);
+	background-color: rgb(0 220 0);
 	color: white;
 }
+
 .rougeSelect {
-	background-color: rgb(220, 0, 0);
+	background-color: rgb(220 0 0);
 	color: white;
 }
+
 .vertSelect:hover {
-	background-color: rgb(0, 255, 0);
+	background-color: rgb(0 255 0);
 	color: black;
 }
+
 .rougeSelect:hover {
-	background-color: rgb(255, 0, 0);
+	background-color: rgb(255 0 0);
 	color: black;
 }
+
 .vertSelect:active {
-	background-color: rgb(0, 200, 0);
+	background-color: rgb(0 200 0);
 }
+
 .rougeSelect:active {
-	background-color: rgb(200, 0, 0);
+	background-color: rgb(200 0 0);
 }
+
 .activeEditeur {
 	display: flex;
 }
@@ -294,17 +343,21 @@ dialog::backdrop {
 	gap: 30px;
 	margin: 25px;
 }
+
 .reversTrait {
-	background-color: rgb(220, 220, 0);
+	background-color: rgb(220 220 0);
 	color: white;
 }
+
 .reversTrait:hover {
-	background-color: rgb(250, 250, 0);
+	background-color: rgb(250 250 0);
 	color: black;
 }
+
 .reversTrait:active {
-	background-color: rgb(200, 200, 0);
+	background-color: rgb(200 200 0);
 }
+
 /* .dernierClick {
 	border: 4px solid rgba(28, 102, 167, 0.6)
 } */
@@ -312,33 +365,32 @@ dialog::backdrop {
 .dernierClick {
 	position: relative;
 }
-.dernierClick:before {
+
+.dernierClick::before {
 	content: "";
 	position: absolute;
 	border: 4px solid #339ad8;
+
 	/* inset: 0; */
-	top: 0px;
-	right: 0px;
-	bottom: 0px;
-	left: 0px;
+	inset: 0;
 
 	/* border: 4px solid rgba(28, 102, 167, 0.6) */
 }
 
-
 .infoNeg {
 	display: none;
-  	flex-direction: column;
-  	align-items: center;
-  	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
 	text-align: center;
 	font-weight: bold;
 	color: blue;
 }
+
 .hInfo {
 	position: absolute;
-  	top: 0;
-  	left: 0;
+	top: 0;
+	left: 0;
 }
 
 .beginner {
@@ -352,47 +404,57 @@ dialog::backdrop {
 }
 
 .trait_joueur1 {
-	background-color: rgb(0, 220, 0);
-	color: rgb(255, 255, 255);
+	background-color: rgb(0 220 0);
+	color: rgb(255 255 255);
 }
+
 .trait_joueur2 {
-	background-color: rgb(220, 0, 0);
-	color: rgb(255, 255, 255);
+	background-color: rgb(220 0 0);
+	color: rgb(255 255 255);
 }
+
 .alea_trait {
-	background-color: rgb(220, 220, 0);
-	color: rgb(255, 255, 255);
+	background-color: rgb(220 220 0);
+	color: rgb(255 255 255);
 }
+
 .trait_joueur1:hover {
-	background-color: rgb(0, 255, 0);
-  	color: black;
+	background-color: rgb(0 255 0);
+	color: black;
 }
+
 .trait_joueur2:hover {
-	background-color: rgb(255, 0, 0);
-	color: rgb(0, 0, 0);
+	background-color: rgb(255 0 0);
+	color: rgb(0 0 0);
 }
+
 .alea_trait:hover {
-	background-color: rgb(255, 255, 0);
-	color: rgb(0, 0, 0);
+	background-color: rgb(255 255 0);
+	color: rgb(0 0 0);
 }
+
 .trait_joueur1:active {
-	background-color: rgb(0, 200, 0);;
-  	color: black;
+	background-color: rgb(0 200 0);
+	color: black;
 }
+
 .trait_joueur2:active {
-	background-color: rgb(200, 0, 0);
-	color: rgb(0, 0, 0);
+	background-color: rgb(200 0 0);
+	color: rgb(0 0 0);
 }
+
 .alea_trait:active {
-	background-color: rgb(200, 200, 0);
-	color: rgb(0, 0, 0);
+	background-color: rgb(200 200 0);
+	color: rgb(0 0 0);
 }
+
 .alea {
-	color: rgb(220, 220, 0);
+	color: rgb(220 220 0);
 }
+
 .invalid {
 	user-select: none;
-	background-color: rgb(170, 170, 170);
+	background-color: rgb(170 170 170);
 	pointer-events: none;
-    opacity: 0.5;
+	opacity: 0.5;
 }

@@ -1,6 +1,15 @@
 <script lang="ts">
-	import { onMount, tick } from 'svelte';
-	import { evaluationValid$, findBestPlay, lastValidMove$, maxWorkers, negInfo$, settings$, showBestPlay$, workersNumber$ } from '../code';
+	import { onMount, tick } from "svelte";
+	import {
+		evaluationValid$,
+		findBestPlay,
+		lastValidMove$,
+		maxWorkers,
+		negInfo$,
+		settings$,
+		showBestPlay$,
+		workersNumber$
+	} from "../code";
 
 	const options = [2, 4, 6, 8, 10, 12, 14, 16];
 
@@ -33,22 +42,38 @@
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="mCoup" type="checkbox" name="case1" bind:checked={$showBestPlay$} />Montrer le meilleur coup
+					<input class="mCoup" type="checkbox" name="case1" bind:checked={$showBestPlay$} />Montrer
+					le meilleur coup
 				</label>
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="dCoup" type="checkbox" name="case1" bind:checked={$lastValidMove$} />Afficher le dernier coup
+					<input
+						class="dCoup"
+						type="checkbox"
+						name="case1"
+						bind:checked={$lastValidMove$}
+					/>Afficher le dernier coup
 				</label>
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="evalEnnemi" type="checkbox" name="case1" bind:checked={$evaluationValid$} />Montrer l'évaluation calculée
+					<input
+						class="evalEnnemi"
+						type="checkbox"
+						name="case1"
+						bind:checked={$evaluationValid$}
+					/>Montrer l'évaluation calculée
 				</label>
 			</div>
 			<div class="label_content">
 				<label for="abset-move-annotation">
-					<input class="negInfo-checkbox" type="checkbox" name="case1" bind:checked={$negInfo$} />Afficher les informations negamax
+					<input
+						class="negInfo-checkbox"
+						type="checkbox"
+						name="case1"
+						bind:checked={$negInfo$}
+					/>Afficher les informations negamax
 				</label>
 			</div>
 			<label for="pet-select">Nombre de coeurs actifs :</label>
@@ -62,12 +87,3 @@
 		<button onclick={valider}>Valider</button>
 	</div>
 </dialog>
-
-<style>
-
-	.unselectable {
-		background-color: rgb(119, 119, 119);
-		color: white;
-	}
-
-</style>

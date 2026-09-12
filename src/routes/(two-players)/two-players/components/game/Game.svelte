@@ -1,7 +1,19 @@
 <script lang="ts">
-	import { asset } from '$app/paths';
-	import { computingSpeed$, gameStarted$, level$, moveCursor, player1Name$, player2Name$, restartGame, settings$, negInfo$, bestEvaluation$, evaluationValid$ } from "../../code";
-	import Board from './Board.svelte';
+	import { asset } from "$app/paths";
+	import {
+		computingSpeed$,
+		gameStarted$,
+		level$,
+		moveCursor,
+		player1Name$,
+		player2Name$,
+		restartGame,
+		settings$,
+		negInfo$,
+		bestEvaluation$,
+		evaluationValid$
+	} from "../../code";
+	import Board from "./Board.svelte";
 </script>
 
 <div class="play-container">
@@ -21,7 +33,9 @@
 	</div>
 	<div class="evaluation">
 		{#if $evaluationValid$}
-			<h4 class="evalAide eval">Evaluation MinMax: <span class="evalAide-value">{$bestEvaluation$}</span></h4>
+			<h4 class="evalAide eval">
+				Evaluation MinMax: <span class="evalAide-value">{$bestEvaluation$}</span>
+			</h4>
 		{/if}
 	</div>
 	<div class="board-container">
@@ -38,25 +52,26 @@
 		</div>
 	{/if}
 	<div class="retour">
-		<button onclick={(() => $gameStarted$ = false)} class="menu-bouton">
+		<button onclick={() => ($gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
-			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu">
+			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu" />
 		</button>
 	</div>
 	<div class="fleches">
 		<button onclick={() => moveCursor(-1)} class="move">&#8592;</button>
 		<button onclick={() => moveCursor(1)} class="move">&#8594;</button>
 	</div>
-	<button class="menu_content" 
+	<button
+		class="menu_content"
 		onclick={() => {
-			settings$.set(true);		
-		}}>
-		<img class="icone" src={asset("/two-players/menu.svg")} width="50px" alt="Menu">
+			settings$.set(true);
+		}}
+	>
+		<img class="icone" src={asset("/two-players/menu.svg")} width="50px" alt="Menu" />
 	</button>
 </div>
 
 <style>
-
 	h3 {
 		display: flex;
 		align-items: center;
@@ -72,15 +87,15 @@
 		height: 15px;
 		width: 15px;
 		border-radius: 50%;
-		box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.9);
+		box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 90%);
 	}
 
 	.player1 {
-		background-color: rgb(0, 180, 0);
+		background-color: rgb(0 180 0);
 	}
 
 	.player2 {
-		background-color: rgb(180, 0, 0);
+		background-color: rgb(180 0 0);
 	}
 
 	.infoNegamax {
@@ -89,12 +104,12 @@
 	}
 
 	.info {
-		color: rgb(0, 0, 0);
+		color: rgb(0 0 0);
 		font-weight: 700;
 		margin: 10px;
 	}
+
 	.niveau-ordi {
 		font-weight: 700;
 	}
 </style>
-

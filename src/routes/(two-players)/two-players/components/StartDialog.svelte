@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { tick } from 'svelte';
-	import { commencerOrdi, level$, levelColor$ } from '../code';
+	import { tick } from "svelte";
+	import { commencerOrdi, level$, levelColor$ } from "../code";
 
 	let dialog: HTMLDialogElement | undefined = $state(undefined);
 	let isOpen = $state(false);

@@ -1,9 +1,9 @@
-import { createMinMax } from '$lib/game/alphaBetaWorker';
-import { donnerEvalFns } from './game.ts';
-import type { Coordonnees, Direction, Noeud } from './game.ts';
+import { createMinMax } from "$lib/game/alphaBetaWorker";
+import { donnerEvalFns } from "./game.ts";
+import type { Coordonnees, Direction, Noeud } from "./game.ts";
 
 interface CalculerMessage {
-	type: 'CALCULER';
+	type: "CALCULER";
 	donnees: {
 		noeudEnfant: Noeud;
 		profondeur: number;
@@ -16,7 +16,7 @@ interface CalculerMessage {
 }
 
 interface ResultatMessage {
-	type: 'RESULTAT';
+	type: "RESULTAT";
 	evaluation: number;
 	n: number;
 }
@@ -29,7 +29,7 @@ const workerSelf = self as unknown as {
 workerSelf.onmessage = (evenement) => {
 	const { type, donnees } = evenement.data;
 
-	if (type === 'CALCULER') {
+	if (type === "CALCULER") {
 		const { noeudEnfant, profondeur, alpha, beta, prochainJoueurMax, tabEval, directions } =
 			donnees;
 		const { donnerEnfants, estFeuille, evaluer, jouer, donnerN } = donnerEvalFns(
@@ -44,6 +44,6 @@ workerSelf.onmessage = (evenement) => {
 		});
 
 		const evaluation = alphabetaSequentiel(noeudEnfant, profondeur, alpha, beta, prochainJoueurMax);
-		workerSelf.postMessage({ type: 'RESULTAT', evaluation, n: donnerN() });
+		workerSelf.postMessage({ type: "RESULTAT", evaluation, n: donnerN() });
 	}
 };

@@ -1,7 +1,7 @@
 <script lang="ts">
-	import { asset } from '$app/paths';
+	import { asset } from "$app/paths";
 	import { ajout, traitEdition, validEdition, gameStarted$, backgroundColor$ } from "../../code";
-	import Board from './Board.svelte';
+	import Board from "./Board.svelte";
 </script>
 
 <div class={`play-container ${$backgroundColor$}`}>
@@ -16,29 +16,27 @@
 	<div class="couleurEdition desactiveEditeur">
 		<button class="vertSelect" onclick={() => ajout(1)}>Ajout de points verts</button>
 		<button class="reversTrait" onclick={() => traitEdition()}>Changer le trait</button>
-		<button class="rougeSelect"onclick={() => ajout(-1)}>Ajout de points rouges</button>
+		<button class="rougeSelect" onclick={() => ajout(-1)}>Ajout de points rouges</button>
 	</div>
 	<div class="infoNeg">
 		<h5>Temps de Calcul: <span class="tCalc"></span></h5>
 		<h5><span class="vCalc">(TODO : Temps calcul)</span></h5>
 	</div>
 	<div class="retour">
-		<button onclick={(() => $gameStarted$ = false)} class="menu-bouton">
+		<button onclick={() => ($gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
-			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu">
+			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu" />
 		</button>
 	</div>
 	<div class="info"></div>
 </div>
 
 <style>
-
 	.player1 {
-		background-color: rgb(0, 220, 0);
+		background-color: rgb(0 220 0);
 	}
 
 	.player2 {
-		background-color: rgb(255, 0, 0);
+		background-color: rgb(255 0 0);
 	}
-
 </style>
