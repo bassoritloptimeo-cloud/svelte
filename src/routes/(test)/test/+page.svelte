@@ -1,5 +1,5 @@
 <script lang="ts">
-	import {number$, add} from "./state.store";
+	import { number$, add } from "./state.store";
 	import "./styles.css";
 </script>
 

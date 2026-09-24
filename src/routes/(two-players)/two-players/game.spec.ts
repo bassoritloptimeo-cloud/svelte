@@ -1,7 +1,7 @@
-import { describe, test, expect } from 'vitest';
-import { donnerEvalFns, preCalculs } from './game';
-import type { Coordonnees, Direction, Noeud } from './game';
-import { createMinMax } from '$lib/game/alphaBetaWorker';
+import { describe, test, expect } from "vitest";
+import { donnerEvalFns, preCalculs } from "./game";
+import type { Coordonnees, Direction, Noeud } from "./game";
+import { createMinMax } from "$lib/game/alphaBetaWorker";
 
 const directions: readonly Direction[] = [
 	[-1, 0],
@@ -44,15 +44,15 @@ function trouverMeilleurCoup(
 }
 
 describe("Computer move", () => {
-	test('find the best move for a simple board for red player', () => {
+	test("find the best move for a simple board for red player", () => {
 		const tabEval = preCalculs(3);
 		const noeud: Noeud = {
 			board: [
 				[-1, 0, 0],
 				[0, -3, 1],
-				[0, 0, 0],
+				[0, 0, 0]
 			],
-			trait: -1,
+			trait: -1
 		};
 
 		const coup = trouverMeilleurCoup(noeud, tabEval, 1);
@@ -60,20 +60,19 @@ describe("Computer move", () => {
 		expect(coup).toEqual([1, 1]);
 	});
 
-	test('find the best move for a simple board for green player', () => {
+	test("find the best move for a simple board for green player", () => {
 		const tabEval = preCalculs(3);
 		const noeud: Noeud = {
 			board: [
 				[1, 0, 0],
 				[0, 3, -1],
-				[0, 0, 0],
+				[0, 0, 0]
 			],
-			trait: 1,
+			trait: 1
 		};
 
 		const coup = trouverMeilleurCoup(noeud, tabEval, 1);
 
 		expect(coup).toEqual([1, 1]);
 	});
-
 });

@@ -1,4 +1,4 @@
-import type { MinMaxNode } from '$lib/game/alphaBetaWorker';
+import type { MinMaxNode } from "$lib/game/alphaBetaWorker";
 
 export const MAX_EVAL = 1_000_000;
 

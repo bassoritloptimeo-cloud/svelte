@@ -3,9 +3,12 @@
 ## Commands
 
 - `npm run dev` — dev server
-- `npm run check` — svelte-check typecheck (`svelte-kit sync` runs first; `prepare` script also syncs on install)
-- `npm run lint` — `prettier --check . && eslint .`
-- `npm run format` — `prettier --write .`
+- `npm run check` — typecheck + lint (`svelte-kit sync && svelte-check && npm run lint`; `prepare` also syncs on install)
+- `npm run check:fix` — autofix lint issues (`lint:fix` + `lint:css:fix`)
+- `npm run lint` — `prettier --check . && eslint . && stylelint`
+- `npm run lint:fix` — eslint autofix (cached)
+- `npm run lint:css` / `lint:css:fix` — stylelint on `src/**/*.{css,svelte}`
+- `npm run format` / `format:check` — prettier write / check
 - `npm run tdd` — vitest (watch by default; use `npm run tdd -- --run` for one-shot)
 - `npm run test:e2e` — playwright (spawns `npm run build && npm run preview` on port 4173; matches `**/*.e2e.{ts,js}`)
 - `npm run test` — `tdd -- --run` then e2e
@@ -15,6 +18,7 @@ Verify with `npm run check` and `npm run lint` after changes.
 ## Layout
 
 Two independent games, each fully self-contained under a route group (groups only affect URLs):
+
 - `src/routes/(sherif)/sherif/` — "Shérif et bandit" board game (URL `/sherif`). Game data + grid live in `data.ts`, logic in `state.store.ts`, types in `types.ts`.
 - `src/routes/(sur-le-toit)/sur-le-toit/` — 3D maze game (URL `/sur-le-toit`).
 
@@ -24,7 +28,7 @@ Two independent games, each fully self-contained under a route group (groups onl
 - **Runes mode is forced on** project-wide (except `node_modules`) via `compilerOptions.runes` in `vite.config.ts`.
 - **No `svelte.config.js/ts` exists.** The static adapter and Tailwind v4 plugin are configured directly in `vite.config.ts` via `sveltekit({ adapter: adapter() })`. Tailwind v4 is CSS-first (no `tailwind.config`); the global stylesheet is `src/routes/layout.css` (also referenced by prettier).
 - **Relative imports use explicit extensions** (e.g. `import type { Cell } from './types.ts'`) — `rewriteRelativeImportExtensions` is on.
-- **Prettier style**: tabs, single quotes, `trailingComma: 'none'`, print width 100.
+- **Prettier style**: tabs, double quotes, `trailingComma: 'none'`, print width 100.
 
 ## Gotchas
 

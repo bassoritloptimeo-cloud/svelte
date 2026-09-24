@@ -14,3 +14,5 @@ export function wait(ms: number) {
 	});
 	return promise;
 }
+
+export const clamp = (min: number, n: number, max: number) => Math.min(Math.max(0, n), max);
