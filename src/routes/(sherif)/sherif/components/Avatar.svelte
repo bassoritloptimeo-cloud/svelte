@@ -33,11 +33,11 @@
 	}
 
 	.sherif {
-		filter: drop-shadow(-10px 0px 8px green);
+		filter: drop-shadow(-10px 0 8px green);
 	}
 
 	.bandit {
-		filter: drop-shadow(-10px 0px 8px red);
+		filter: drop-shadow(-10px 0 8px red);
 	}
 
 	.avatar-background {

@@ -40,7 +40,7 @@
 			<button onclick={position}>Commencer le jeu</button>
 		</div>
 		{#if $beginGame$}
-			<div class="bottom-element">
+			<div class="bottomElement">
 				<div>
 					<h2>>> Mouvement</h2>
 				</div>

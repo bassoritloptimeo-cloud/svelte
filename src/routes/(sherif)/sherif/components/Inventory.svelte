@@ -11,7 +11,7 @@
 	const { sherifInventory, banditInventory, inventoryTranslations }: Props = $props();
 </script>
 
-<div class="bottom-element">
+<div class="bottomElement">
 	<h2>>> Inventaire</h2>
 	<div class="inventory-container">
 		<div class="inventory">
@@ -51,7 +51,7 @@
 
 <style>
 	p {
-		font-family: "Domine, serif";
+		font-family: Domine, serif;
 		font-size: 0.875rem;
 	}
 	
@@ -85,14 +85,14 @@
 
 	.key-inventory {
 		display: inline-block;
-		border-bottom : 1px solid rgba(255, 255, 255, 0.2);
-		padding: 5px 10px 5px 10px;
+		border-bottom : 1px solid rgb(255 255 255 / 20%);
+		padding: 5px 10px;
 	}
 	
 	.value-inventory {
 		display: flex;
-		border-bottom : 1px solid rgba(255, 255, 255, 0.2);
-		padding: 5px 10px 5px 10px;
+		border-bottom : 1px solid rgb(255 255 255 / 20%);
+		padding: 5px 10px;
 	}
 
 	.sherif-inventory {

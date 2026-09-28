@@ -9,7 +9,7 @@
 
 	const { text }: Props = $props();
 </script>
-<div class="bottom-element newspaper">
+<div class="bottomElement newspaper">
 	<h2>Journal des Événements</h2>
 	<div class="bottom">
 		{#each text as event, i (i)}
@@ -20,14 +20,14 @@
 
 <style>
 	p {
-		color: rgb(74, 222, 128);
+		color: rgb(74 222 128);
 		white-space: nowrap;
 		overflow: hidden;
 
 	}
 
 	h2 {
-		font-family: "Domine, serif";
+		font-family: Domine, serif;
 		text-transform: uppercase;
 		font-size: 1.125rem;
 		font-weight: 700;
@@ -35,7 +35,7 @@
 	}
 
 	.newspaper {
-		background-color: rgb(0, 0, 0);
+		background-color: rgb(0 0 0);
 	}
 
 	.bottom {

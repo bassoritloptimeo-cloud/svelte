@@ -1,11 +1,11 @@
 .wallpaper {
-	background-color: rgba(11, 9, 1);
+	background-color: rgb(11 9 1);
 	height: 100vh;
 	overflow: auto;
 }
 
-.bottom-element {
-	background-color: rgba(55, 43, 5);
+.bottomElement {
+	background-color: rgb(55 43 5);
 	margin: 20px;
 	border: 2px solid rgb(93 64 55);
 	border-radius: 0.5rem;
@@ -13,27 +13,27 @@
 
 p {
 	color: #fffacfc0;
-	font-family: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace';
+	font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 h2 {
 	margin: 5px;
 	color: rgb(218 196 121);
-	font-family: "Domine, serif";
+	font-family: Domine, serif;
 	font-weight: 700;
 	font-size: 1.25rem;
 }
 
 button {
-	color: rgb(255, 255, 255);
-	background-color: rgb(255, 100, 0);
-	box-shadow: 0px 5px 0px 0px rgb(200, 70, 0);
+	color: rgb(255 255 255);
+	background-color: rgb(255 100 0);
+	box-shadow: 0 5px 0 0 rgb(200 70 0);
 	margin: 10px;
 	border: none;
 }
 
 button:hover {
-	background-color: rgb(255, 125, 0);
+	background-color: rgb(255 125 0);
 }
 
 button:active {
@@ -41,13 +41,13 @@ button:active {
 }
 
 .sherifM {
-	background-color: rgb(66, 57, 24);
+	background-color: rgb(66 57 24);
 	margin: 5px;
 	padding: 8px;
 }
 
 .banditM {
-	background-color: rgb(66, 57, 24);
+	background-color: rgb(66 57 24);
 	margin: 5px;
 	padding: 8px;
 }
@@ -98,7 +98,7 @@ button:active {
 }
 
 .sherif-title {
-	color: rgb(255, 255, 255);
+	color: rgb(255 255 255);
 }
 
 .bandit-title {
