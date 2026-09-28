@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { onMount } from "svelte";
-	import { asset } from "$app/paths";
+	import {onMount} from "svelte";
+	import {asset} from "$app/paths";
 	import {
-		computingSpeed$,
+		computedSpeed$,
 		gameStarted$,
 		level$,
 		moveCursor,
@@ -13,11 +13,13 @@
 		negInfo$,
 		bestEvaluation$,
 		evaluationValid$,
-		setupKeyboard
+		setupKeyboard,
 	} from "../../code";
 	import Board from "./Board.svelte";
 
 	onMount(setupKeyboard);
+
+	let {time, speed} = $derived($computedSpeed$);
 </script>
 
 <div class="play-container">
@@ -48,10 +50,10 @@
 	{#if $negInfo$}
 		<div class="infoNegamax">
 			<div class="info">
-				Temps: {$computingSpeed$.time}
+				Temps: {time}
 			</div>
 			<div class="info">
-				Vitesse: {$computingSpeed$.speed}
+				Vitesse: {speed}
 			</div>
 		</div>
 	{/if}

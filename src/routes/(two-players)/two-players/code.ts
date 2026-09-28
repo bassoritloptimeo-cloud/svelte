@@ -1,8 +1,8 @@
-import { batch, computed, writable } from "@amadeus-it-group/tansu";
-import type { Cell, Trait } from "./types";
-import { randomNumber, distance, wait, clamp } from "$lib/game/utils";
-import { donnerEvalFns, preCalculs } from "./game.ts";
-import type { Coordonnees, Direction, Noeud } from "./game.ts";
+import {batch, computed, writable} from "@amadeus-it-group/tansu";
+import type {Cell, Trait} from "./types";
+import {randomNumber, distance, wait, clamp} from "$lib/game/utils";
+import {donnerEvalFns, preCalculs} from "./game.ts";
+import type {Coordonnees, Direction, Noeud} from "./game.ts";
 
 const waitMove = 500;
 
@@ -22,7 +22,7 @@ export const gridSize$ = writable("5");
 export const board$ = writable(<number[][]>[]);
 export const trait$ = writable(<Trait>1);
 export const traitInit$ = writable(<Trait | undefined>undefined);
-export const lastPlay$ = writable(<Cell>{ x: -1, y: -1 });
+export const lastPlay$ = writable(<Cell>{x: -1, y: -1});
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
 export const evalEnnemmiValid$ = writable(<undefined | number>undefined);
@@ -40,8 +40,6 @@ export const player2Name$ = computed(() => player2$() || "Joueur2");
 
 export const maxWorkers = typeof navigator !== "undefined" ? navigator.hardwareConcurrency : 1;
 export const workersNumber$ = writable(maxWorkers / 2);
-
-let startCalcul: Date = new Date();
 
 export const traitInitText$ = computed(() => {
 	const traitInit = traitInit$();
@@ -66,7 +64,7 @@ export const levelColor$ = computed(() => {
 });
 
 export const humanColor$ = computed(() => {
-	const level = clamp(0, humanErrors$(), 10);
+	const level = 10 - clamp(0, humanErrors$(), 10);
 	const color = [];
 	for (let i = 0; i < 3; i++) {
 		color.push(Math.floor(minColor[i] + ((maxColor[i] - minColor[i]) * level) / 10));
@@ -93,7 +91,7 @@ export function startGame() {
 		const gridSizeMinusOne = gridSize - 1;
 		const cell1: [number, number] = [
 			randomNumber(0, gridSizeMinusOne),
-			randomNumber(0, gridSizeMinusOne)
+			randomNumber(0, gridSizeMinusOne),
 		];
 		// const cell1 = [2, 2];
 		let cell2: [number, number] = [...cell1];
@@ -117,11 +115,11 @@ export function restartGame() {
 }
 
 export const backgroundColor$ = computed(() =>
-	gameStarted$() ? (trait$() === 1 ? "player1" : "player2") : ""
+	gameStarted$() ? (trait$() === 1 ? "player1" : "player2") : "",
 );
 
-export async function clickCell(cell: { x: number; y: number }) {
-	const { x, y } = cell;
+export async function clickCell(cell: {x: number; y: number}) {
+	const {x, y} = cell;
 	if (editing$()) {
 		addPointEdition([x, y], board$());
 		return;
@@ -132,7 +130,7 @@ export async function clickCell(cell: { x: number; y: number }) {
 	const trait = trait$();
 	const board = board$();
 	if (Math.sign(board[y][x]) === trait) {
-		bestPlay$.set({ x: -1, y: -1 });
+		bestPlay$.set({x: -1, y: -1});
 		await playMove(cell);
 		if (trait$() === robotTrait) {
 			void computerMove();
@@ -140,13 +138,13 @@ export async function clickCell(cell: { x: number; y: number }) {
 	}
 }
 
-async function playMove({ x, y }: { x: number; y: number }) {
+async function playMove({x, y}: {x: number; y: number}) {
 	if (cursor === pointPlays.length) {
 		pointPlays.push([y, x]);
 		cursor = pointPlays.length;
 	}
 	if (lastValidMove$()) {
-		lastPlay$.set({ x, y });
+		lastPlay$.set({x, y});
 	}
 	const trait = trait$();
 	await addPoint([[x, y]], board$(), trait, true);
@@ -157,14 +155,14 @@ const directions = [
 	[-1, 0],
 	[0, -1],
 	[0, 1],
-	[1, 0]
+	[1, 0],
 ] as const;
 
 export async function addPoint(
 	cells: number[][],
 	board: number[][],
 	trait: number,
-	isAsync: boolean
+	isAsync: boolean,
 ) {
 	// debugger;
 	const cellsWith4 = new Set<string>();
@@ -250,7 +248,7 @@ export function findBestPlay() {
 
 export function commencerOrdi() {
 	profondeur = Math.max(1, level$());
-	if (player1$() && player1$() !== "Ordinateur") {
+	if (player1$() || !player2$()) {
 		robotTrait = -1;
 		player2$.set("Ordinateur");
 	} else {
@@ -280,6 +278,7 @@ interface ResultatTache {
 	n: number;
 }
 
+let timeStart: number;
 async function computerMove() {
 	if (!tabEval.length || robotPlaying) {
 		return;
@@ -287,8 +286,8 @@ async function computerMove() {
 	robotPlaying = true;
 	nbClone$.set(0);
 	const trait = trait$();
-	const noeud: Noeud = { board: structuredClone(board$()), trait };
-	const { donnerEnfants, jouer } = donnerEvalFns(tabEval, directions);
+	const noeud: Noeud = {board: structuredClone(board$()), trait};
+	const {donnerEnfants, jouer} = donnerEvalFns(tabEval, directions);
 	const coups = donnerEnfants(noeud);
 	if (coups.length === 0) {
 		robotPlaying = false;
@@ -304,11 +303,11 @@ async function computerMove() {
 		profondeur: profondeur - 1,
 		alpha: -Infinity,
 		beta: Infinity,
-		prochainJoueurMax: !mustMaximize
+		prochainJoueurMax: !mustMaximize,
 	}));
 
-	const { poolWorkers, destroy } = createPoolWorker();
-	startCalcul = new Date();
+	const {poolWorkers, destroy} = createPoolWorker();
+	timeStart = new Date().getTime();
 	const resultats = await gererCalculParallele(poolWorkers, listeTaches);
 	destroy();
 
@@ -316,7 +315,7 @@ async function computerMove() {
 	let meilleureEvaluation = mustMaximize ? -Infinity : Infinity;
 	if (!humanErrors$()) {
 		for (const res of resultats) {
-			const { coup, evaluation } = res;
+			const {coup, evaluation} = res;
 			if (
 				(!mustMaximize && evaluation < meilleureEvaluation) ||
 				(mustMaximize && evaluation > meilleureEvaluation)
@@ -336,7 +335,7 @@ async function computerMove() {
 		let sumEvaluations = 0;
 		const evaluationCumulative = [];
 		if (robotTrait === 1) {
-			orderResults = trierDecroissant(resultats);
+			orderResults = trierDecroissant(structuredClone(resultats));
 			const minValue = orderResults[orderResults.length - 1].evaluation - 1;
 			for (let i = 0; i <= lengthResults; i++) {
 				orderResults[i].evaluation -= minValue;
@@ -344,7 +343,7 @@ async function computerMove() {
 				evaluationCumulative.push(sumEvaluations);
 			}
 		} else {
-			orderResults = trierCroissant(resultats);
+			orderResults = trierCroissant(structuredClone(resultats));
 			const minValue = orderResults[orderResults.length - 1].evaluation - 1;
 			for (let i = 0; i <= lengthResults; i++) {
 				orderResults[i].evaluation -= minValue;
@@ -378,25 +377,26 @@ async function computerMove() {
 		const [y, x] = meilleurCoup;
 		if (!showBestPlay$()) {
 			await wait(waitMove);
-			await playMove({ x, y });
+			await playMove({x, y});
 		} else {
-			bestPlay$.set({ x, y });
+			bestPlay$.set({x, y});
+			showBestPlay$.set(false);
 		}
 	}
 }
-export const bestPlay$ = writable({ x: -1, y: -1 });
+export const bestPlay$ = writable({x: -1, y: -1});
 export const bestEvaluation$ = writable<number>(0);
 
 function createPoolWorker() {
 	const poolWorkers: Worker[] = [];
 	for (let i = 0; i < workersNumber$() - 1; i++) {
-		poolWorkers.push(new Worker(new URL("./worker.ts", import.meta.url), { type: "module" }));
+		poolWorkers.push(new Worker(new URL("./worker.ts", import.meta.url), {type: "module"}));
 	}
 	return {
 		poolWorkers,
 		destroy() {
 			poolWorkers.forEach((worker) => worker.terminate());
-		}
+		},
 	};
 }
 
@@ -421,10 +421,10 @@ function gererCalculParallele(workers: Worker[], taches: Tache[]): Promise<Resul
 			const tacheActuelle = taches[idActuel];
 
 			worker.onmessage = (evenement) => {
-				const { type, evaluation, n } = evenement.data;
+				const {type, evaluation, n} = evenement.data;
 				nbClone$.update((value) => value + n);
 				if (type === "RESULTAT") {
-					resultatsFinaux.push({ coup: tacheActuelle.coup, evaluation, n });
+					resultatsFinaux.push({coup: tacheActuelle.coup, evaluation, n});
 					tachesTerminees++;
 
 					if (tachesTerminees === taches.length) {
@@ -435,24 +435,34 @@ function gererCalculParallele(workers: Worker[], taches: Tache[]): Promise<Resul
 				}
 			};
 
-			worker.postMessage({ type: "CALCULER", donnees: tacheActuelle });
+			worker.postMessage({type: "CALCULER", donnees: tacheActuelle});
 		}
 
 		workers.forEach((worker) => lancerTacheSurWorker(worker));
 	});
 }
 
-export const computingSpeed$ = computed(() => {
+export const computedSpeed$ = computed(() => {
+	const nbClone = nbClone$();
 	const date = new Date().getTime();
-	if (nbClone$() / (date - startCalcul.getTime()) < 10000) {
+	console.log("timeStart", timeStart);
+	if (!timeStart) {
+		console.log(`🔴 (DEBUG) [code.ts:450]: timeStart: `, timeStart);
 		return {
-			speed: Math.round((nbClone$() / (date - startCalcul.getTime())) * 10) / 10 + "Kn/s",
-			time: date - startCalcul.getTime() + "ms"
+			speed: "0",
+			time: "0",
+		};
+	} else if (nbClone / (date - timeStart) < 10000) {
+		console.log("nbClone, date, timeStart", nbClone, date, timeStart);
+		return {
+			speed: Math.round((nbClone / (date - timeStart)) * 10) / 10 + "Kn/s",
+			time: date - timeStart + "ms",
 		};
 	} else {
+		console.log("nbClone, date, timeStart", nbClone, date, timeStart);
 		return {
-			speed: Math.round(nbClone$() / (date - startCalcul.getTime()) / 100) / 10 + "Mn/s",
-			time: date - startCalcul.getTime() + "ms"
+			speed: Math.round(nbClone / (date - timeStart) / 100) / 10 + "Mn/s",
+			time: date - timeStart + "ms",
 		};
 	}
 });
@@ -475,7 +485,7 @@ export function moveCursor(avance: number) {
 	} else if (cursor > pointPlays.length) {
 		cursor = pointPlays.length;
 	} else {
-		bestPlay$.set({ x: -1, y: -1 });
+		bestPlay$.set({x: -1, y: -1});
 		board$.set(structuredClone(beginningBoard));
 		console.log("board", board$(), beginningBoard);
 		let trait = firstTrait;
@@ -485,7 +495,7 @@ export function moveCursor(avance: number) {
 				addPoint([[x, y]], board$(), trait, false);
 				trait = trait === 1 ? -1 : 1;
 			}
-			lastPlay$.set({ y: pointPlays[cursor - 1][0], x: pointPlays[cursor - 1][1] });
+			lastPlay$.set({y: pointPlays[cursor - 1][0], x: pointPlays[cursor - 1][1]});
 		});
 		trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
 	}

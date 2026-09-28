@@ -1,4 +1,4 @@
-import type { Cell, Maze } from "./types.ts";
+import type {Cell, Maze} from "./types.ts";
 
 // Type utilitaire pour restreindre les directions possibles
 type Direction = "up" | "down" | "top" | "bottom" | "right" | "left";
@@ -9,7 +9,7 @@ const opposed: Record<Direction, Direction> = {
 	top: "bottom",
 	bottom: "top",
 	right: "left",
-	left: "right"
+	left: "right",
 };
 
 /**
@@ -35,7 +35,7 @@ function getShuffleDirections(): [Direction, number, number, number][] {
 		["top", 0, -1, 0],
 		["bottom", 0, 1, 0],
 		["right", 0, 0, 1],
-		["left", 0, 0, -1]
+		["left", 0, 0, -1],
 	]);
 }
 
@@ -63,7 +63,7 @@ export function mazeFactory(mz: number, my: number, mx: number): Maze {
 					right: false,
 					bottom: false,
 					left: false,
-					dist: undefined
+					dist: undefined,
 				});
 			}
 		}
@@ -91,15 +91,12 @@ export function mazeFactory(mz: number, my: number, mx: number): Maze {
 	}
 
 	function fusion(): void {
-		const groups: { z: number; y: number; x: number }[][] = Array.from(
-			{ length: max + 1 },
-			() => []
-		);
+		const groups: {z: number; y: number; x: number}[][] = Array.from({length: max + 1}, () => []);
 
 		for (let z = 0; z < mz; z++) {
 			for (let y = 0; y < my; y++) {
 				for (let x = 0; x < mx; x++) {
-					groups[t[z][y][x].id].push({ z, y, x });
+					groups[t[z][y][x].id].push({z, y, x});
 				}
 			}
 		}
@@ -107,7 +104,7 @@ export function mazeFactory(mz: number, my: number, mx: number): Maze {
 		for (let n = max; n > 1; n--) {
 			const cellsInRegion = shuffleArray(groups[n]);
 			let found = false;
-			for (const { z, y, x } of cellsInRegion) {
+			for (const {z, y, x} of cellsInRegion) {
 				const currentCell = t[z][y][x];
 				const directions = getShuffleDirections();
 				for (const [dir, dz, dy, dx] of directions) {
@@ -154,7 +151,7 @@ export function mazeFactory(mz: number, my: number, mx: number): Maze {
 		my,
 		mz,
 		t,
-		player: [0, Math.floor(Math.random() * my), Math.floor(Math.random() * mx)]
+		player: [0, Math.floor(Math.random() * my), Math.floor(Math.random() * mx)],
 	};
 }
 

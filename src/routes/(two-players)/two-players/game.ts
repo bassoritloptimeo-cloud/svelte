@@ -1,4 +1,4 @@
-import type { MinMaxNode } from "$lib/game/alphaBetaWorker";
+import type {MinMaxNode} from "$lib/game/alphaBetaWorker";
 
 export const MAX_EVAL = 1_000_000;
 
@@ -15,7 +15,7 @@ export interface EvalFns {
 	estFeuille: (node: Noeud) => boolean;
 	donnerEnfants: (node: Noeud) => Coordonnees[];
 	jouer: (node: Noeud, coordonnees: Coordonnees) => Noeud;
-	ajoutPointMinmax: (opts: { state: Noeud; coordonnees: Coordonnees }) => void;
+	ajoutPointMinmax: (opts: {state: Noeud; coordonnees: Coordonnees}) => void;
 	resoudreExplosions: (state: Noeud, cell: Coordonnees) => Coordonnees[];
 	donnerN: () => number;
 }
@@ -46,7 +46,7 @@ export function donnerEvalFns(tabEval: number[][], directions: readonly Directio
 		return newCells;
 	}
 
-	function ajoutPointMinmax({ state, coordonnees }: { state: Noeud; coordonnees: Coordonnees }) {
+	function ajoutPointMinmax({state, coordonnees}: {state: Noeud; coordonnees: Coordonnees}) {
 		const [y, x] = coordonnees;
 		const board = state.board;
 		const couleur = Math.sign(board[y][x]);
@@ -62,7 +62,7 @@ export function donnerEvalFns(tabEval: number[][], directions: readonly Directio
 	}
 
 	function evaluer(stateForComputer: Noeud): number {
-		const { board } = stateForComputer;
+		const {board} = stateForComputer;
 		let evaluation = 0;
 		let nombreCasesPossiblesJoueur1 = 0;
 		let nombreCasesPossiblesJoueur2 = 0;
@@ -128,7 +128,7 @@ export function donnerEvalFns(tabEval: number[][], directions: readonly Directio
 
 	function jouer(noeud: Noeud, coordonnees: Coordonnees): Noeud {
 		const nouveauNoeud = clonerBoard(noeud);
-		ajoutPointMinmax({ state: nouveauNoeud, coordonnees });
+		ajoutPointMinmax({state: nouveauNoeud, coordonnees});
 		nouveauNoeud.trait *= -1;
 
 		return nouveauNoeud;
@@ -136,7 +136,7 @@ export function donnerEvalFns(tabEval: number[][], directions: readonly Directio
 
 	function clonerBoard(noeud: Noeud): Noeud {
 		n++;
-		const noeudClone: Noeud = { board: [], trait: noeud.trait };
+		const noeudClone: Noeud = {board: [], trait: noeud.trait};
 		const longueur = noeud.board.length;
 		for (let i = 0; i < longueur; i++) {
 			const ligne: number[] = [];
@@ -155,7 +155,7 @@ export function donnerEvalFns(tabEval: number[][], directions: readonly Directio
 		jouer,
 		ajoutPointMinmax,
 		resoudreExplosions,
-		donnerN
+		donnerN,
 	};
 }
 
@@ -164,7 +164,7 @@ export function preCalculs(tailleGrille: number): number[][] {
 	const BASE_VALUE_OFFSET = 0.75;
 	const ROUNDING_FACTOR = 10;
 	const centerValue = Math.round(
-		BASE_VALUE_OFFSET + Math.sqrt(2 * Math.pow(milieu, 2)) * ROUNDING_FACTOR
+		BASE_VALUE_OFFSET + Math.sqrt(2 * Math.pow(milieu, 2)) * ROUNDING_FACTOR,
 	);
 	const evals: number[][] = [];
 	for (let i = 0; i < tailleGrille; i++) {
@@ -174,8 +174,8 @@ export function preCalculs(tailleGrille: number): number[][] {
 			const distJ = Math.abs(milieu - j);
 			lineEval.push(
 				Math.round(
-					(centerValue - Math.sqrt(Math.pow(distI, 2) + Math.pow(distJ, 2))) * ROUNDING_FACTOR
-				) / ROUNDING_FACTOR
+					(centerValue - Math.sqrt(Math.pow(distI, 2) + Math.pow(distJ, 2))) * ROUNDING_FACTOR,
+				) / ROUNDING_FACTOR,
 			);
 		}
 		evals.push(lineEval);

@@ -1,8 +1,8 @@
 import tailwindcss from "@tailwindcss/vite";
-import { defineConfig } from "vitest/config";
+import {defineConfig} from "vitest/config";
 import adapter from "@sveltejs/adapter-static";
-import { sveltekit } from "@sveltejs/kit/vite";
-import { playwright } from "@vitest/browser-playwright";
+import {sveltekit} from "@sveltejs/kit/vite";
+import {playwright} from "@vitest/browser-playwright";
 
 const base = (process.env.BASE_PATH ?? "") as "" | `/${string}`;
 
@@ -12,23 +12,23 @@ export default defineConfig({
 		sveltekit({
 			compilerOptions: {
 				// Force runes mode for the project, except for libraries. Can be removed in svelte 6.
-				runes: ({ filename }) =>
-					filename.split(/[/\\]/).includes("node_modules") ? undefined : true
+				runes: ({filename}) =>
+					filename.split(/[/\\]/).includes("node_modules") ? undefined : true,
 			},
 			adapter: adapter(),
-			paths: { base }
-		})
+			paths: {base},
+		}),
 	],
 	server: {
 		port: 5173,
-		strictPort: true
+		strictPort: true,
 	},
 	preview: {
 		port: 5174,
-		strictPort: true
+		strictPort: true,
 	},
 	test: {
-		expect: { requireAssertions: true },
+		expect: {requireAssertions: true},
 		projects: [
 			{
 				extends: "./vite.config.ts",
@@ -36,8 +36,8 @@ export default defineConfig({
 					name: "server",
 					environment: "node",
 					include: ["src/**/*.{test,spec}.{js,ts}"],
-					exclude: ["src/**/*.browser.{test,spec}.{js,ts}", "src/**/*.svelte.{test,spec}.{js,ts}"]
-				}
+					exclude: ["src/**/*.browser.{test,spec}.{js,ts}", "src/**/*.svelte.{test,spec}.{js,ts}"],
+				},
 			},
 			{
 				extends: "./vite.config.ts",
@@ -49,11 +49,11 @@ export default defineConfig({
 						screenshotFailures: false,
 						ui: false,
 						provider: playwright(),
-						instances: [{ browser: "chromium" }]
+						instances: [{browser: "chromium"}],
 					},
-					include: ["src/**/*.browser.{test,spec}.{js,ts}"]
-				}
-			}
-		]
-	}
+					include: ["src/**/*.browser.{test,spec}.{js,ts}"],
+				},
+			},
+		],
+	},
 });

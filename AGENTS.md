@@ -28,7 +28,7 @@ Two independent games, each fully self-contained under a route group (groups onl
 - **Runes mode is forced on** project-wide (except `node_modules`) via `compilerOptions.runes` in `vite.config.ts`.
 - **No `svelte.config.js/ts` exists.** The static adapter and Tailwind v4 plugin are configured directly in `vite.config.ts` via `sveltekit({ adapter: adapter() })`. Tailwind v4 is CSS-first (no `tailwind.config`); the global stylesheet is `src/routes/layout.css` (also referenced by prettier).
 - **Relative imports use explicit extensions** (e.g. `import type { Cell } from './types.ts'`) — `rewriteRelativeImportExtensions` is on.
-- **Prettier style**: tabs, double quotes, `trailingComma: 'none'`, print width 100.
+- **Prettier style**: tabs, double quotes, `trailingComma: 'all'`, `bracketSpacing: false`, print width 100.
 
 ## Gotchas
 

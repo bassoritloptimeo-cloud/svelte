@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { settings$, backgroundColor$, gameStarted$, editing$ } from "./code";
+	import {settings$, backgroundColor$, gameStarted$, editing$} from "./code";
 
 	import Edition from "./components/game/Edition.svelte";
 	import Game from "./components/game/Game.svelte";

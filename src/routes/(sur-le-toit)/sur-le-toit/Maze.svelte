@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { maze$, player$, width$ } from "./state.store";
+	import {maze$, player$, width$} from "./state.store";
 
 	const [pz, py, px] = $derived($player$);
 </script>
@@ -11,7 +11,7 @@
 			<div class="maze-grid">
 				{#each floors as rows, y (y)}
 					{#each rows as cell, x (x)}
-						{@const { top, right, bottom, left, up, down } = cell}
+						{@const {top, right, bottom, left, up, down} = cell}
 						<div
 							class="cell"
 							class:wall-top={!top}

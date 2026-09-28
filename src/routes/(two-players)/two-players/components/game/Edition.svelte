@@ -1,6 +1,6 @@
 <script lang="ts">
-	import { asset } from "$app/paths";
-	import { ajout, traitEdition, validEdition, gameStarted$, backgroundColor$ } from "../../code";
+	import {asset} from "$app/paths";
+	import {ajout, traitEdition, validEdition, gameStarted$, backgroundColor$} from "../../code";
 	import Board from "./Board.svelte";
 </script>
 
