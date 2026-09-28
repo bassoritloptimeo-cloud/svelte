@@ -1,12 +1,12 @@
-import { describe, test, expect } from "vitest";
-import { addPoint, board$, formatBoard, level$, levelColor$ } from "./code.ts";
+import {describe, test, expect} from "vitest";
+import {addPoint, board$, formatBoard, level$, levelColor$} from "./code.ts";
 
 describe("addPoint", () => {
 	test("increments an empty cell to 1 for the current trait", async () => {
 		const board = [
 			[0, 0, 0],
 			[0, 0, 0],
-			[0, 0, 0]
+			[0, 0, 0],
 		];
 		await addPoint([[0, 1]], board, 1, false);
 
@@ -14,8 +14,8 @@ describe("addPoint", () => {
 			formatBoard([
 				[0, 0, 0],
 				[1, 0, 0],
-				[0, 0, 0]
-			])
+				[0, 0, 0],
+			]),
 		);
 	});
 
@@ -23,7 +23,7 @@ describe("addPoint", () => {
 		const board = [
 			[0, 0, 0],
 			[0, 0, 0],
-			[0, 0, 0]
+			[0, 0, 0],
 		];
 		await addPoint([[2, 0]], board, -1, false);
 
@@ -31,8 +31,8 @@ describe("addPoint", () => {
 			formatBoard([
 				[0, 0, -1],
 				[0, 0, 0],
-				[0, 0, 0]
-			])
+				[0, 0, 0],
+			]),
 		);
 	});
 
@@ -40,7 +40,7 @@ describe("addPoint", () => {
 		const board = [
 			[0, 0, 0],
 			[0, 3, 0],
-			[0, 0, 0]
+			[0, 0, 0],
 		];
 		await addPoint([[1, 1]], board, 1, false);
 
@@ -48,8 +48,8 @@ describe("addPoint", () => {
 			formatBoard([
 				[0, 1, 0],
 				[1, 0, 1],
-				[0, 1, 0]
-			])
+				[0, 1, 0],
+			]),
 		);
 	});
 
@@ -57,7 +57,7 @@ describe("addPoint", () => {
 		const board = [
 			[3, 0, 0],
 			[0, 0, 0],
-			[0, 0, 0]
+			[0, 0, 0],
 		];
 		await addPoint([[0, 0]], board, 1, false);
 
@@ -65,8 +65,8 @@ describe("addPoint", () => {
 			formatBoard([
 				[0, 1, 0],
 				[1, 0, 0],
-				[0, 0, 0]
-			])
+				[0, 0, 0],
+			]),
 		);
 	});
 
@@ -74,25 +74,25 @@ describe("addPoint", () => {
 		const board = [
 			[0, 0, 0],
 			[0, 0, 0],
-			[0, 0, 0]
+			[0, 0, 0],
 		];
 		await addPoint(
 			[
 				[1, 1],
 				[-1, 0],
-				[3, 3]
+				[3, 3],
 			],
 			board,
 			1,
-			false
+			false,
 		);
 
 		expect(formatBoard(board$())).toStrictEqual(
 			formatBoard([
 				[0, 0, 0],
 				[0, 1, 0],
-				[0, 0, 0]
-			])
+				[0, 0, 0],
+			]),
 		);
 	});
 
@@ -101,18 +101,18 @@ describe("addPoint", () => {
 			[0, 3, 0, 3],
 			[0, 0, 3, 0],
 			[0, 0, 0, 0],
-			[0, 0, 0, 0]
+			[0, 0, 0, 0],
 		];
 
 		await addPoint(
 			[
 				[1, 0],
 				[3, 0],
-				[2, 1]
+				[2, 1],
 			],
 			board,
 			1,
-			false
+			false,
 		);
 
 		expect(formatBoard(board$())).toStrictEqual(
@@ -120,8 +120,8 @@ describe("addPoint", () => {
 				[1, 0, 3, 0],
 				[0, 2, 0, 2],
 				[0, 0, 1, 0],
-				[0, 0, 0, 0]
-			])
+				[0, 0, 0, 0],
+			]),
 		);
 	});
 
@@ -131,7 +131,7 @@ describe("addPoint", () => {
 			[0, -3, -3, -3, 0],
 			[0, -3, 2, -3, 0],
 			[0, -3, -3, -3, 0],
-			[0, 0, 0, 0, 0]
+			[0, 0, 0, 0, 0],
 		];
 
 		await addPoint([[1, 2]], board, -1, false);
@@ -142,8 +142,8 @@ describe("addPoint", () => {
 				[-1, -1, -2, -1, -1],
 				[-1, -3, -1, 0, -1],
 				[-1, -1, -2, -1, -1],
-				[0, -1, -1, -1, 0]
-			])
+				[0, -1, -1, -1, 0],
+			]),
 		);
 	});
 });

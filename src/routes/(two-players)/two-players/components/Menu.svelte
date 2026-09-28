@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { asset } from "$app/paths";
+	import {asset} from "$app/paths";
 	import {
 		gridSize$,
 		player1$,
@@ -7,7 +7,7 @@
 		traitInit$,
 		traitInitText$,
 		startGame,
-		editing$
+		editing$,
 	} from "../code";
 	import StartDialog from "./StartDialog.svelte";
 

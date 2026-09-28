@@ -1,27 +1,27 @@
-import { describe, test, expect } from "vitest";
-import { donnerEvalFns, preCalculs } from "./game";
-import type { Coordonnees, Direction, Noeud } from "./game";
-import { createMinMax } from "$lib/game/alphaBetaWorker";
+import {describe, test, expect} from "vitest";
+import {donnerEvalFns, preCalculs} from "./game";
+import type {Coordonnees, Direction, Noeud} from "./game";
+import {createMinMax} from "$lib/game/alphaBetaWorker";
 
 const directions: readonly Direction[] = [
 	[-1, 0],
 	[0, -1],
 	[0, 1],
-	[1, 0]
+	[1, 0],
 ];
 
 // Version séquentielle (sans workers) de coupOrdinateur() dans code.ts
 function trouverMeilleurCoup(
 	noeud: Noeud,
 	tabEval: number[][],
-	profondeur: number
+	profondeur: number,
 ): Coordonnees | undefined {
-	const { donnerEnfants, evaluer, estFeuille, jouer } = donnerEvalFns(tabEval, directions);
+	const {donnerEnfants, evaluer, estFeuille, jouer} = donnerEvalFns(tabEval, directions);
 	const alphabeta = createMinMax<Coordonnees, Noeud>({
 		evaluate: evaluer,
 		isLeaf: estFeuille,
 		getChildren: donnerEnfants,
-		play: jouer
+		play: jouer,
 	});
 
 	const mustMaximize = noeud.trait === 1;
@@ -50,9 +50,9 @@ describe("Computer move", () => {
 			board: [
 				[-1, 0, 0],
 				[0, -3, 1],
-				[0, 0, 0]
+				[0, 0, 0],
 			],
-			trait: -1
+			trait: -1,
 		};
 
 		const coup = trouverMeilleurCoup(noeud, tabEval, 1);
@@ -66,9 +66,9 @@ describe("Computer move", () => {
 			board: [
 				[1, 0, 0],
 				[0, 3, -1],
-				[0, 0, 0]
+				[0, 0, 0],
 			],
-			trait: 1
+			trait: 1,
 		};
 
 		const coup = trouverMeilleurCoup(noeud, tabEval, 1);

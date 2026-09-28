@@ -1,6 +1,6 @@
-import { batch, writable } from "@amadeus-it-group/tansu";
-import { mazeFactory } from "./code.ts";
-import type { Cell, Direction } from "./types.ts";
+import {batch, writable} from "@amadeus-it-group/tansu";
+import {mazeFactory} from "./code.ts";
+import type {Cell, Direction} from "./types.ts";
 
 /**
  * Spécifie si le jeu a commencé
@@ -25,7 +25,7 @@ export function createMaze() {
 	// document.querySelector(".settings").style.display = "none";
 	// afficherTable();
 
-	const { player, t } = mazeFactory(floors$(), height$(), width$());
+	const {player, t} = mazeFactory(floors$(), height$(), width$());
 	batch(() => {
 		maze$.set(t);
 		player$.set(player);
@@ -41,7 +41,7 @@ const eventDirs: Record<string, EventDir> = {
 	ArrowUp: ["top", 0, -1, 0] as EventDir,
 	ArrowDown: ["bottom", 0, 1, 0] as EventDir,
 	PageUp: ["up", 1, 0, 0] as EventDir,
-	PageDown: ["down", -1, 0, 0] as EventDir
+	PageDown: ["down", -1, 0, 0] as EventDir,
 };
 
 export function newGame() {

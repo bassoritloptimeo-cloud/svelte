@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { onMount, tick } from "svelte";
+	import {onMount, tick} from "svelte";
 	import {
 		evaluationValid$,
 		findBestPlay,
@@ -8,7 +8,7 @@
 		negInfo$,
 		settings$,
 		showBestPlay$,
-		workersNumber$
+		workersNumber$,
 	} from "../code";
 
 	const options = [2, 4, 6, 8, 10, 12, 14, 16];
@@ -42,8 +42,8 @@
 			</div>
 			<div class="label_content">
 				<label>
-					<input class="mCoup" type="checkbox" name="case1" bind:checked={$showBestPlay$} />Montrer
-					le meilleur coup
+					<input class="mCoup" type="checkbox" name="case1" bind:checked={$showBestPlay$} />
+					Montrer le meilleur coup
 				</label>
 			</div>
 			<div class="label_content">

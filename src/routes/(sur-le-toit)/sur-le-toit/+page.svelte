@@ -7,7 +7,7 @@
 		createMaze,
 		onkeydown,
 		win$,
-		newGame
+		newGame,
 	} from "./state.store";
 	import Maze from "./Maze.svelte";
 

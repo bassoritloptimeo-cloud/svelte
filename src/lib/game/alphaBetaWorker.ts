@@ -14,21 +14,21 @@ export type MinMaxFunction<Node extends MinMaxNode> = (
 	depth: number,
 	alpha: number,
 	beta: number,
-	isMaximizingPlayer: boolean
+	isMaximizingPlayer: boolean,
 ) => number;
 
 export function createMinMax<Move, Node extends MinMaxNode>({
 	evaluate,
 	isLeaf,
 	getChildren,
-	play
+	play,
 }: MinMaxOptions<Move, Node>): MinMaxFunction<Node> {
 	return function alphabetaSequential(
 		node: Node,
 		depth: number,
 		alpha: number,
 		beta: number,
-		isMaximizingPlayer: boolean
+		isMaximizingPlayer: boolean,
 	): number {
 		if (depth === 0 || isLeaf(node)) {
 			return evaluate(node);

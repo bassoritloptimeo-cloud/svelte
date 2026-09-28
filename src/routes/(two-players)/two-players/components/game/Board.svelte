@@ -1,8 +1,8 @@
 <script lang="ts">
-	import { board$, gridSize$, trait$, editing$ } from "../../code";
+	import {board$, gridSize$, trait$, editing$} from "../../code";
 	import Cell from "./Cell.svelte";
 	const traitClass = $derived(
-		!editing$() ? ($trait$ === 1 ? "trait-player1" : "trait-player2") : ""
+		!editing$() ? ($trait$ === 1 ? "trait-player1" : "trait-player2") : "",
 	);
 </script>
 
