@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html lang="fr">
+
+<head>
+	<meta charset="utf-8" />
+	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+	<title>Frontier Outlaw - Interface du Jeu</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Domine:wght@400;700&amp;display=swap" rel="stylesheet" />
+	<script>
+		tailwind.config = {
+			theme: {
+				extend: {
+					fontFamily: {
+						'domine': ['Domine', 'serif'],
+					},
+					colors: {
+						frontier: {
+							surface: '#191300',
+							'surface-dim': '#191300',
+							'surface-bright': '#423918',
+							'surface-container-lowest': '#130e00',
+							'surface-container-low': '#221b01',
+							'surface-container': '#2c2203',
+							'surface-container-high': '#372b05',
+							'surface-container-highest': '#423918',
+							primary: '#dac479',
+							'on-primary': '#3b2f00',
+							'primary-container': '#554500',
+							'on-primary-container': '#f7e092',
+							secondary: '#cec6b4',
+							'on-secondary': '#343023',
+							'secondary-container': '#4b4638',
+							'on-secondary-container': '#eae1ce',
+							tertiary: '#a8d0b2',
+							'on-tertiary': '#133722',
+							'tertiary-container': '#2b4e37',
+							'on-tertiary-container': '#c4ecce',
+							error: '#ffb4ab',
+							'on-error': '#690005',
+							'error-container': '#93000a',
+							'on-error-container': '#ffdad6',
+							outline: '#979080',
+							'outline-variant': '#4c4639',
+							wood: '#3e2723',
+							leather: '#5d4037',
+						}
+					}
+				}
+			}
+		}
+	</script>
+	<style data-purpose="custom-scrollbar">
+		/* Custom scrollbar for event log */
+		.scrollbar-wood::-webkit-scrollbar {
+			width: 8px;
+		}
+
+		.scrollbar-wood::-webkit-scrollbar-track {
+			background: #2c2203;
+			border-radius: 4px;
+		}
+
+		.scrollbar-wood::-webkit-scrollbar-thumb {
+			background: #5d4037;
+			border-radius: 4px;
+		}
+
+		.scrollbar-wood::-webkit-scrollbar-thumb:hover {
+			background: #3e2723;
+		}
+	</style>
+	<style data-purpose="textures">
+		.bg-texture-wood {
+			background-color: #3e2723;
+			background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%232d1c19' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E");
+		}
+
+		.bg-texture-parchment {
+			background-color: #f7e092;
+			background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+		}
+	</style>
+</head>
+
+<body class="bg-frontier-surface text-frontier-secondary font-domine h-screen w-screen overflow-hidden flex">
+	<!-- BEGIN: Main Layout Split -->
+	<!-- LEFT PANEL: Game Board Area (65%) -->
+	<main
+		class="w-[65%] h-full p-4 relative bg-frontier-surface-container-lowest border-r-4 border-frontier-wood shadow-[inset_0_0_50px_rgba(0,0,0,0.8)] overflow-auto "
+		data-purpose="game-board-container">
+		<!-- Header -->
+		<!-- Game Board Image Container -->
+		<section
+			class="grow relative rounded-xl border-4 border-frontier-wood bg-black shadow-2xl flex items-center justify-center">
+			<img alt="Carte du jeu de plateau Wild West" class="max-w-full w-full"
+				src="./map.png" />
+		</section>
+	</main>
+	<!-- END: LEFT PANEL -->
+	<!-- RIGHT PANEL: Dashboard (35%) -->
+	<aside
+		class="w-[35%] h-full flex flex-col bg-frontier-surface bg-texture-wood p-4 gap-4 overflow-y-auto custom-scrollbar shadow-[-10px_0_20px_rgba(0,0,0,0.5)]"
+		data-purpose="dashboard-panel">
+		<!-- BEGIN: Movements Section -->
+		<header
+			class="flex justify-between items-center mb-4 shrink-0 bg-frontier-surface-container-high p-3 rounded-lg border border-frontier-outline-variant shadow-md">
+			<h1 class="text-2xl font-bold text-frontier-primary drop-shadow-md">Frontier Outlaw</h1>
+			<button
+				class="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-6 rounded-full shadow-[0_4px_0_#9a3412] active:shadow-[0_0px_0_#9a3412] active:translate-y-1 transition-all">
+				Commencer le jeu
+			</button>
+		</header>
+		<section
+			class="bg-frontier-surface-container p-4 rounded-lg border-2 border-frontier-leather shadow-inner shrink-0">
+			<h2
+				class="text-xl text-frontier-primary font-bold mb-3 border-b border-frontier-outline-variant pb-1 flex items-center gap-2">
+				<svg class="w-5 h-5 text-frontier-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M13 5l7 7-7 7M5 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+					</path>
+				</svg>
+				Mouvements
+			</h2>
+			<div class="grid grid-cols-2 gap-4">
+				<!-- Sheriff Moves -->
+				<div
+					class="bg-frontier-surface-container-highest p-3 rounded border border-frontier-outline-variant/50">
+					<h3 class="text-white font-bold mb-2 flex items-center gap-2">
+						<span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span>
+						Sherif
+					</h3>
+					<ul class="text-sm space-y-1 text-frontier-secondary font-mono">
+						<li>1. Grand pont en bois (à gauche)</li>
+						<li>2. Maison avec fleurs (en haut à gauche)</li>
+						<li>3. Épicerie (Grocery)</li>
+						<li>4. Diligence et cheval</li>
+					</ul>
+				</div>
+				<!-- Bandit Moves -->
+				<div
+					class="bg-frontier-surface-container-highest p-3 rounded border border-frontier-outline-variant/50">
+					<h3 class="text-red-400 font-bold mb-2 flex items-center gap-2">
+						<span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span>
+						Bandit
+					</h3>
+					<ul class="text-sm space-y-1 text-frontier-secondary font-mono">
+						<li>1. Bureau du Shérif (Sheriff Office)</li>
+						<li>2. Station (Gare)</li>
+						<li>3. Fontaine</li>
+						<li>4. Banque (Bank)</li>
+					</ul>
+				</div>
+			</div>
+		</section>
+		<!-- END: Movements Section -->
+		<!-- BEGIN: Inventory Section -->
+		<section
+			class="bg-frontier-surface-container p-4 rounded-lg border-2 border-frontier-leather shadow-inner grow flex flex-col overflow-hidden">
+			<h2
+				class="text-xl text-frontier-primary font-bold mb-3 border-b border-frontier-outline-variant pb-1 flex items-center gap-2">
+				<svg class="w-5 h-5 text-frontier-primary" fill="none" stroke="currentColor" viewbox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" stroke-linecap="round"
+						stroke-linejoin="round" stroke-width="2"></path>
+				</svg>
+				Inventaire
+			</h2>
+			<div class="grow overflow-y-auto scrollbar-wood grid grid-cols-2 gap-4">
+				<!-- Sheriff Inventory -->
+				<div>
+					<h3
+						class="text-white font-bold mb-2 text-center bg-frontier-surface-container-highest py-1 rounded">
+						Sherif</h3>
+					<table class="w-full text-sm text-left">
+						<tbody class="divide-y divide-frontier-outline-variant/30">
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Étoile</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Carnet</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Affiche</td>
+								<td class="py-1 text-right text-frontier-primary">2</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Marteau</td>
+								<td class="py-1 text-right text-frontier-primary">2</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Menottes</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Clé de coffre</td>
+								<td class="py-1 text-right text-frontier-primary">4</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Étoile localisée</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Copain du fils identifié</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1">Fils sous le pont</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<!-- Bandit Inventory -->
+				<div>
+					<h3
+						class="text-red-400 font-bold mb-2 text-center bg-frontier-surface-container-highest py-1 rounded">
+						Bandit</h3>
+					<table class="w-full text-sm text-left border-l border-frontier-outline-variant/30 pl-2">
+						<tbody class="divide-y divide-frontier-outline-variant/30">
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Crayon</td>
+								<td class="py-1 text-right text-frontier-primary">2</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Sac en toile</td>
+								<td class="py-1 text-right text-frontier-primary">3</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Couteau</td>
+								<td class="py-1 text-right text-frontier-primary">3</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Gourde</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Robe de pasteur</td>
+								<td class="py-1 text-right text-frontier-primary">3</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Clé</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Valise</td>
+								<td class="py-1 text-right text-frontier-primary">1</td>
+							</tr>
+							<tr class="hover:bg-frontier-surface-container-highest/50">
+								<td class="py-1 pl-2">Argent</td>
+								<td class="py-1 text-right text-frontier-primary">30</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+		<!-- END: Inventory Section -->
+		<!-- BEGIN: Event Log Section -->
+		<section
+			class="bg-black/80 p-4 rounded-lg border-2 border-frontier-outline-variant shadow-inner h-48 shrink-0 flex flex-col">
+			<h2
+				class="text-lg text-frontier-secondary font-bold mb-2 border-b border-frontier-outline-variant/50 pb-1 flex items-center gap-2 uppercase tracking-widest">
+				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"
+					xmlns="http://www.w3.org/2000/svg">
+					<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round" stroke-linejoin="round"
+						stroke-width="2"></path>
+				</svg>
+				Journal des Événements
+			</h2>
+			<div class="grow overflow-y-auto scrollbar-wood pr-2 space-y-2 font-mono text-sm">
+				<div class="text-green-400">
+					<span class="text-gray-500 mr-2">[10:05]</span>Le shérif sait où se trouve son étoile
+				</div>
+				<div class="text-green-400">
+					<span class="text-gray-500 mr-2">[10:07]</span>Le shérif récupère son étoile.
+				</div>
+				<div class="text-green-400">
+					<span class="text-gray-500 mr-2">[10:12]</span>Le bandit trouve une petite valise.
+				</div>
+				<!-- More logs can be added here -->
+			</div>
+		</section>
+		<!-- END: Event Log Section -->
+	</aside>
+	<!-- END: RIGHT PANEL -->
+</body>
+
+</html>
