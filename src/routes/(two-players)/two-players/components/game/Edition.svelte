@@ -1,15 +1,35 @@
 <script lang="ts">
 	import {asset} from "$app/paths";
-	import {ajout, traitEdition, validEdition, gameStarted$, backgroundColor$} from "../../code";
+	import {
+		ajout,
+		traitEdition,
+		validEdition,
+		gameStarted$,
+		computerEnemy$,
+		level$,
+		player1Name$,
+		player2Name$,
+	} from "../../code";
 	import Board from "./Board.svelte";
 </script>
 
-<div class={`play-container ${$backgroundColor$}`}>
-	<h2 class="niveau-ordi">(niveau ordi)</h2>
+<div class="play-container">
+	{#if $computerEnemy$}
+		<h2 class="niveau-ordi">Niveau de l'ordinateur: {$level$}</h2>
+	{/if}
 	<div class="bouton-principal">
 		<button onclick={() => validEdition()} class="valEdit">Valider l'édition</button>
 	</div>
-	<div class="legende"></div>
+	<div class="legende">
+		<h3>
+			<div class="player player1"></div>
+			{$player1Name$}
+		</h3>
+		<h3>
+			<div class="player player2"></div>
+			{$player2Name$}
+		</h3>
+	</div>
 	<div class="board-container">
 		<Board />
 	</div>
@@ -32,11 +52,25 @@
 </div>
 
 <style>
+	h3 {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 5px;
+	}
+
+	.player {
+		height: 15px;
+		width: 15px;
+		border-radius: 50%;
+		box-shadow: 2px 2px 5px 0 rgb(0 0 0 / 90%);
+	}
+
 	.player1 {
-		background-color: rgb(0 220 0);
+		background-color: rgb(0 180 0);
 	}
 
 	.player2 {
-		background-color: rgb(255 0 0);
+		background-color: rgb(180 0 0);
 	}
 </style>

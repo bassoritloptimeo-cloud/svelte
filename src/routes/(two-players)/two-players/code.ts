@@ -72,8 +72,10 @@ export const humanColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
+export const computerEnemy$ = writable(false);
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
+	computerEnemy$.set(false);
 	trait$.set(traitInit$() ?? (Math.random() < 0.5 ? -1 : 1));
 	firstTrait = trait$();
 	const board: number[][] = [];
@@ -256,6 +258,7 @@ export function commencerOrdi() {
 		player1$.set("Ordinateur");
 	}
 	startGame();
+	computerEnemy$.set(true);
 	if (trait$() === robotTrait) {
 		void computerMove();
 	}

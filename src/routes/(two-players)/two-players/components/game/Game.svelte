@@ -14,6 +14,7 @@
 		bestEvaluation$,
 		evaluationValid$,
 		setupKeyboard,
+		computerEnemy$,
 	} from "../../code";
 	import Board from "./Board.svelte";
 
@@ -23,7 +24,9 @@
 </script>
 
 <div class="play-container">
-	<h2 class="niveau-ordi">Niveau de l'ordinateur: {$level$}</h2>
+	{#if $computerEnemy$}
+		<h2 class="niveau-ordi">Niveau de l'ordinateur: {$level$}</h2>
+	{/if}
 	<div class="bouton-principal">
 		<button onclick={() => restartGame()} class="reinitialiser">Nouvelle partie</button>
 	</div>
@@ -83,10 +86,6 @@
 		align-items: center;
 		justify-content: center;
 		gap: 5px;
-	}
-
-	.legende {
-		margin-top: 15px;
 	}
 
 	.player {

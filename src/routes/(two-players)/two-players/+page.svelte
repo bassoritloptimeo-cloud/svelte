@@ -26,10 +26,10 @@
 
 <style>
 	.player1 {
-		background-color: rgb(0 220 0);
+		background: linear-gradient(to top, rgb(0 150 0) 0%, rgb(0 255 0) 100%);
 	}
 
 	.player2 {
-		background-color: rgb(255 0 0);
+		background: linear-gradient(to top, rgb(150 0 0) 0%, rgb(255 0 0) 100%);
 	}
 </style>
