@@ -76,7 +76,9 @@ export const computerEnemy$ = writable(false);
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
 	computerEnemy$.set(false);
+	stringURL.initBoard = "";
 	trait$.set(traitInit$() ?? (Math.random() < 0.5 ? -1 : 1));
+	stringURL.initTrait = trait$();
 	firstTrait = trait$();
 	const board: number[][] = [];
 	const gridSize = +gridSize$();
@@ -106,6 +108,12 @@ export function startGame() {
 	}
 	beginningBoard = structuredClone(board);
 	console.log("beginningBoard", beginningBoard);
+	for (const line of beginningBoard) {
+		for (const cell of line) {
+			stringURL.initBoard += cell + "";
+		}
+	}
+	console.log("stringURL", stringURL);
 	batch(() => {
 		board$.set(board);
 		gameStarted$.set(true);
@@ -223,6 +231,15 @@ export async function ajout(add: number) {
 }
 
 export function validEdition() {
+	stringURL.initBoard = "";
+	const board = board$();
+	for (const line of board) {
+		for (const cell of line) {
+			stringURL.initBoard += cell + "";
+		}
+	}
+	stringURL.initTrait = trait$();
+	console.log("stringURL", stringURL);
 	editing$.set(false);
 	if (trait$() === robotTrait) {
 		void computerMove();
@@ -532,4 +549,10 @@ export function setupKeyboard(): () => void {
 
 	document.addEventListener("keydown", onKeydown);
 	return () => document.removeEventListener("keydown", onKeydown);
+}
+
+
+const stringURL = {
+	initBoard: "",
+	initTrait: 1,
 }
