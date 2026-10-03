@@ -20,8 +20,11 @@ export const level$ = writable(5);
 export const settings$ = writable(false);
 export const gridSize$ = writable("5");
 export const board$ = writable(<number[][]>[]);
-export const trait$ = writable(<Trait>1);
+const initialBoard$ = writable(<number[][]>[]);
+
 export const traitInit$ = writable(<Trait | undefined>undefined);
+export const trait$ = writable(<Trait>1);
+const moves$ = writable(<number[][]>[]);
 export const lastPlay$ = writable(<Cell>{x: -1, y: -1});
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
@@ -62,6 +65,14 @@ export const levelColor$ = computed(() => {
 	}
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
+
+const paramString$ = computed(() => {
+	const trait = traitInit$();
+	const moves = moves$();
+	const initialBoard = initialBoard$();
+	let paramString = "";
+	return paramString;
+})
 
 export const humanColor$ = computed(() => {
 	const level = 10 - clamp(0, humanErrors$(), 10);
@@ -104,13 +115,12 @@ export function startGame() {
 		board[cell1[0]][cell1[1]] = 3 * factor;
 		board[cell2[0]][cell2[1]] = -3 * factor;
 	}
-	beginningBoard = structuredClone(board);
-	console.log("beginningBoard", beginningBoard);
+	initialBoard$.set(structuredClone(board));
 	batch(() => {
 		board$.set(board);
 		gameStarted$.set(true);
 	});
-	pointPlays = [];
+	moves$.set([]);
 }
 export function restartGame() {
 	startGame();
@@ -141,9 +151,12 @@ export async function clickCell(cell: {x: number; y: number}) {
 }
 
 async function playMove({x, y}: {x: number; y: number}) {
-	if (cursor === pointPlays.length) {
-		pointPlays.push([y, x]);
-		cursor = pointPlays.length;
+	if (cursor === moves$.length) {
+		moves$.update((moves) => {
+			moves.push([y, x]);
+			return moves;
+		})
+		cursor = moves$.length;
 	}
 	if (lastValidMove$()) {
 		lastPlay$.set({x, y});
@@ -472,33 +485,31 @@ export const computedSpeed$ = computed(() => {
 
 let addEditor: number = 0;
 let firstTrait: number = 1;
-let beginningBoard: number[][];
 let cursor: number = 0;
 let tabEval: number[][] = [];
 let robotTrait: Trait | undefined = undefined;
 let profondeur = 1;
 let robotPlaying = false;
-let pointPlays: number[][] = [];
 
 export function moveCursor(avance: number) {
 	// debugger;
 	cursor += avance;
 	if (cursor < 0) {
 		cursor = 0;
-	} else if (cursor > pointPlays.length) {
-		cursor = pointPlays.length;
+	} else if (cursor > moves$.length) {
+		cursor = moves$.length;
 	} else {
 		bestPlay$.set({x: -1, y: -1});
-		board$.set(structuredClone(beginningBoard));
-		console.log("board", board$(), beginningBoard);
+		board$.set(structuredClone(initialBoard$()));
 		let trait = firstTrait;
 		batch(() => {
+			const moves = moves$();
 			for (let i = 0; i < cursor; i++) {
-				const [y, x] = pointPlays[i];
+				const [y, x] = moves[i];
 				addPoint([[x, y]], board$(), trait, false);
 				trait = trait === 1 ? -1 : 1;
 			}
-			lastPlay$.set({y: pointPlays[cursor - 1][0], x: pointPlays[cursor - 1][1]});
+			lastPlay$.set({y: moves[cursor - 1][0], x: moves[cursor - 1][1]});
 		});
 		trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
 	}
@@ -506,14 +517,14 @@ export function moveCursor(avance: number) {
 }
 
 export const afterFirstPlay$ = computed(() => {
-	return pointPlays.length !== 0;
+	return moves$.length !== 0;
 });
 
 export function setupKeyboard(): () => void {
 	const onKeydown = (event: KeyboardEvent) => {
 		switch (event.key) {
 			case "ArrowUp":
-				moveCursor(pointPlays.length - cursor);
+				moveCursor(moves$.length - cursor);
 				break;
 
 			case "ArrowDown":
