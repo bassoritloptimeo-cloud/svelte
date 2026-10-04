@@ -66,13 +66,42 @@ export const levelColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
-const paramString$ = computed(() => {
-	const trait = traitInit$();
-	const moves = moves$();
+const initialBoardString$ = computed(() => {
+	let str = "";
 	const initialBoard = initialBoard$();
-	let paramString = "";
-	return paramString;
-})
+	for (const line of initialBoard) {
+		for (const cell of line) {
+			str += cell;
+		}
+	}
+	return str;
+});
+
+const movesString$ = computed(() => {
+	const moves = moves$();
+	let str = "";
+	for (const line of moves) {
+		for (const cell of line) {
+			str += cell;
+		}
+	}
+	return str;
+});
+
+export const paramString$ = computed(() => {
+	if (gameStarted$()) {
+		const paramString = `trait=${traitInit$()}&initialBoard=${initialBoardString$()}&moves=${movesString$()}`;
+		return paramString;
+	} else {
+		return "";
+	}
+});
+
+
+
+export function updateUrl(paramString: string) {
+	window.location.hash = paramString;
+}
 
 export const humanColor$ = computed(() => {
 	const level = 10 - clamp(0, humanErrors$(), 10);
@@ -83,44 +112,50 @@ export const humanColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
+export function initState() {
+	console.log("initState", window.location.hash);
+}
+
 export const computerEnemy$ = writable(false);
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
-	computerEnemy$.set(false);
-	trait$.set(traitInit$() ?? (Math.random() < 0.5 ? -1 : 1));
-	firstTrait = trait$();
-	const board: number[][] = [];
-	const gridSize = +gridSize$();
-	tabEval = preCalculs(gridSize);
-	for (let i = 0; i < gridSize; i++) {
-		const line: number[] = [];
-		board.push(line);
-		for (let j = 0; j < gridSize; j++) {
-			line.push(0);
-		}
-	}
-
-	if (!editing$()) {
-		const gridSizeMinusOne = gridSize - 1;
-		const cell1: [number, number] = [
-			randomNumber(0, gridSizeMinusOne),
-			randomNumber(0, gridSizeMinusOne),
-		];
-		// const cell1 = [2, 2];
-		let cell2: [number, number] = [...cell1];
-		while (distance(cell1, cell2) < distanceMin) {
-			cell2 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
-		}
-		const factor = randomNumber(0, 1) ? 1 : -1;
-		board[cell1[0]][cell1[1]] = 3 * factor;
-		board[cell2[0]][cell2[1]] = -3 * factor;
-	}
-	initialBoard$.set(structuredClone(board));
 	batch(() => {
+		computerEnemy$.set(false);
+		const trait = traitInit$() ?? (Math.random() < 0.5 ? -1 : 1);
+		trait$.set(trait);
+		traitInit$.set(trait);
+		firstTrait = trait$();
+		const board: number[][] = [];
+		const gridSize = +gridSize$();
+		tabEval = preCalculs(gridSize);
+		for (let i = 0; i < gridSize; i++) {
+			const line: number[] = [];
+			board.push(line);
+			for (let j = 0; j < gridSize; j++) {
+				line.push(0);
+			}
+		}
+
+		if (!editing$()) {
+			const gridSizeMinusOne = gridSize - 1;
+			const cell1: [number, number] = [
+				randomNumber(0, gridSizeMinusOne),
+				randomNumber(0, gridSizeMinusOne),
+			];
+			// const cell1 = [2, 2];
+			let cell2: [number, number] = [...cell1];
+			while (distance(cell1, cell2) < distanceMin) {
+				cell2 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
+			}
+			const factor = randomNumber(0, 1) ? 1 : -1;
+			board[cell1[0]][cell1[1]] = 3 * factor;
+			board[cell2[0]][cell2[1]] = -3 * factor;
+		}
+		initialBoard$.set(structuredClone(board));
 		board$.set(board);
 		gameStarted$.set(true);
+		moves$.set([]);
 	});
-	moves$.set([]);
 }
 export function restartGame() {
 	startGame();

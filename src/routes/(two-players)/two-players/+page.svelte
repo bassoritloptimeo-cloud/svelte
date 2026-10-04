@@ -1,5 +1,6 @@
 <script lang="ts">
-	import {settings$, backgroundColor$, gameStarted$, editing$} from "./code";
+	import { onMount } from "svelte";
+	import {settings$, backgroundColor$, gameStarted$, editing$, paramString$, updateUrl, initState} from "./code";
 
 	import Edition from "./components/game/Edition.svelte";
 	import Game from "./components/game/Game.svelte";
@@ -7,6 +8,12 @@
 	import SettingsDialog from "./components/SettingsDialog.svelte";
 
 	import "./styles.css";
+	
+	onMount(() => {
+		initState();
+		const unsubscribe = paramString$.subscribe(updateUrl);
+		return unsubscribe;
+	});
 </script>
 
 <div class={`plateau ${$backgroundColor$}`}>
