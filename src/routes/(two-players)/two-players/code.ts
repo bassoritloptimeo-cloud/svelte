@@ -113,10 +113,50 @@ export const humanColor$ = computed(() => {
 });
 
 export function initState() {
-	console.log("initState", window.location.hash);
+	const urlParams = window.location.hash;
+	const params = new URLSearchParams(urlParams.substring(1));
+	if (params.size) {
+		const trait = params.get("trait");
+		traitInit$.set(trait === "1" ? 1 : -1);
+		const initialBoard = ajustSign(params.get("initialBoard")!.split(""));
+		const tBoard = Math.sqrt(initialBoard.length);
+		const board = [];
+		for (let i = 0; i < tBoard; i++) {
+			const line: number[] = [];
+			for (let j = 0; j < tBoard; j++) {
+				line.push(initialBoard[i * tBoard + j]);
+			}
+			board.push(line);
+		}
+		console.warn("board", board);
+		
+		// const moves = params.get("moves")?.split("");
+	}
+}
+
+function ajustSign(array: string[]) {
+	const array2 = [];
+	let negation = false;
+	for (const element of array) {
+		if (negation) {
+			negation = false;
+			array2.push(+element * -1);
+		} else if (element !== "-") {
+			array2.push(+element);
+		} else {
+			negation = true;
+		}
+	}
+	return array2;
 }
 
 export const computerEnemy$ = writable(false);
+const isStartedWithUrl$ = computed(() => {
+	if (initialBoardString$()) {
+		return true;
+	}
+	return false;
+});
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
 	batch(() => {
