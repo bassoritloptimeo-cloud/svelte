@@ -151,7 +151,6 @@ function ajustSign(array: string[]) {
 }
 
 export const computerEnemy$ = writable(false);
-const isStartedWithUrl$ = computed(() => {
 	if (initialBoardString$()) {
 		return true;
 	}
