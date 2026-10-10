@@ -129,8 +129,15 @@ export function initState() {
 			board.push(line);
 		}
 		console.warn("board", board);
-		
-		// const moves = params.get("moves")?.split("");
+		/*
+		const movesStr = params.get("moves")!.split("");
+		const lengthMoves = movesStr.length;
+		const moves = [];
+		for (let i = 0; i < lengthMoves; i += 2) {
+			moves.push([movesStr[i], movesStr[i + 1]]);
+		}
+		console.log("moves", moves);
+		*/
 	}
 }
 
@@ -151,11 +158,6 @@ function ajustSign(array: string[]) {
 }
 
 export const computerEnemy$ = writable(false);
-	if (initialBoardString$()) {
-		return true;
-	}
-	return false;
-});
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
 	batch(() => {
@@ -567,11 +569,30 @@ let robotPlaying = false;
 
 export function moveCursor(avance: number) {
 	// debugger;
+	/*
+	// cursor = Math.min(Math.max(0, cursor + avance), moves$().length);
+	cursor = clamp(0, cursor + avance, moves$().length);
+	bestPlay$.set({x: -1, y: -1});
+	board$.set(structuredClone(initialBoard$()));
+	let trait = firstTrait;
+	batch(() => {
+	const moves = moves$();
+		for (let i = 0; i < cursor; i++) {
+			const [y, x] = moves[i];
+			addPoint([[x, y]], board$(), trait, false);
+			trait = trait === 1 ? -1 : 1;
+		}
+		console.log("moves", moves, cursor);
+		lastPlay$.set({y: moves[cursor][0], x: moves[cursor][1]});
+	});
+	trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
+	*/
+
 	cursor += avance;
 	if (cursor < 0) {
 		cursor = 0;
-	} else if (cursor > moves$.length) {
-		cursor = moves$.length;
+	} else if (cursor > moves$().length) {
+		cursor = moves$().length;
 	} else {
 		bestPlay$.set({x: -1, y: -1});
 		board$.set(structuredClone(initialBoard$()));
@@ -583,7 +604,8 @@ export function moveCursor(avance: number) {
 				addPoint([[x, y]], board$(), trait, false);
 				trait = trait === 1 ? -1 : 1;
 			}
-			lastPlay$.set({y: moves[cursor - 1][0], x: moves[cursor - 1][1]});
+			console.log("moves", moves, cursor);
+			lastPlay$.set({y: moves[cursor][0], x: moves[cursor][1]});
 		});
 		trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
 	}
@@ -598,7 +620,7 @@ export function setupKeyboard(): () => void {
 	const onKeydown = (event: KeyboardEvent) => {
 		switch (event.key) {
 			case "ArrowUp":
-				moveCursor(moves$.length - cursor);
+				moveCursor(moves$().length - cursor);
 				break;
 
 			case "ArrowDown":
