@@ -20,8 +20,11 @@ export const level$ = writable(5);
 export const settings$ = writable(false);
 export const gridSize$ = writable("5");
 export const board$ = writable(<number[][]>[]);
-export const trait$ = writable(<Trait>1);
+const initialBoard$ = writable(<number[][]>[]);
+
 export const traitInit$ = writable(<Trait | undefined>undefined);
+export const trait$ = writable(<Trait>1);
+const moves$ = writable(<number[][]>[]);
 export const lastPlay$ = writable(<Cell>{x: -1, y: -1});
 export const evaluationValid$ = writable(false);
 export const evaluation$ = writable(<undefined | number>undefined);
@@ -63,6 +66,41 @@ export const levelColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
+const initialBoardString$ = computed(() => {
+	let str = "";
+	const initialBoard = initialBoard$();
+	for (const line of initialBoard) {
+		for (const cell of line) {
+			str += cell;
+		}
+	}
+	return str;
+});
+
+const movesString$ = computed(() => {
+	const moves = moves$();
+	let str = "";
+	for (const line of moves) {
+		for (const cell of line) {
+			str += cell;
+		}
+	}
+	return str;
+});
+
+export const paramString$ = computed(() => {
+	if (gameStarted$()) {
+		const paramString = `trait=${traitInit$()}&initialBoard=${initialBoardString$()}&moves=${movesString$()}`;
+		return paramString;
+	} else {
+		return "";
+	}
+});
+
+export function updateUrl(paramString: string) {
+	window.location.hash = paramString;
+}
+
 export const humanColor$ = computed(() => {
 	const level = 10 - clamp(0, humanErrors$(), 10);
 	const color = [];
@@ -72,45 +110,107 @@ export const humanColor$ = computed(() => {
 	return `rgb(${color[0]}, ${color[1]}, ${color[2]})`;
 });
 
+export function initState() {
+	batch(() => {
+		const urlParams = window.location.hash;
+		const params = new URLSearchParams(urlParams.substring(1));
+		if (params.size) {
+			const trait = params.get("trait");
+			const initialBoard = ajustSign(params.get("initialBoard")!.split(""));
+			const tBoard = Math.sqrt(initialBoard.length);
+			const board = [];
+			for (let i = 0; i < tBoard; i++) {
+				const line: number[] = [];
+				for (let j = 0; j < tBoard; j++) {
+					line.push(initialBoard[i * tBoard + j]);
+				}
+				board.push(line);
+			}
+			console.warn("board", board);
+
+			const movesStr = params.get("moves")!.split("");
+			const lengthMoves = movesStr.length;
+			const moves = [];
+			for (let i = 0; i < lengthMoves; i += 2) {
+				moves.push([+movesStr[i], +movesStr[i + 1]]);
+			}
+			const traitValue = trait === "1" ? 1 : -1;
+			computerEnemy$.set(false);
+			traitInit$.set(traitValue);
+			initialBoard$.set(board);
+			moves$.set(moves);
+			board$.set(board);
+			gameStarted$.set(true);
+			trait$.set(traitValue);
+			tabEval = preCalculs(+gridSize$());
+			firstTrait = traitValue;
+			console.log("moves", moves$());
+
+			// Remplacer startGame par l'initialisation des stores
+			cursor = 0;
+			moveCursor(moves.length);
+		}
+	});
+}
+
+function ajustSign(array: string[]) {
+	const array2 = [];
+	let negation = false;
+	for (const element of array) {
+		if (negation) {
+			negation = false;
+			array2.push(+element * -1);
+		} else if (element !== "-") {
+			array2.push(+element);
+		} else {
+			negation = true;
+		}
+	}
+	return array2;
+}
+
 export const computerEnemy$ = writable(false);
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
-	computerEnemy$.set(false);
-	trait$.set(traitInit$() ?? (Math.random() < 0.5 ? -1 : 1));
-	firstTrait = trait$();
-	const board: number[][] = [];
-	const gridSize = +gridSize$();
-	tabEval = preCalculs(gridSize);
-	for (let i = 0; i < gridSize; i++) {
-		const line: number[] = [];
-		board.push(line);
-		for (let j = 0; j < gridSize; j++) {
-			line.push(0);
-		}
-	}
-
-	if (!editing$()) {
-		const gridSizeMinusOne = gridSize - 1;
-		const cell1: [number, number] = [
-			randomNumber(0, gridSizeMinusOne),
-			randomNumber(0, gridSizeMinusOne),
-		];
-		// const cell1 = [2, 2];
-		let cell2: [number, number] = [...cell1];
-		while (distance(cell1, cell2) < distanceMin) {
-			cell2 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
-		}
-		const factor = randomNumber(0, 1) ? 1 : -1;
-		board[cell1[0]][cell1[1]] = 3 * factor;
-		board[cell2[0]][cell2[1]] = -3 * factor;
-	}
-	beginningBoard = structuredClone(board);
-	console.log("beginningBoard", beginningBoard);
 	batch(() => {
+		computerEnemy$.set(false);
+		const trait = traitInit$() ?? (Math.random() < 0.5 ? -1 : 1);
+		trait$.set(trait!);
+		traitInit$.set(trait);
+		firstTrait = trait$();
+		let board: number[][] = [];
+		const gridSize = +gridSize$();
+		tabEval = preCalculs(gridSize);
+		for (let i = 0; i < gridSize; i++) {
+			const line: number[] = [];
+			board.push(line);
+			for (let j = 0; j < gridSize; j++) {
+				line.push(0);
+			}
+		}
+
+		if (!editing$()) {
+			const gridSizeMinusOne = gridSize - 1;
+			const cell1: [number, number] = [
+				randomNumber(0, gridSizeMinusOne),
+				randomNumber(0, gridSizeMinusOne),
+			];
+			// const cell1 = [2, 2];
+			let cell2: [number, number] = [...cell1];
+			while (distance(cell1, cell2) < distanceMin) {
+				cell2 = [randomNumber(0, gridSizeMinusOne), randomNumber(0, gridSizeMinusOne)];
+			}
+			const factor = randomNumber(0, 1) ? 1 : -1;
+			board[cell1[0]][cell1[1]] = 3 * factor;
+			board[cell2[0]][cell2[1]] = -3 * factor;
+		} else {
+			board = initialBoard$();
+		}
+		initialBoard$.set(structuredClone(board));
 		board$.set(board);
 		gameStarted$.set(true);
+		moves$.set([]);
 	});
-	pointPlays = [];
 }
 export function restartGame() {
 	startGame();
@@ -141,9 +241,12 @@ export async function clickCell(cell: {x: number; y: number}) {
 }
 
 async function playMove({x, y}: {x: number; y: number}) {
-	if (cursor === pointPlays.length) {
-		pointPlays.push([y, x]);
-		cursor = pointPlays.length;
+	if (cursor === moves$().length) {
+		moves$.update((moves) => {
+			moves.push([y, x]);
+			return moves;
+		});
+		cursor = moves$().length;
 	}
 	if (lastValidMove$()) {
 		lastPlay$.set({x, y});
@@ -472,33 +575,53 @@ export const computedSpeed$ = computed(() => {
 
 let addEditor: number = 0;
 let firstTrait: number = 1;
-let beginningBoard: number[][];
 let cursor: number = 0;
 let tabEval: number[][] = [];
 let robotTrait: Trait | undefined = undefined;
 let profondeur = 1;
 let robotPlaying = false;
-let pointPlays: number[][] = [];
 
 export function moveCursor(avance: number) {
 	// debugger;
+	/*
+	// cursor = Math.min(Math.max(0, cursor + avance), moves$().length);
+	cursor = clamp(0, cursor + avance, moves$().length);
+	bestPlay$.set({x: -1, y: -1});
+	board$.set(structuredClone(initialBoard$()));
+	let trait = firstTrait;
+	batch(() => {
+	const moves = moves$();
+		for (let i = 0; i < cursor; i++) {
+			const [y, x] = moves[i];
+			addPoint([[x, y]], board$(), trait, false);
+			trait = trait === 1 ? -1 : 1;
+		}
+		console.log("moves", moves, cursor);
+		lastPlay$.set({y: moves[cursor][0], x: moves[cursor][1]});
+	});
+	trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
+	*/
+
 	cursor += avance;
 	if (cursor < 0) {
 		cursor = 0;
-	} else if (cursor > pointPlays.length) {
-		cursor = pointPlays.length;
+	} else if (cursor > moves$().length) {
+		cursor = moves$().length - 1;
 	} else {
 		bestPlay$.set({x: -1, y: -1});
-		board$.set(structuredClone(beginningBoard));
-		console.log("board", board$(), beginningBoard);
+		board$.set(structuredClone(initialBoard$()));
 		let trait = firstTrait;
+		console.log("firstTrait", firstTrait);
 		batch(() => {
+			console.log("cursor", cursor);
+			const moves = moves$();
 			for (let i = 0; i < cursor; i++) {
-				const [y, x] = pointPlays[i];
+				const [y, x] = moves[i];
 				addPoint([[x, y]], board$(), trait, false);
 				trait = trait === 1 ? -1 : 1;
 			}
-			lastPlay$.set({y: pointPlays[cursor - 1][0], x: pointPlays[cursor - 1][1]});
+			console.log("moves", moves, cursor);
+			lastPlay$.set({y: moves[cursor - 1][0], x: moves[cursor - 1][1]});
 		});
 		trait$.set(firstTrait === 1 ? (cursor % 2 === 0 ? 1 : -1) : cursor % 2 === 0 ? -1 : 1);
 	}
@@ -506,14 +629,14 @@ export function moveCursor(avance: number) {
 }
 
 export const afterFirstPlay$ = computed(() => {
-	return pointPlays.length !== 0;
+	return moves$.length !== 0;
 });
 
 export function setupKeyboard(): () => void {
 	const onKeydown = (event: KeyboardEvent) => {
 		switch (event.key) {
 			case "ArrowUp":
-				moveCursor(pointPlays.length - cursor);
+				moveCursor(moves$().length - cursor);
 				break;
 
 			case "ArrowDown":
