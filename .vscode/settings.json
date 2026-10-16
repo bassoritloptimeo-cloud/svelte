@@ -9,6 +9,10 @@
 	"files.associations": {
 		"*.css": "tailwindcss"
 	},
+	"git-graph.dialog.merge.noFastForward": false,
+	"git-graph.openToTheRepoOfTheActiveTextEditorDocument": true,
+	"git.pullBeforeCheckout": true,
+	"git-graph.dialog.createBranch.checkOut": true,
 	"search.useIgnoreFiles": false,
 	"quickConsoleLog.logMessagePrefix": "🔴 (DEBUG) ",
 	"quickConsoleLog.quote": "`"
