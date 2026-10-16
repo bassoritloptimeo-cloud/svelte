@@ -3,6 +3,7 @@
 	"private": true,
 	"version": "0.0.1",
 	"type": "module",
+	"packageManager": "npm@11.19.0",
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
@@ -57,5 +58,8 @@
 		"typescript-eslint": "^8.60.1",
 		"vite": "^8.0.16",
 		"vitest": "^5.0.3"
+	},
+	"overrides": {
+		"@vitest/browser-playwright": "$@vitest/browser-playwright"
 	}
 }
