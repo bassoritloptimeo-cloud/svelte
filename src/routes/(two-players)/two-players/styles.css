@@ -50,14 +50,6 @@ button {
 	padding: 0;
 }
 
-.legende {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
-	height: 50px;
-}
-
 .menu {
 	display: flex;
 	flex-direction: column;
