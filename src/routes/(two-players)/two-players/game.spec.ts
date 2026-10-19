@@ -76,3 +76,35 @@ describe("Computer move", () => {
 		expect(coup).toEqual([1, 1]);
 	});
 });
+
+describe("preCalculs", () => {
+	test("preCalcul with 5", () => {
+		const tabEval = preCalculs(5);
+		expect(tabEval).toStrictEqual([
+			[ 0.8, 1.4, 1.6, 1.4, 0.8 ],
+			[ 1.4, 2.2, 2.6, 2.2, 1.4 ],
+			[ 1.6, 2.6, 3.6, 2.6, 1.6 ],
+			[ 1.4, 2.2, 2.6, 2.2, 1.4 ],
+			[ 0.8, 1.4, 1.6, 1.4, 0.8 ]
+		]);
+	});
+});
+
+describe("evaluer", () => {
+
+	test("negative eval", () => {
+		const board = [
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, -3, 0, 0],
+			[0, 0, 0, 0, 0],
+			[0, 0, 0, 0, 1],
+		];
+		const tabEval = preCalculs(5);
+		const {evaluer} = donnerEvalFns(tabEval, directions);
+		const evaluation = evaluer({board, trait: 1})
+		expect(evaluation).toBe(-10);
+	});
+
+
+});

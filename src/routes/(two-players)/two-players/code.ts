@@ -111,9 +111,12 @@ export const humanColor$ = computed(() => {
 });
 
 export function initState() {
+	initFromString(window.location.hash.substring(1));
+};
+
+export function initFromString(url: string) {
 	batch(() => {
-		const urlParams = window.location.hash;
-		const params = new URLSearchParams(urlParams.substring(1));
+		const params = new URLSearchParams(url);
 		if (params.size) {
 			const trait = params.get("trait");
 			const initialBoard = ajustSign(params.get("initialBoard")!.split(""));
@@ -261,7 +264,7 @@ async function playMove({x, y}: {x: number; y: number}) {
 	trait$.set(trait === 1 ? -1 : 1);
 }
 
-const directions = [
+export const directions = [
 	[-1, 0],
 	[0, -1],
 	[0, 1],
@@ -331,10 +334,12 @@ export async function ajout(add: number) {
 }
 
 export function validEdition() {
-	editing$.set(false);
-	if (trait$() === robotTrait) {
-		void computerMove();
-	}
+	batch(() => {
+		editing$.set(false);
+		if (trait$() === robotTrait) {
+			void computerMove();
+		}
+	});
 }
 export function vsOrdi() {}
 
