@@ -169,6 +169,9 @@ function ajustSign(array: string[]) {
 	return array2;
 }
 
+/**
+ * true when playing against the computer
+ */
 export const computerEnemy$ = writable(false);
 const distanceMin = 2 * Math.sqrt(2);
 export function startGame() {
@@ -208,11 +211,13 @@ export function startGame() {
 		}
 		initialBoard$.set(structuredClone(board));
 		board$.set(board);
-		gameStarted$.set(true);
 		moves$.set([]);
+		gameStarted$.set(true);
 	});
 }
 export function restartGame() {
+	traitInit$.set(undefined);
+	cursor = 0;
 	startGame();
 }
 
