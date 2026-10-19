@@ -102,7 +102,7 @@ describe("evaluer", () => {
 		];
 		const tabEval = preCalculs(5);
 		const {evaluer} = donnerEvalFns(tabEval, directions);
-		const evaluation = evaluer({board, trait: 1})
+		const evaluation = evaluer({board, trait: 1});
 		expect(evaluation).toBe(-10);
 	});
 
