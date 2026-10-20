@@ -1,10 +1,5 @@
-<script>
-
+<script lang="ts">
+	import Board from "./components/Board.svelte";
 </script>
 
-
-<p>Othello</p>
-
-<style>
-
-</style>
+<Board />
