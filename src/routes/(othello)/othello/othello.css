@@ -1,0 +1,10 @@
+:root {
+	--line-gap: 2px;
+	--board-size: 400px;
+	--pawn-size: 80%;
+	--color-cell: rgb(37, 184, 37);
+	--color-white: white;
+	--color-black: black;
+	--color-inter-cell: white;
+	
+}

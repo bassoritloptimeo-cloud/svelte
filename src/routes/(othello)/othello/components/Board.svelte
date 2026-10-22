@@ -17,8 +17,9 @@
 		display: grid;
 		grid-template-columns: repeat(8, 1fr);
 		grid-template-rows: repeat(8, 1fr);
-		width: 400px;
+		width: calc(var(--board-size) + 7 * var(--line-gap));
 		aspect-ratio: 1 / 1;
+		gap: var(--line-gap);
 	}
 
 </style>
