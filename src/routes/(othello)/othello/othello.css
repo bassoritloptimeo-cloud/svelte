@@ -1,10 +1,11 @@
 :root {
 	--line-gap: 2px;
-	--board-size: 400px;
+	--board-size: min(50vw, 80vh);
 	--pawn-size: 80%;
-	--color-cell: rgb(37, 184, 37);
+	--header-size: 35px;
+	--color-cell: rgb(50, 156, 68);
+	--color-cell-header: rgb(148, 66, 36);
 	--color-white: white;
 	--color-black: black;
 	--color-inter-cell: white;
-	
 }
