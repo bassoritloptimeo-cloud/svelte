@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { board$, canMove, directions, returnedPawns } from "./code.ts";
+import { board$, canMove, directions, playableCells, returnedPawns, reversedPanws } from "./code.ts";
 
 
 function initialBoard() {
@@ -27,6 +27,7 @@ function edgeBoard() {
 		[0, 0, 0, 0, 0, 0, 0, 0],
 	]
 }
+
 
 describe("Board @othello", () => {
 	test("initial board", () => {
@@ -63,4 +64,12 @@ describe("Returned pawns @othello", () => {
 		expect(returnedPawns(board, -1, [0, 2], [-1, 0])).toStrictEqual([]);
 	});
 	
+});
+
+describe("All playable cells @othello", () => {
+	test("playableCells", () => {
+		const board = initialBoard();
+	
+		expect(playableCells(board, -1).length, "test a valid cell").toBe(4);
+	});
 });

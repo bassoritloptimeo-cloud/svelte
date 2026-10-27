@@ -83,18 +83,37 @@ export function returnedPawns(board: Board, trait: Trait, initialCell: Move, dir
 }
 
 export function canMove(board: Board, trait: Trait, move: Move): boolean {
-	for (const direction of directions) {
-		if (returnedPawns(board, trait, move, direction).length) {
-			return true;
+	if (!board[move[0]][move[1]]) {
+		for (const direction of directions) {
+			if (returnedPawns(board, trait, move, direction).length) {
+				return true;
+			}
 		}
 	}
 	return false;
 }
 
-export function playableCells() {
-
+export function playableCells(board: Board, trait: Trait) {
+	const returnedCells = [];
+	for (let i = 0; i < 7; i++) {
+		for (let j = 0; j < 7; j++) {
+			if (canMove(board, trait, [i, j])) {
+				returnedCells.push([i, j]);
+			}
+		}
+	}
+	return returnedCells;
 }
 
-export function reversedPanws() {
+export function reversedPanws(board: Board, trait: Trait, initialCell: Move): Board {
+	const reverseBoard: Board = structuredClone(board);
+	const toReturn: Move[][] = [];
+	for (const direction of directions) {
+		toReturn.push(returnedPawns(board, trait, initialCell, direction));
+	}
 
+	for (const cell of toReturn) {
+		reverseBoard[cell[0]][cell[1]] *= -1;
+	}
+	return reverseBoard;
 }
