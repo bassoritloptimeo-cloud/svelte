@@ -1,5 +1,5 @@
 import { describe, expect, test } from "vitest";
-import { board$, canMove, directions, playableCells, returnedPawns, reversedPanws } from "./code.ts";
+import { board$, canMove, directions, playableCells, returnedPawns } from "./code.ts";
 
 
 function initialBoard() {
