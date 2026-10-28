@@ -5,7 +5,7 @@ interface Cell {
 	y: number
 }
 
-type Board = number[][];
+export type Board = number[][];
 type Direction = [number, number];
 type Move = [number, number];
 
@@ -115,8 +115,8 @@ export function canMove(board: Board, trait: number, move: Move): boolean {
 
 export function playableCells(board: Board, trait: number) {
 	const returnedCells = [];
-	for (let i = 0; i < 7; i++) {
-		for (let j = 0; j < 7; j++) {
+	for (let i = 0; i < 8; i++) {
+		for (let j = 0; j < 8; j++) {
 			const cell: Move = [i, j];
 			if (canMove(board, trait, cell)) {
 				returnedCells.push(cell);
@@ -160,4 +160,7 @@ export function onCellClick(y: number, x: number) {
 		board$.set(playMove(board$(), trait$(), [y, x]));
 		trait$.update((trait) => trait * -1);
 	});
+	if (!playableCells$().length) {
+		trait$.update((trait) => trait * -1);
+	}
 }
