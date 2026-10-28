@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { onCellClick, playableCellsStr$ } from "../code";
+
 	interface Props {
 		value: number;
 		x: number;
@@ -6,13 +8,19 @@
 	}
 
 	const {value, x, y}: Props = $props();
+	let isPlayable = $derived($playableCellsStr$.includes(`${y}${x}`))
 
 	function onclick() {
+		
+		if (isPlayable) {
+			onCellClick(y, x);
+		}
+		
 		console.log(`🔴 (DEBUG) [Cell.svelte:10]: onclick: `, x, y);
 	}
 </script>
 
-<button {onclick}>
+<button class:playable={isPlayable} {onclick}>
 	{#if value}
 		<div class="pawn" class:white={value === 1} class:black={value === -1}></div>
 	{/if}
@@ -23,6 +31,13 @@
 		all: unset;
 		position: relative;
 		background-color: var(--color-cell);
+		pointer-events: none;
+		
+		&.playable {
+			pointer-events: all;
+			cursor: pointer;
+		}
+
 	}
 
 	.pawn {

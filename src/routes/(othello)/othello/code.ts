@@ -1,4 +1,4 @@
-import { writable } from "@amadeus-it-group/tansu";
+import { batch, computed, writable } from "@amadeus-it-group/tansu";
 
 interface Cell {
 	x: number
@@ -6,7 +6,6 @@ interface Cell {
 }
 
 type Board = number[][];
-type Trait = 1 | -1;
 type Direction = [number, number];
 type Move = [number, number];
 
@@ -45,7 +44,9 @@ export const directions: Direction[] = [
 	[1, -1],
 	[1, 0],
 	[1, 1],
-]
+];
+
+
 
 // ------------------------------------------
 // writable
@@ -56,16 +57,35 @@ export const board$ = writable(createBoard({
 	black: [{x: 3, y: 4}, {x: 4, y: 3}],
 }));
 
+export const trait$ = writable(-1);
+
 // ------------------------------------------
 // computed
 // ------------------------------------------
+
+
+
+export const playableCells$ = computed(() => {
+	const board = board$();
+	const trait = trait$();
+	return playableCells(board, trait);
+});
+
+	
+export const playableCellsStr$ = computed(() => {
+	const cellsStr = []
+	for (const playableCell of playableCells$()) {
+		cellsStr.push(playableCell.join(""));
+	}
+	return cellsStr.join(",");
+});
 
 
 // ------------------------------------------
 // API
 // ------------------------------------------
 
-export function returnedPawns(board: Board, trait: Trait, initialCell: Move, direction: Direction) {
+export function returnedPawns(board: Board, trait: number, initialCell: Move, direction: Direction) {
 	const returnedCells: Move[] = [];
 	const opponent = trait * -1;
 	const [dy, dx] = direction;
@@ -82,7 +102,7 @@ export function returnedPawns(board: Board, trait: Trait, initialCell: Move, dir
 	
 }
 
-export function canMove(board: Board, trait: Trait, move: Move): boolean {
+export function canMove(board: Board, trait: number, move: Move): boolean {
 	if (!board[move[0]][move[1]]) {
 		for (const direction of directions) {
 			if (returnedPawns(board, trait, move, direction).length) {
@@ -93,27 +113,51 @@ export function canMove(board: Board, trait: Trait, move: Move): boolean {
 	return false;
 }
 
-export function playableCells(board: Board, trait: Trait) {
+export function playableCells(board: Board, trait: number) {
 	const returnedCells = [];
 	for (let i = 0; i < 7; i++) {
 		for (let j = 0; j < 7; j++) {
-			if (canMove(board, trait, [i, j])) {
-				returnedCells.push([i, j]);
+			const cell: Move = [i, j];
+			if (canMove(board, trait, cell)) {
+				returnedCells.push(cell);
 			}
 		}
 	}
 	return returnedCells;
 }
 
-export function reversedPanws(board: Board, trait: Trait, initialCell: Move): Board {
+export function reversedPanws(board: Board, trait: number, initialCell: Move): Board {
 	const reverseBoard: Board = structuredClone(board);
-	const toReturn: Move[][] = [];
 	for (const direction of directions) {
-		toReturn.push(returnedPawns(board, trait, initialCell, direction));
+		const toReturn = returnedPawns(board, trait, initialCell, direction);
+		for (const cell of toReturn) {
+			reverseBoard[cell[0]][cell[1]] = trait;
+		}
 	}
 
-	for (const cell of toReturn) {
-		reverseBoard[cell[0]][cell[1]] *= -1;
-	}
 	return reverseBoard;
+}
+
+export function playMove(board: Board, trait: number, move: Move) {
+	const newBoard = structuredClone(board);
+	newBoard[move[0]][move[1]] = trait;
+	for (const direction of directions) {
+		const toReturns = returnedPawns(newBoard, trait, move, direction);
+		for (const toReturn of toReturns) {
+			newBoard[toReturn[0]][toReturn[1]] = trait;
+		}
+	}
+	console.log("trait", trait);
+	return newBoard;
+}
+
+// ------------------------------------------
+// Actions
+// ------------------------------------------
+
+export function onCellClick(y: number, x: number) {
+	batch(() => {
+		board$.set(playMove(board$(), trait$(), [y, x]));
+		trait$.update((trait) => trait * -1);
+	});
 }
