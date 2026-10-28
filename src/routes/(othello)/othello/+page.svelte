@@ -17,7 +17,7 @@
 
 	.panel {
 		height: calc(var(--board-size) + 7 * var(--line-gap));
-		background-color: rgb(200, 51, 51);
+		background-color: rgb(200, 50, 50);
 	}
 
 	.board-parent {
