@@ -21,6 +21,7 @@ Two independent games, each fully self-contained under a route group (groups onl
 
 - `src/routes/(sherif)/sherif/` — "Shérif et bandit" board game (URL `/sherif`). Game data + grid live in `data.ts`, logic in `state.store.ts`, types in `types.ts`.
 - `src/routes/(sur-le-toit)/sur-le-toit/` — 3D maze game (URL `/sur-le-toit`).
+- `src/routes/(othello)/othello/` — Othello board game (URL `/othello`). Game logic in `code.ts`, tests in `code.spec.ts`.
 
 ## Conventions
 

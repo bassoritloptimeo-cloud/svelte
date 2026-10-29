@@ -1,25 +1,21 @@
 <script lang="ts">
 	import Board from "./components/Board.svelte";
-	import { trait$ } from "./code";
 	import "./othello.css";
+	import Panel from "./Panel.svelte";
 </script>
 
 
 <div class="board-parent">
-	<div class="panel">
-		<div class={`trait ${$trait$ === 1 ? "white": "black"}`}></div>
+	<div class="left">
+		<Panel />
 	</div>
-	<Board />
-	<div></div>
+	<div>
+		<Board />
+	</div>
+	<div class="right"></div>
 </div>
 
 <style>
-
-	.panel {
-		height: calc(var(--board-size) + 7 * var(--line-gap));
-		background-color: rgb(200, 50, 50);
-	}
-
 	.board-parent {
 		display: grid;
 		grid-template-columns: 1fr auto 1fr;
@@ -30,17 +26,10 @@
     	height: 100vh;
 	}
 
-	.trait {
-		width: 1vw;
-		aspect-ratio: 1 / 1;
-		border-radius: 50%;
+	.left {
+		display: flex;
+		justify-content: right;
+		padding-right: 1rem;
 	}
 
-	.white {
-		background-color: rgb(255, 255, 255, 1);
-	}
-
-	.black {
-		background-color: rgb(0, 0, 0, 1);
-	}
 </style>

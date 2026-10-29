@@ -5,6 +5,7 @@ interface Cell {
 	y: number
 }
 
+
 export type Board = number[][];
 type Direction = [number, number];
 type Move = [number, number];
@@ -63,14 +64,30 @@ export const trait$ = writable(-1);
 // computed
 // ------------------------------------------
 
-
+export const state$ = computed(() => {
+	const board = board$();
+	const trait = trait$();
+	let nbWhite = 0;
+	let nbBlack = 0;
+	for (const line of board) {
+		for (const cell of line) {
+			if (cell) {
+				if (cell === 1) {
+					nbWhite++;
+				} else {
+					nbBlack++;
+				}
+			}
+		}
+	}
+	return {trait, nbWhite, nbBlack};
+});
 
 export const playableCells$ = computed(() => {
 	const board = board$();
 	const trait = trait$();
 	return playableCells(board, trait);
 });
-
 	
 export const playableCellsStr$ = computed(() => {
 	const cellsStr = []
@@ -163,4 +180,5 @@ export function onCellClick(y: number, x: number) {
 	if (!playableCells$().length) {
 		trait$.update((trait) => trait * -1);
 	}
+	console.log("state", state$().trait, state$().nbWhite, state$().nbBlack);
 }
