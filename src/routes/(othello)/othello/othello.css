@@ -1,5 +1,6 @@
 :root {
-	--line-gap: 2px;
+	--border-board: 4px;
+	--border-cell: 1px;
 	--board-size: min(50vw, 80vh);
 	--pawn-size: 80%;
 	--header-size: 35px;
