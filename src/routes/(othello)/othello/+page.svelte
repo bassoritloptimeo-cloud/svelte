@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Board from "./components/Board.svelte";
 	import "./othello.css";
-	import Panel from "./Panel.svelte";
+	import Panel from "./components/Panel.svelte";
 </script>
 
 <div class="board-parent">

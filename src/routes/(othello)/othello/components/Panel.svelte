@@ -1,5 +1,5 @@
 <script>
-	import {state$} from "./code";
+	import {state$} from "../code";
 
 	const {trait} = $derived($state$);
 </script>
