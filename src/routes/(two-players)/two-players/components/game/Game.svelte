@@ -63,12 +63,13 @@
 	<div class="retour">
 		<button onclick={() => ($gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
-			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu" />
+
+			<img class="icone" src={asset("two-players/retour.svg")} width="20px" alt="Retour au menu" />
 		</button>
 	</div>
 	<div class="fleches">
-		<button onclick={() => moveCursor(-1)} class="move">&#8592;</button>
-		<button onclick={() => moveCursor(1)} class="move">&#8594;</button>
+		<button onclick={() => moveCursor(-1)} class="move">←</button>
+		<button onclick={() => moveCursor(1)} class="move">→</button>
 	</div>
 	<button
 		class="menu_content"
@@ -76,7 +77,7 @@
 			settings$.set(true);
 		}}
 	>
-		<img class="icone" src={asset("/two-players/menu.svg")} width="50px" alt="Menu" />
+		<img class="icone" src={asset("two-players/menu.svg")} width="50px" alt="Menu" />
 	</button>
 </div>
 

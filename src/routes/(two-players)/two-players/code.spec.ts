@@ -1,5 +1,5 @@
-import { describe, expect, test } from "vitest";
-import { addPoint, board$, formatBoard, level$, levelColor$ } from "./code.ts";
+import {describe, expect, test} from "vitest";
+import {addPoint, board$, formatBoard, level$, levelColor$} from "./code.ts";
 
 describe("addPoint", () => {
 	test("increments an empty cell to 1 for the current trait", async () => {

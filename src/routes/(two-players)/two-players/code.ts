@@ -1,6 +1,6 @@
 import {batch, computed, writable} from "@amadeus-it-group/tansu";
 import type {Cell, Trait} from "./types";
-import {randomNumber, distance, wait, clamp} from "$lib/game/utils";
+import {randomNumber, distance, wait, clamp} from "#lib/game/utils.js";
 import {donnerEvalFns, preCalculs} from "./game.ts";
 import type {Coordonnees, Direction, Noeud} from "./game.ts";
 
@@ -112,7 +112,7 @@ export const humanColor$ = computed(() => {
 
 export function initState() {
 	initFromString(window.location.hash.substring(1));
-};
+}
 
 export function initFromString(url: string) {
 	batch(() => {

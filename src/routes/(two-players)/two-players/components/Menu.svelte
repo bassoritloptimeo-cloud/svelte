@@ -24,7 +24,8 @@
 		<button onclick={() => startComputerGame()} class="vsOrdi">Jouer contre l'ordinateur</button>
 	</div>
 	<div class="parametres">
-		<img class="icone" src={asset("/two-players/gear.svg")} width="40px" alt="gear icon" />
+		<img class="icone" src={asset("two-players/gear.svg")} width="40px" alt="gear icon" />
+
 		<br />
 		<label for="grid-size-select">Taille de la grille :</label>
 		<select id="grid-size-select" bind:value={$gridSize$}>
@@ -52,7 +53,9 @@
 		<h3>Choisir le trait</h3>
 		<div class="beginner">
 			<button class="trait_joueur1" onclick={() => ($traitInit$ = 1)}>Trait au vert</button>
+
 			<button class="alea_trait" onclick={() => ($traitInit$ = undefined)}>Trait aléatoire</button>
+
 			<button class="trait_joueur2" onclick={() => ($traitInit$ = -1)}>Trait au rouge</button>
 		</div>
 		<div class="beginner">
