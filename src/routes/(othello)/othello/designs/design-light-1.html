@@ -1,528 +1,669 @@
-<!DOCTYPE html>
+<!doctype html>
 
 <html lang="fr">
-
-<head>
-	<meta charset="utf-8" />
-	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
-	<title>Othello Grandmaster - Jeu Officiel Reversi</title>
-	<!-- Tailwind CSS CDN avec extensions nécessaires -->
-	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-	<!-- Configuration Google Fonts pour élégance classique et modernité -->
-	<link href="https://fonts.googleapis.com" rel="preconnect" />
-	<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
-	<link
-		href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap"
-		rel="stylesheet" />
-	<!-- Tailwind Custom Configuration -->
-	<script>
-		tailwind.config = {
-			theme: {
-				extend: {
-					fontFamily: {
-						serif: ['Cinzel', 'serif'],
-						sans: ['Inter', 'sans-serif'],
-						mono: ['Space Grotesk', 'monospace'],
+	<head>
+		<meta charset="utf-8" />
+		<meta content="width=device-width, initial-scale=1.0" name="viewport" />
+		<title>Othello Grandmaster - Jeu Officiel Reversi</title>
+		<!-- Tailwind CSS CDN avec extensions nécessaires -->
+		<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+		<!-- Configuration Google Fonts pour élégance classique et modernité -->
+		<link href="https://fonts.googleapis.com" rel="preconnect" />
+		<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&amp;family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Manrope:wght@500;600;700;800&amp;display=swap"
+			rel="stylesheet"
+		/>
+		<!-- Tailwind Custom Configuration -->
+		<script>
+			tailwind.config = {
+				theme: {
+					extend: {
+						fontFamily: {
+							serif: ["Cinzel", "serif"],
+							sans: ["Inter", "sans-serif"],
+							mono: ["Space Grotesk", "monospace"],
+						},
+						colors: {
+							linen: {
+								50: "#faf9f6",
+								100: "#f4f3ef",
+								200: "#ebe8e1",
+								300: "#e2ded6",
+								400: "#cfc9be",
+							},
+							oak: {
+								100: "#f5eee6",
+								300: "#ddc2a3",
+								400: "#c29668",
+								500: "#b38555",
+								700: "#754b23",
+								800: "#5c3b1e",
+								900: "#3e2410",
+							},
+							felt: {
+								500: "#1b7c46",
+								600: "#157342",
+								700: "#125f37",
+								800: "#0e4a2b",
+							},
+						},
 					},
-					colors: {
-						linen: {
-							50: '#faf9f6',
-							100: '#f4f3ef',
-							200: '#ebe8e1',
-							300: '#e2ded6',
-							400: '#cfc9be',
-						},
-						oak: {
-							100: '#f5eee6',
-							300: '#ddc2a3',
-							400: '#c29668',
-							500: '#b38555',
-							700: '#754b23',
-							800: '#5c3b1e',
-							900: '#3e2410',
-						},
-						felt: {
-							500: '#1b7c46',
-							600: '#157342',
-							700: '#125f37',
-							800: '#0e4a2b',
-						}
-					}
-				}
+				},
+			};
+		</script>
+		<!-- BEGIN: Custom Styles - Plateau & Pions 3D Réalistes & Thème Clair -->
+		<style data-purpose="textures-and-elevation">
+			/* Fond feutrine vert tournoi officiel texturé avec dégradé subtil */
+			.othello-felt-bg {
+				background: radial-gradient(circle at 48% 45%, #198049 0%, #157342 55%, #105933 100%);
+				box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
 			}
-		}
-	</script>
-	<!-- BEGIN: Custom Styles - Plateau & Pions 3D Réalistes & Thème Clair -->
-	<style data-purpose="textures-and-elevation">
-		/* Fond feutrine vert tournoi officiel texturé avec dégradé subtil */
-		.othello-felt-bg {
-			background: radial-gradient(circle at 48% 45%, #198049 0%, #157342 55%, #105933 100%);
-			box-shadow: inset 0 0 18px rgba(0, 0, 0, 0.45);
-		}
 
-		/* Cadre chêne blond / warm blonde oak chanfreiné */
-		.wood-frame {
-			background: linear-gradient(135deg, #d8b284 0%, #c29668 35%, #b38555 70%, #9e7142 100%);
-			box-shadow:
-				0 20px 35px -10px rgba(117, 75, 35, 0.28),
-				0 10px 20px -5px rgba(0, 0, 0, 0.08),
-				inset 2px 2px 5px rgba(255, 255, 255, 0.55),
-				inset -2px -3px 6px rgba(92, 59, 30, 0.45);
-		}
+			/* Cadre chêne blond / warm blonde oak chanfreiné */
+			.wood-frame {
+				background: linear-gradient(135deg, #d8b284 0%, #c29668 35%, #b38555 70%, #9e7142 100%);
+				box-shadow:
+					0 20px 35px -10px rgba(117, 75, 35, 0.28),
+					0 10px 20px -5px rgba(0, 0, 0, 0.08),
+					inset 2px 2px 5px rgba(255, 255, 255, 0.55),
+					inset -2px -3px 6px rgba(92, 59, 30, 0.45);
+			}
 
-		/* Effet pion 3D Noir brillant (obsidian) */
-		.piece-black {
-			background: radial-gradient(circle at 35% 28%, #4a4d53 0%, #1c1e22 45%, #050607 100%);
-			box-shadow:
-				0 4px 8px rgba(0, 0, 0, 0.45),
-				inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4),
-				inset 0 -2px 3px rgba(0, 0, 0, 0.9);
-			border: 1px solid rgba(15, 15, 18, 0.7);
-		}
+			/* Effet pion 3D Noir brillant (obsidian) */
+			.piece-black {
+				background: radial-gradient(circle at 35% 28%, #4a4d53 0%, #1c1e22 45%, #050607 100%);
+				box-shadow:
+					0 4px 8px rgba(0, 0, 0, 0.45),
+					inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4),
+					inset 0 -2px 3px rgba(0, 0, 0, 0.9);
+				border: 1px solid rgba(15, 15, 18, 0.7);
+			}
 
-		/* Effet pion 3D Blanc perlé lumineux */
-		.piece-white {
-			background: radial-gradient(circle at 32% 26%, #ffffff 0%, #f6f7fa 40%, #d8dde7 80%, #b8bfc9 100%);
-			box-shadow:
-				0 4px 9px rgba(0, 0, 0, 0.25),
-				inset 0 2px 2px rgba(255, 255, 255, 1),
-				inset 0 -2.5px 3.5px rgba(140, 148, 163, 0.5);
-			border: 1px solid rgba(255, 255, 255, 0.95);
-		}
+			/* Effet pion 3D Blanc perlé lumineux */
+			.piece-white {
+				background: radial-gradient(
+					circle at 32% 26%,
+					#ffffff 0%,
+					#f6f7fa 40%,
+					#d8dde7 80%,
+					#b8bfc9 100%
+				);
+				box-shadow:
+					0 4px 9px rgba(0, 0, 0, 0.25),
+					inset 0 2px 2px rgba(255, 255, 255, 1),
+					inset 0 -2.5px 3.5px rgba(140, 148, 163, 0.5);
+				border: 1px solid rgba(255, 255, 255, 0.95);
+			}
 
-		/* Pastille d'aide coup jouable (ghost move ring discret) */
-		.hint-dot {
-			background: rgba(255, 255, 255, 0.22);
-			border: 2px dashed rgba(255, 255, 255, 0.85);
-			box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
-			transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-		}
+			/* Pastille d'aide coup jouable (ghost move ring discret) */
+			.hint-dot {
+				background: rgba(255, 255, 255, 0.22);
+				border: 2px dashed rgba(255, 255, 255, 0.85);
+				box-shadow: 0 0 6px rgba(255, 255, 255, 0.3);
+				transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+			}
 
-		.hint-dot:hover {
-			background: rgba(255, 255, 255, 0.48);
-			transform: scale(1.18);
-			border-color: #ffffff;
-		}
+			.hint-dot:hover {
+				background: rgba(255, 255, 255, 0.48);
+				transform: scale(1.18);
+				border-color: #ffffff;
+			}
 
-		/* Scrollbar discrète claire pour le journal des coups */
-		.custom-scrollbar::-webkit-scrollbar {
-			width: 5px;
-		}
+			/* Scrollbar discrète claire pour le journal des coups */
+			.custom-scrollbar::-webkit-scrollbar {
+				width: 5px;
+			}
 
-		.custom-scrollbar::-webkit-scrollbar-track {
-			background: #f1eee7;
-			border-radius: 9999px;
-		}
+			.custom-scrollbar::-webkit-scrollbar-track {
+				background: #f1eee7;
+				border-radius: 9999px;
+			}
 
-		.custom-scrollbar::-webkit-scrollbar-thumb {
-			background: #d4cec2;
-			border-radius: 9999px;
-		}
+			.custom-scrollbar::-webkit-scrollbar-thumb {
+				background: #d4cec2;
+				border-radius: 9999px;
+			}
 
-		.custom-scrollbar::-webkit-scrollbar-thumb:hover {
-			background: #b5ad9e;
-		}
-	</style>
-	<!-- END: Custom Styles -->
-</head>
+			.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+				background: #b5ad9e;
+			}
+		</style>
+		<!-- END: Custom Styles -->
+	</head>
 
-<body
-	class="bg-linen-100 text-stone-800 min-h-screen flex flex-col justify-between selection:bg-amber-200 selection:text-stone-900 font-sans antialiased">
-	<!-- BEGIN: TopNavigation -->
-	<header
-		class="w-full bg-white/95 backdrop-blur-md border-b border-linen-300 px-6 py-3 flex items-center justify-between shadow-xs z-20">
-		<div class="flex items-center space-x-3">
-			<!-- Two-tone Reversi disc icon logo -->
-			<div class="w-8 h-8 rounded-full border border-oak-300 shadow-sm overflow-hidden flex relative"
-				title="Logo Othello">
-				<div class="w-1/2 h-full bg-stone-900"></div>
-				<div class="w-1/2 h-full bg-stone-50 border-l border-stone-300"></div>
-				<div class="absolute inset-0 rounded-full ring-1 ring-inset ring-black/10"></div>
-			</div>
-			<div>
-				<h1 class="font-serif tracking-wider text-xl font-bold text-stone-900 flex items-center gap-2">
-					OTHELLO <span
-						class="text-[11px] px-2 py-0.5 rounded-full bg-oak-100 text-oak-800 font-sans tracking-wide font-semibold border border-oak-300">OFFICIEL</span>
-				</h1>
-			</div>
-		</div>
-		<!-- Sélecteur de style / onglets de configuration -->
-		<nav class="flex items-center bg-linen-200/80 p-1 rounded-xl border border-linen-300 text-xs font-medium">
-			<button class="px-3.5 py-1.5 rounded-lg bg-white text-oak-900 font-semibold shadow-xs transition">Vue
-				Tournoi &amp; Bois</button>
-			<button class="px-3.5 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition">Vue
-				Analytique</button>
-			<button class="px-3.5 py-1.5 rounded-lg text-stone-600 hover:text-stone-900 transition">Épurée</button>
-		</nav>
-		<!-- Statut de connectivité & Paramètres rapides -->
-		<div class="flex items-center gap-3">
-			<div
-				class="flex items-center gap-2 text-xs bg-white px-3 py-1.5 rounded-lg border border-linen-300 shadow-xs">
-				<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-				<span class="text-stone-700 font-medium">Match Amical Classé</span>
-			</div>
-			<button
-				class="p-2 rounded-lg bg-white hover:bg-linen-100 border border-linen-300 text-stone-600 hover:text-stone-900 transition shadow-xs"
-				title="Règles du jeu">
-				<svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24"
-					xmlns="http://www.w3.org/2000/svg">
-					<path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-						stroke-linejoin="round" stroke-width="2"></path>
-				</svg>
-			</button>
-		</div>
-	</header>
-	<!-- END: TopNavigation -->
-	<!-- BEGIN: MainContainer -->
-	<main
-		class="flex-1 w-full max-w-7xl mx-auto p-4 md:p-6 lg:p-8 flex flex-col lg:flex-row items-center lg:items-start justify-center gap-8">
-		<!-- BEGIN: LeftSidebarPanel -->
-		<aside class="w-full lg:w-[380px] shrink-0 flex flex-col gap-4" data-purpose="game-dashboard">
-			<!-- Carte principale de contrôle de jeu -->
-			<div
-				class="bg-white border border-linen-300 rounded-2xl p-5 shadow-[0_10px_30px_rgba(0,0,0,0.06)] relative overflow-hidden">
-				<!-- 1. En-tête & État du jeu -->
-				<div class="flex items-center justify-between pb-3.5 border-b border-linen-200">
-					<div>
-						<span class="text-[11px] uppercase tracking-wider text-oak-700 font-bold font-sans">Session de
-							Tournoi</span>
-						<div class="text-stone-600 text-xs font-medium mt-0.5">Tour 5 • 59 cases libres</div>
-					</div>
-					<span
-						class="px-2.5 py-1 text-xs rounded-full bg-emerald-50 border border-emerald-200 text-emerald-700 font-semibold flex items-center gap-1.5">
-						<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span> En direct
-					</span>
+	<body
+		class="bg-linen-100 flex min-h-screen flex-col justify-between font-sans text-stone-800 antialiased selection:bg-amber-200 selection:text-stone-900"
+	>
+		<!-- BEGIN: TopNavigation -->
+		<header
+			class="border-linen-300 z-20 flex w-full items-center justify-between border-b bg-white/95 px-6 py-3 shadow-xs backdrop-blur-md"
+		>
+			<div class="flex items-center space-x-3">
+				<!-- Two-tone Reversi disc icon logo -->
+				<div
+					class="border-oak-300 relative flex h-8 w-8 overflow-hidden rounded-full border shadow-sm"
+					title="Logo Othello"
+				>
+					<div class="h-full w-1/2 bg-stone-900"></div>
+					<div class="h-full w-1/2 border-l border-stone-300 bg-stone-50"></div>
+					<div class="absolute inset-0 rounded-full ring-1 ring-black/10 ring-inset"></div>
 				</div>
-				<!-- 2. Indicateur de Trait Actif & Horloges individuelles -->
-				<div class="my-4">
-					<div class="text-[11px] uppercase font-bold text-stone-500 mb-2 flex items-center justify-between">
-						<span>Trait en cours</span>
-						<span class="text-oak-700 font-medium tracking-normal">Cadence 5 min Blitz</span>
-					</div>
-					<!-- Bannière joueur actif : Blanc -->
-					<div
-						class="flex items-center justify-between bg-[#fef9ee] border border-[#f4d58d] rounded-xl p-3.5 shadow-xs relative overflow-hidden">
-						<div class="flex items-center gap-3 z-10">
-							<div class="w-8 h-8 rounded-full piece-white shrink-0 ring-2 ring-amber-300/80"></div>
-							<div>
-								<span class="text-[11px] text-stone-500 block font-medium">C'est au tour des</span>
-								<span class="text-sm font-bold text-stone-900 tracking-wide">BLANCS</span>
-							</div>
-						</div>
-						<div class="text-right z-10">
-							<span class="font-mono text-2xl font-bold text-amber-700">04:32</span>
-							<span class="block text-[9px] text-stone-500 font-bold uppercase tracking-wider">Temps
-								Restant</span>
-						</div>
-					</div>
-				</div>
-				<!-- 3. Fiches Joueurs & Décompte des pions -->
-				<div class="space-y-2.5">
-					<!-- Joueur Noir -->
-					<div
-						class="flex items-center justify-between p-3 rounded-xl bg-linen-50 border border-linen-200/90 hover:border-linen-300 transition">
-						<div class="flex items-center gap-3">
-							<div class="w-9 h-9 rounded-full piece-black flex items-center justify-center shrink-0">
-							</div>
-							<div>
-								<div class="font-semibold text-xs text-stone-900 flex items-center gap-1.5">
-									GrandMaster_Noir
-									<span
-										class="text-[10px] px-1.5 py-0.2 rounded bg-linen-200 text-stone-600 font-medium">Elo
-										2140</span>
-								</div>
-								<div class="text-[11px] text-stone-500 font-mono mt-0.5">Chrono : 03:15</div>
-							</div>
-						</div>
-						<div class="text-right">
-							<div class="text-2xl font-black text-stone-900 font-mono leading-none">4</div>
-							<div class="text-[10px] text-stone-500 uppercase tracking-wider font-semibold">Pions</div>
-						</div>
-					</div>
-					<!-- Joueur Blanc -->
-					<div
-						class="flex items-center justify-between p-3 rounded-xl bg-linen-50 border border-linen-200/90 hover:border-linen-300 transition">
-						<div class="flex items-center gap-3">
-							<div class="w-9 h-9 rounded-full piece-white flex items-center justify-center shrink-0">
-							</div>
-							<div>
-								<div class="font-semibold text-xs text-stone-900 flex items-center gap-1.5">
-									Invité (Blanc)
-									<span
-										class="text-[10px] px-1.5 py-0.2 rounded bg-amber-100 text-amber-800 font-medium border border-amber-200">Au
-										trait</span>
-								</div>
-								<div class="text-[11px] text-amber-800 font-mono mt-0.5">Chrono : 04:32</div>
-							</div>
-						</div>
-						<div class="text-right">
-							<div class="text-2xl font-black text-stone-900 font-mono leading-none">1</div>
-							<div class="text-[10px] text-stone-500 uppercase tracking-wider font-semibold">Pion</div>
-						</div>
-					</div>
-					<!-- Jauge de domination du plateau (4 vs 1 = 80% vs 20%) -->
-					<div class="pt-1.5">
-						<div class="flex justify-between text-[11px] text-stone-500 font-medium mb-1">
-							<span class="font-semibold text-stone-800">Noir 80% (4)</span>
-							<span class="font-semibold text-stone-800">Blanc 20% (1)</span>
-						</div>
-						<div
-							class="w-full h-2 rounded-full bg-linen-200 overflow-hidden flex p-0.5 border border-linen-300">
-							<div class="h-full bg-stone-900 rounded-l-full transition-all duration-500"
-								style="width: 80%;"></div>
-							<div class="h-full bg-white rounded-r-full border border-stone-200 transition-all duration-500"
-								style="width: 20%;"></div>
-						</div>
-					</div>
-				</div>
-				<!-- 4. Historique des coups joués -->
-				<div class="mt-4 pt-3.5 border-t border-linen-200">
-					<div class="flex items-center justify-between mb-2">
-						<h3 class="text-[11px] uppercase tracking-wider font-bold text-stone-600">Journal des coups</h3>
+				<div>
+					<h1
+						class="flex items-center gap-2 font-serif text-xl font-bold tracking-wider text-stone-900"
+					>
+						OTHELLO
 						<span
-							class="text-[10px] text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded font-semibold border border-emerald-200">3
-							coups légaux</span>
+							class="bg-oak-100 text-oak-800 border-oak-300 rounded-full border px-2 py-0.5 font-sans text-[11px] font-semibold tracking-wide"
+							>OFFICIEL</span
+						>
+					</h1>
+				</div>
+			</div>
+			<!-- Sélecteur de style / onglets de configuration -->
+			<nav
+				class="bg-linen-200/80 border-linen-300 flex items-center rounded-xl border p-1 text-xs font-medium"
+			>
+				<button
+					class="text-oak-900 rounded-lg bg-white px-3.5 py-1.5 font-semibold shadow-xs transition"
+				>
+					Vue Tournoi &amp; Bois
+				</button>
+				<button class="rounded-lg px-3.5 py-1.5 text-stone-600 transition hover:text-stone-900">
+					Vue Analytique
+				</button>
+				<button class="rounded-lg px-3.5 py-1.5 text-stone-600 transition hover:text-stone-900">
+					Épurée
+				</button>
+			</nav>
+			<!-- Statut de connectivité & Paramètres rapides -->
+			<div class="flex items-center gap-3">
+				<div
+					class="border-linen-300 flex items-center gap-2 rounded-lg border bg-white px-3 py-1.5 text-xs shadow-xs"
+				>
+					<span class="h-2 w-2 animate-pulse rounded-full bg-emerald-500"></span>
+					<span class="font-medium text-stone-700">Match Amical Classé</span>
+				</div>
+				<button
+					class="hover:bg-linen-100 border-linen-300 rounded-lg border bg-white p-2 text-stone-600 shadow-xs transition hover:text-stone-900"
+					title="Règles du jeu"
+				>
+					<svg
+						class="h-4 w-4"
+						fill="none"
+						stroke="currentColor"
+						viewbox="0 0 24 24"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path
+							d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+						></path>
+					</svg>
+				</button>
+			</div>
+		</header>
+		<!-- END: TopNavigation -->
+		<!-- BEGIN: MainContainer -->
+		<main
+			class="mx-auto flex w-full max-w-7xl flex-1 flex-col items-center justify-center gap-8 p-4 md:p-6 lg:flex-row lg:items-start lg:p-8"
+		>
+			<!-- BEGIN: LeftSidebarPanel -->
+			<aside class="flex w-full shrink-0 flex-col gap-4 lg:w-[380px]" data-purpose="game-dashboard">
+				<!-- Carte principale de contrôle de jeu -->
+				<div
+					class="border-linen-300 relative overflow-hidden rounded-2xl border bg-white p-5 shadow-[0_10px_30px_rgba(0,0,0,0.06)]"
+				>
+					<!-- 1. En-tête & État du jeu -->
+					<div class="border-linen-200 flex items-center justify-between border-b pb-3.5">
+						<div>
+							<span class="text-oak-700 font-sans text-[11px] font-bold tracking-wider uppercase"
+								>Session de Tournoi</span
+							>
+							<div class="mt-0.5 text-xs font-medium text-stone-600">Tour 5 • 59 cases libres</div>
+						</div>
+						<span
+							class="flex items-center gap-1.5 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-1 text-xs font-semibold text-emerald-700"
+						>
+							<span class="h-1.5 w-1.5 animate-pulse rounded-full bg-emerald-500"></span> En direct
+						</span>
 					</div>
-					<div
-						class="bg-[#f8f7f4] rounded-xl p-2.5 border border-linen-300 max-h-24 overflow-y-auto custom-scrollbar font-mono text-[11px] text-stone-700 space-y-1">
-						<div class="grid grid-cols-3 py-0.5 px-2 rounded hover:bg-white text-stone-600">
-							<span class="font-medium text-stone-800">1. Départ</span>
-							<span>d4, e5 (Noir)</span>
-							<span>e4, d5 (Blanc)</span>
+					<!-- 2. Indicateur de Trait Actif & Horloges individuelles -->
+					<div class="my-4">
+						<div
+							class="mb-2 flex items-center justify-between text-[11px] font-bold text-stone-500 uppercase"
+						>
+							<span>Trait en cours</span>
+							<span class="text-oak-700 font-medium tracking-normal">Cadence 5 min Blitz</span>
+						</div>
+						<!-- Bannière joueur actif : Blanc -->
+						<div
+							class="relative flex items-center justify-between overflow-hidden rounded-xl border border-[#f4d58d] bg-[#fef9ee] p-3.5 shadow-xs"
+						>
+							<div class="z-10 flex items-center gap-3">
+								<div
+									class="piece-white h-8 w-8 shrink-0 rounded-full ring-2 ring-amber-300/80"
+								></div>
+								<div>
+									<span class="block text-[11px] font-medium text-stone-500"
+										>C'est au tour des</span
+									>
+									<span class="text-sm font-bold tracking-wide text-stone-900">BLANCS</span>
+								</div>
+							</div>
+							<div class="z-10 text-right">
+								<span class="font-mono text-2xl font-bold text-amber-700">04:32</span>
+								<span class="block text-[9px] font-bold tracking-wider text-stone-500 uppercase"
+									>Temps Restant</span
+								>
+							</div>
+						</div>
+					</div>
+					<!-- 3. Fiches Joueurs & Décompte des pions -->
+					<div class="space-y-2.5">
+						<!-- Joueur Noir -->
+						<div
+							class="bg-linen-50 border-linen-200/90 hover:border-linen-300 flex items-center justify-between rounded-xl border p-3 transition"
+						>
+							<div class="flex items-center gap-3">
+								<div
+									class="piece-black flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+								></div>
+								<div>
+									<div class="flex items-center gap-1.5 text-xs font-semibold text-stone-900">
+										GrandMaster_Noir
+										<span
+											class="py-0.2 bg-linen-200 rounded px-1.5 text-[10px] font-medium text-stone-600"
+											>Elo 2140</span
+										>
+									</div>
+									<div class="mt-0.5 font-mono text-[11px] text-stone-500">Chrono : 03:15</div>
+								</div>
+							</div>
+							<div class="text-right">
+								<div class="font-mono text-2xl leading-none font-black text-stone-900">4</div>
+								<div class="text-[10px] font-semibold tracking-wider text-stone-500 uppercase">
+									Pions
+								</div>
+							</div>
+						</div>
+						<!-- Joueur Blanc -->
+						<div
+							class="bg-linen-50 border-linen-200/90 hover:border-linen-300 flex items-center justify-between rounded-xl border p-3 transition"
+						>
+							<div class="flex items-center gap-3">
+								<div
+									class="piece-white flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
+								></div>
+								<div>
+									<div class="flex items-center gap-1.5 text-xs font-semibold text-stone-900">
+										Invité (Blanc)
+										<span
+											class="py-0.2 rounded border border-amber-200 bg-amber-100 px-1.5 text-[10px] font-medium text-amber-800"
+											>Au trait</span
+										>
+									</div>
+									<div class="mt-0.5 font-mono text-[11px] text-amber-800">Chrono : 04:32</div>
+								</div>
+							</div>
+							<div class="text-right">
+								<div class="font-mono text-2xl leading-none font-black text-stone-900">1</div>
+								<div class="text-[10px] font-semibold tracking-wider text-stone-500 uppercase">
+									Pion
+								</div>
+							</div>
+						</div>
+						<!-- Jauge de domination du plateau (4 vs 1 = 80% vs 20%) -->
+						<div class="pt-1.5">
+							<div class="mb-1 flex justify-between text-[11px] font-medium text-stone-500">
+								<span class="font-semibold text-stone-800">Noir 80% (4)</span>
+								<span class="font-semibold text-stone-800">Blanc 20% (1)</span>
+							</div>
+							<div
+								class="bg-linen-200 border-linen-300 flex h-2 w-full overflow-hidden rounded-full border p-0.5"
+							>
+								<div
+									class="h-full rounded-l-full bg-stone-900 transition-all duration-500"
+									style="width: 80%"
+								></div>
+								<div
+									class="h-full rounded-r-full border border-stone-200 bg-white transition-all duration-500"
+									style="width: 20%"
+								></div>
+							</div>
+						</div>
+					</div>
+					<!-- 4. Historique des coups joués -->
+					<div class="border-linen-200 mt-4 border-t pt-3.5">
+						<div class="mb-2 flex items-center justify-between">
+							<h3 class="text-[11px] font-bold tracking-wider text-stone-600 uppercase">
+								Journal des coups
+							</h3>
+							<span
+								class="rounded border border-emerald-200 bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold text-emerald-800"
+								>3 coups légaux</span
+							>
 						</div>
 						<div
-							class="grid grid-cols-3 py-0.5 px-2 rounded bg-white shadow-2xs text-stone-800 font-medium">
-							<span>2. Noir</span>
-							<span class="font-bold text-oak-800">f5</span>
-							<span class="text-stone-400">-</span>
+							class="border-linen-300 custom-scrollbar max-h-24 space-y-1 overflow-y-auto rounded-xl border bg-[#f8f7f4] p-2.5 font-mono text-[11px] text-stone-700"
+						>
+							<div class="grid grid-cols-3 rounded px-2 py-0.5 text-stone-600 hover:bg-white">
+								<span class="font-medium text-stone-800">1. Départ</span>
+								<span>d4, e5 (Noir)</span>
+								<span>e4, d5 (Blanc)</span>
+							</div>
+							<div
+								class="grid grid-cols-3 rounded bg-white px-2 py-0.5 font-medium text-stone-800 shadow-2xs"
+							>
+								<span>2. Noir</span>
+								<span class="text-oak-800 font-bold">f5</span>
+								<span class="text-stone-400">-</span>
+							</div>
+							<div class="text-oak-700 pt-1 text-center font-sans text-[10.5px] italic">
+								Dernier coup Noir : pion retourné en e5
+							</div>
 						</div>
-						<div class="text-[10.5px] text-oak-700 italic pt-1 text-center font-sans">
-							Dernier coup Noir : pion retourné en e5
+					</div>
+					<!-- 5. Actions de contrôle de partie -->
+					<div class="border-linen-200 mt-4 grid grid-cols-2 gap-2 border-t pt-3.5">
+						<button
+							class="bg-linen-50 border-linen-300 hover:border-linen-400 flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold text-stone-700 shadow-2xs transition hover:bg-white hover:text-stone-900"
+						>
+							<svg
+								class="h-3.5 w-3.5 text-stone-500"
+								fill="none"
+								stroke="currentColor"
+								viewbox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+								></path>
+							</svg>
+							Annuler coup
+						</button>
+						<button
+							class="bg-linen-50 border-linen-300 hover:border-linen-400 flex items-center justify-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-semibold text-stone-700 shadow-2xs transition hover:bg-white hover:text-stone-900"
+						>
+							<svg
+								class="h-3.5 w-3.5 text-stone-500"
+								fill="none"
+								stroke="currentColor"
+								viewbox="0 0 24 24"
+								xmlns="http://www.w3.org/2000/svg"
+							>
+								<path
+									d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+								></path>
+							</svg>
+							Proposer nulle
+						</button>
+						<button
+							class="flex items-center justify-center gap-1.5 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2 text-xs font-semibold text-rose-700 transition hover:bg-rose-100"
+						>
+							Abandonner
+						</button>
+						<button
+							class="flex items-center justify-center gap-1.5 rounded-xl bg-[#1e633d] px-3 py-2 text-xs font-semibold text-white shadow-sm transition hover:bg-[#164e2f]"
+						>
+							Nouvelle partie
+						</button>
+					</div>
+				</div>
+			</aside>
+			<!-- END: LeftSidebarPanel -->
+			<!-- BEGIN: RightBoardSection -->
+			<section class="flex flex-col items-center" data-purpose="othello-board-wrapper">
+				<!-- Cadre en chêne blond biseauté (Warm blonde oak bevel) -->
+				<div class="wood-frame relative rounded-2xl p-4 select-none md:p-6">
+					<!-- Zone complète du plateau avec ses coordonnées -->
+					<div class="relative flex flex-col items-center">
+						<!-- Coordonnées Supérieures (A-H) -->
+						<div
+							class="text-oak-900 grid w-[360px] grid-cols-8 pb-2 text-center font-serif text-sm font-bold tracking-wide sm:w-[480px] sm:text-base md:w-[560px]"
+						>
+							<span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span
+							><span>G</span><span>H</span>
+						</div>
+						<!-- Section centrale : Coordonnées Gauche + Grille Feutrine 8x8 + Coordonnées Droite -->
+						<div class="flex items-center">
+							<!-- Chiffres Latéraux Gauche (1-8) -->
+							<div
+								class="text-oak-900 flex h-[360px] flex-col justify-around pr-2.5 font-serif text-sm font-bold sm:h-[480px] sm:text-base md:h-[560px]"
+							>
+								<span class="flex h-1/8 items-center justify-center">1</span>
+								<span class="flex h-1/8 items-center justify-center">2</span>
+								<span class="flex h-1/8 items-center justify-center">3</span>
+								<span class="flex h-1/8 items-center justify-center">4</span>
+								<span class="flex h-1/8 items-center justify-center">5</span>
+								<span class="flex h-1/8 items-center justify-center">6</span>
+								<span class="flex h-1/8 items-center justify-center">7</span>
+								<span class="flex h-1/8 items-center justify-center">8</span>
+							</div>
+							<!-- Grille de Feutrine Verte 8x8 avec bordure blanche fine -->
+							<div
+								class="othello-felt-bg relative grid aspect-square h-[360px] w-[360px] grid-cols-8 grid-rows-8 border-2 border-white/80 shadow-2xl sm:h-[480px] sm:w-[480px] md:h-[560px] md:w-[560px]"
+							>
+								<!-- Repères officiels à 4 points (Othello dots sur c3, f3, c6, f6) -->
+								<span
+									class="pointer-events-none absolute top-[25%] left-[25%] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-stone-950/70"
+								></span>
+								<span
+									class="pointer-events-none absolute top-[25%] left-[75%] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-stone-950/70"
+								></span>
+								<span
+									class="pointer-events-none absolute top-[75%] left-[25%] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-stone-950/70"
+								></span>
+								<span
+									class="pointer-events-none absolute top-[75%] left-[75%] h-2 w-2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-stone-950/70"
+								></span>
+								<!-- LIGNE 1 (A1 - H1) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 2 (A2 - H2) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 3 (A3 - H3) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- D3 : Suggestion de coup légal -->
+								<div
+									class="group relative flex cursor-pointer items-center justify-center border border-white/50"
+								>
+									<span
+										class="hint-dot h-4 w-4 rounded-full opacity-85 group-hover:scale-125"
+									></span>
+								</div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 4 (A4 - H4) - État : D4=Blanc, E4=Noir -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- C4 : Suggestion de coup légal -->
+								<div
+									class="group relative flex cursor-pointer items-center justify-center border border-white/50"
+								>
+									<span
+										class="hint-dot h-4 w-4 rounded-full opacity-85 group-hover:scale-125"
+									></span>
+								</div>
+								<!-- Case D4 : PION BLANC -->
+								<div
+									class="relative flex items-center justify-center border border-white/50 p-1.5 sm:p-2"
+								>
+									<div
+										class="piece-white h-full w-full rounded-full transition-transform hover:scale-105"
+										title="D4: Blanc"
+									></div>
+								</div>
+								<!-- Case E4 : PION NOIR -->
+								<div
+									class="relative flex items-center justify-center border border-white/50 p-1.5 sm:p-2"
+								>
+									<div
+										class="piece-black h-full w-full rounded-full transition-transform hover:scale-105"
+										title="E4: Noir"
+									></div>
+								</div>
+								<!-- F4 : Suggestion de coup légal pour Blanc -->
+								<div
+									class="group relative flex cursor-pointer items-center justify-center border border-white/50"
+								>
+									<span
+										class="hint-dot h-4 w-4 rounded-full opacity-85 group-hover:scale-125"
+									></span>
+								</div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 5 (A5 - H5) - État : D5=Noir, E5=Noir, F5=Noir -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- Case D5 : PION NOIR -->
+								<div
+									class="relative flex items-center justify-center border border-white/50 p-1.5 sm:p-2"
+								>
+									<div
+										class="piece-black h-full w-full rounded-full transition-transform hover:scale-105"
+										title="D5: Noir"
+									></div>
+								</div>
+								<!-- Case E5 : PION NOIR -->
+								<div
+									class="relative flex items-center justify-center border border-white/50 p-1.5 sm:p-2"
+								>
+									<div
+										class="piece-black h-full w-full rounded-full transition-transform hover:scale-105"
+										title="E5: Noir"
+									></div>
+								</div>
+								<!-- Case F5 : PION NOIR -->
+								<div
+									class="relative flex items-center justify-center border border-white/50 p-1.5 sm:p-2"
+								>
+									<div
+										class="piece-black h-full w-full rounded-full transition-transform hover:scale-105"
+										title="F5: Noir"
+									></div>
+								</div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 6 (A6 - H6) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- D6 : Suggestion de coup légal -->
+								<div
+									class="group relative flex cursor-pointer items-center justify-center border border-white/50"
+								>
+									<span
+										class="hint-dot h-4 w-4 rounded-full opacity-85 group-hover:scale-125"
+									></span>
+								</div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- F6 : Coup alternatif légal -->
+								<div
+									class="group relative flex cursor-pointer items-center justify-center border border-white/50"
+								>
+									<span
+										class="hint-dot h-4 w-4 rounded-full opacity-85 group-hover:scale-125"
+									></span>
+								</div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 7 (A7 - H7) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<!-- LIGNE 8 (A8 - H8) -->
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+								<div class="relative flex items-center justify-center border border-white/50"></div>
+							</div>
+							<!-- Chiffres Latéraux Droite (1-8) -->
+							<div
+								class="text-oak-900 flex h-[360px] flex-col justify-around pl-2.5 font-serif text-sm font-bold sm:h-[480px] sm:text-base md:h-[560px]"
+							>
+								<span class="flex h-1/8 items-center justify-center">1</span>
+								<span class="flex h-1/8 items-center justify-center">2</span>
+								<span class="flex h-1/8 items-center justify-center">3</span>
+								<span class="flex h-1/8 items-center justify-center">4</span>
+								<span class="flex h-1/8 items-center justify-center">5</span>
+								<span class="flex h-1/8 items-center justify-center">6</span>
+								<span class="flex h-1/8 items-center justify-center">7</span>
+								<span class="flex h-1/8 items-center justify-center">8</span>
+							</div>
+						</div>
+						<!-- Coordonnées Inférieures (A-H) -->
+						<div
+							class="text-oak-900 grid w-[360px] grid-cols-8 pt-2 text-center font-serif text-sm font-bold tracking-wide sm:w-[480px] sm:text-base md:w-[560px]"
+						>
+							<span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span
+							><span>G</span><span>H</span>
 						</div>
 					</div>
 				</div>
-				<!-- 5. Actions de contrôle de partie -->
-				<div class="mt-4 pt-3.5 border-t border-linen-200 grid grid-cols-2 gap-2">
-					<button
-						class="px-3 py-2 rounded-xl bg-linen-50 hover:bg-white text-stone-700 hover:text-stone-900 text-xs font-semibold border border-linen-300 hover:border-linen-400 transition flex items-center justify-center gap-1.5 shadow-2xs">
-						<svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg">
-							<path d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" stroke-linecap="round"
-								stroke-linejoin="round" stroke-width="2"></path>
-						</svg>
-						Annuler coup
-					</button>
-					<button
-						class="px-3 py-2 rounded-xl bg-linen-50 hover:bg-white text-stone-700 hover:text-stone-900 text-xs font-semibold border border-linen-300 hover:border-linen-400 transition flex items-center justify-center gap-1.5 shadow-2xs">
-						<svg class="w-3.5 h-3.5 text-stone-500" fill="none" stroke="currentColor" viewbox="0 0 24 24"
-							xmlns="http://www.w3.org/2000/svg">
-							<path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" stroke-linecap="round"
-								stroke-linejoin="round" stroke-width="2"></path>
-						</svg>
-						Proposer nulle
-					</button>
-					<button
-						class="px-3 py-2 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-semibold border border-rose-200 transition flex items-center justify-center gap-1.5">
-						Abandonner
-					</button>
-					<button
-						class="px-3 py-2 rounded-xl bg-[#1e633d] hover:bg-[#164e2f] text-white text-xs font-semibold shadow-sm transition flex items-center justify-center gap-1.5">
-						Nouvelle partie
-					</button>
+				<!-- Pied de plateau : aide rapide au clic -->
+				<div class="mt-3.5 flex items-center gap-2 text-xs text-stone-600">
+					<span
+						class="inline-block h-3 w-3 rounded-full border-2 border-dashed border-stone-400"
+					></span>
+					<span
+						>Les cercles pointillés indiquent les coups légaux pour le joueur actif (Blanc)</span
+					>
 				</div>
+			</section>
+			<!-- END: RightBoardSection -->
+		</main>
+		<!-- END: MainContainer -->
+		<!-- BEGIN: Footer -->
+		<footer
+			class="border-linen-300 flex w-full flex-col items-center justify-between gap-2 border-t bg-white px-6 py-3.5 text-center text-xs text-stone-600 shadow-2xs sm:flex-row"
+		>
+			<div>
+				Plateforme de Jeu Reversi Desktop • Conforme aux règles de la Fédération Mondiale d'Othello
+				(WOF)
 			</div>
-		</aside>
-		<!-- END: LeftSidebarPanel -->
-		<!-- BEGIN: RightBoardSection -->
-		<section class="flex flex-col items-center" data-purpose="othello-board-wrapper">
-			<!-- Cadre en chêne blond biseauté (Warm blonde oak bevel) -->
-			<div class="wood-frame p-4 md:p-6 rounded-2xl relative select-none">
-				<!-- Zone complète du plateau avec ses coordonnées -->
-				<div class="relative flex flex-col items-center">
-					<!-- Coordonnées Supérieures (A-H) -->
-					<div
-						class="grid grid-cols-8 w-[360px] sm:w-[480px] md:w-[560px] text-center font-serif text-sm sm:text-base font-bold text-oak-900 pb-2 tracking-wide">
-						<span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
-					</div>
-					<!-- Section centrale : Coordonnées Gauche + Grille Feutrine 8x8 + Coordonnées Droite -->
-					<div class="flex items-center">
-						<!-- Chiffres Latéraux Gauche (1-8) -->
-						<div
-							class="flex flex-col justify-around h-[360px] sm:h-[480px] md:h-[560px] pr-2.5 font-serif text-sm sm:text-base font-bold text-oak-900">
-							<span class="h-1/8 flex items-center justify-center">1</span>
-							<span class="h-1/8 flex items-center justify-center">2</span>
-							<span class="h-1/8 flex items-center justify-center">3</span>
-							<span class="h-1/8 flex items-center justify-center">4</span>
-							<span class="h-1/8 flex items-center justify-center">5</span>
-							<span class="h-1/8 flex items-center justify-center">6</span>
-							<span class="h-1/8 flex items-center justify-center">7</span>
-							<span class="h-1/8 flex items-center justify-center">8</span>
-						</div>
-						<!-- Grille de Feutrine Verte 8x8 avec bordure blanche fine -->
-						<div
-							class="othello-felt-bg w-[360px] h-[360px] sm:w-[480px] sm:h-[480px] md:w-[560px] md:h-[560px] aspect-square grid grid-cols-8 grid-rows-8 border-2 border-white/80 shadow-2xl relative">
-							<!-- Repères officiels à 4 points (Othello dots sur c3, f3, c6, f6) -->
-							<span
-								class="absolute top-[25%] left-[25%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-stone-950/70 pointer-events-none"></span>
-							<span
-								class="absolute top-[25%] left-[75%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-stone-950/70 pointer-events-none"></span>
-							<span
-								class="absolute top-[75%] left-[25%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-stone-950/70 pointer-events-none"></span>
-							<span
-								class="absolute top-[75%] left-[75%] -translate-x-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-stone-950/70 pointer-events-none"></span>
-							<!-- LIGNE 1 (A1 - H1) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 2 (A2 - H2) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 3 (A3 - H3) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- D3 : Suggestion de coup légal -->
-							<div
-								class="border border-white/50 flex items-center justify-center relative cursor-pointer group">
-								<span class="w-4 h-4 rounded-full hint-dot opacity-85 group-hover:scale-125"></span>
-							</div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 4 (A4 - H4) - État : D4=Blanc, E4=Noir -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- C4 : Suggestion de coup légal -->
-							<div
-								class="border border-white/50 flex items-center justify-center relative cursor-pointer group">
-								<span class="w-4 h-4 rounded-full hint-dot opacity-85 group-hover:scale-125"></span>
-							</div>
-							<!-- Case D4 : PION BLANC -->
-							<div class="border border-white/50 flex items-center justify-center p-1.5 sm:p-2 relative">
-								<div class="w-full h-full rounded-full piece-white transition-transform hover:scale-105"
-									title="D4: Blanc"></div>
-							</div>
-							<!-- Case E4 : PION NOIR -->
-							<div class="border border-white/50 flex items-center justify-center p-1.5 sm:p-2 relative">
-								<div class="w-full h-full rounded-full piece-black transition-transform hover:scale-105"
-									title="E4: Noir"></div>
-							</div>
-							<!-- F4 : Suggestion de coup légal pour Blanc -->
-							<div
-								class="border border-white/50 flex items-center justify-center relative cursor-pointer group">
-								<span class="w-4 h-4 rounded-full hint-dot opacity-85 group-hover:scale-125"></span>
-							</div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 5 (A5 - H5) - État : D5=Noir, E5=Noir, F5=Noir -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- Case D5 : PION NOIR -->
-							<div class="border border-white/50 flex items-center justify-center p-1.5 sm:p-2 relative">
-								<div class="w-full h-full rounded-full piece-black transition-transform hover:scale-105"
-									title="D5: Noir"></div>
-							</div>
-							<!-- Case E5 : PION NOIR -->
-							<div class="border border-white/50 flex items-center justify-center p-1.5 sm:p-2 relative">
-								<div class="w-full h-full rounded-full piece-black transition-transform hover:scale-105"
-									title="E5: Noir"></div>
-							</div>
-							<!-- Case F5 : PION NOIR -->
-							<div class="border border-white/50 flex items-center justify-center p-1.5 sm:p-2 relative">
-								<div class="w-full h-full rounded-full piece-black transition-transform hover:scale-105"
-									title="F5: Noir"></div>
-							</div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 6 (A6 - H6) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- D6 : Suggestion de coup légal -->
-							<div
-								class="border border-white/50 flex items-center justify-center relative cursor-pointer group">
-								<span class="w-4 h-4 rounded-full hint-dot opacity-85 group-hover:scale-125"></span>
-							</div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- F6 : Coup alternatif légal -->
-							<div
-								class="border border-white/50 flex items-center justify-center relative cursor-pointer group">
-								<span class="w-4 h-4 rounded-full hint-dot opacity-85 group-hover:scale-125"></span>
-							</div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 7 (A7 - H7) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<!-- LIGNE 8 (A8 - H8) -->
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-							<div class="border border-white/50 flex items-center justify-center relative"></div>
-						</div>
-						<!-- Chiffres Latéraux Droite (1-8) -->
-						<div
-							class="flex flex-col justify-around h-[360px] sm:h-[480px] md:h-[560px] pl-2.5 font-serif text-sm sm:text-base font-bold text-oak-900">
-							<span class="h-1/8 flex items-center justify-center">1</span>
-							<span class="h-1/8 flex items-center justify-center">2</span>
-							<span class="h-1/8 flex items-center justify-center">3</span>
-							<span class="h-1/8 flex items-center justify-center">4</span>
-							<span class="h-1/8 flex items-center justify-center">5</span>
-							<span class="h-1/8 flex items-center justify-center">6</span>
-							<span class="h-1/8 flex items-center justify-center">7</span>
-							<span class="h-1/8 flex items-center justify-center">8</span>
-						</div>
-					</div>
-					<!-- Coordonnées Inférieures (A-H) -->
-					<div
-						class="grid grid-cols-8 w-[360px] sm:w-[480px] md:w-[560px] text-center font-serif text-sm sm:text-base font-bold text-oak-900 pt-2 tracking-wide">
-						<span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
-					</div>
-				</div>
+			<div class="flex items-center gap-5 font-medium text-stone-700">
+				<span class="hover:text-oak-700 cursor-pointer transition">Raccourcis Clavier</span>
+				<span class="hover:text-oak-700 cursor-pointer transition">Sons de pions</span>
+				<span class="hover:text-oak-700 cursor-pointer transition">Plein écran</span>
 			</div>
-			<!-- Pied de plateau : aide rapide au clic -->
-			<div class="mt-3.5 text-xs text-stone-600 flex items-center gap-2">
-				<span class="w-3 h-3 rounded-full border-2 border-dashed border-stone-400 inline-block"></span>
-				<span>Les cercles pointillés indiquent les coups légaux pour le joueur actif (Blanc)</span>
-			</div>
-		</section>
-		<!-- END: RightBoardSection -->
-	</main>
-	<!-- END: MainContainer -->
-	<!-- BEGIN: Footer -->
-	<footer
-		class="w-full bg-white border-t border-linen-300 text-stone-600 text-xs py-3.5 px-6 text-center flex flex-col sm:flex-row justify-between items-center gap-2 shadow-2xs">
-		<div>Plateforme de Jeu Reversi Desktop • Conforme aux règles de la Fédération Mondiale d'Othello (WOF)</div>
-		<div class="flex items-center gap-5 text-stone-700 font-medium">
-			<span class="hover:text-oak-700 cursor-pointer transition">Raccourcis Clavier</span>
-			<span class="hover:text-oak-700 cursor-pointer transition">Sons de pions</span>
-			<span class="hover:text-oak-700 cursor-pointer transition">Plein écran</span>
-		</div>
-	</footer>
-	<!-- END: Footer -->
-</body>
-
+		</footer>
+		<!-- END: Footer -->
+	</body>
 </html>

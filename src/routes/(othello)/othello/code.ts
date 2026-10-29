@@ -1,10 +1,9 @@
-import { batch, computed, writable } from "@amadeus-it-group/tansu";
+import {batch, computed, writable} from "@amadeus-it-group/tansu";
 
 interface Cell {
-	x: number
-	y: number
+	x: number;
+	y: number;
 }
-
 
 export type Board = number[][];
 type Direction = [number, number];
@@ -14,7 +13,7 @@ type Move = [number, number];
 // helpers
 // ------------------------------------------
 
-function createBoard({white, black}: {white: Cell[], black: Cell[]}) {
+function createBoard({white, black}: {white: Cell[]; black: Cell[]}) {
 	const board: Board = [
 		[0, 0, 0, 0, 0, 0, 0, 0],
 		[0, 0, 0, 0, 0, 0, 0, 0],
@@ -32,7 +31,7 @@ function createBoard({white, black}: {white: Cell[], black: Cell[]}) {
 	for (const {x, y} of black) {
 		board[y][x] = -1;
 	}
-	
+
 	return board;
 }
 
@@ -47,16 +46,22 @@ export const directions: Direction[] = [
 	[1, 1],
 ];
 
-
-
 // ------------------------------------------
 // writable
 // ------------------------------------------
 
-export const board$ = writable(createBoard({
-	white: [{x: 3, y: 3}, {x: 4, y: 4}],
-	black: [{x: 3, y: 4}, {x: 4, y: 3}],
-}));
+export const board$ = writable(
+	createBoard({
+		white: [
+			{x: 3, y: 3},
+			{x: 4, y: 4},
+		],
+		black: [
+			{x: 3, y: 4},
+			{x: 4, y: 3},
+		],
+	}),
+);
 
 export const trait$ = writable(-1);
 
@@ -88,25 +93,29 @@ export const playableCells$ = computed(() => {
 	const trait = trait$();
 	return playableCells(board, trait);
 });
-	
+
 export const playableCellsStr$ = computed(() => {
-	const cellsStr = []
+	const cellsStr = [];
 	for (const playableCell of playableCells$()) {
 		cellsStr.push(playableCell.join(""));
 	}
 	return cellsStr.join(",");
 });
 
-
 // ------------------------------------------
 // API
 // ------------------------------------------
 
-export function returnedPawns(board: Board, trait: number, initialCell: Move, direction: Direction) {
+export function returnedPawns(
+	board: Board,
+	trait: number,
+	initialCell: Move,
+	direction: Direction,
+) {
 	const returnedCells: Move[] = [];
 	const opponent = trait * -1;
 	const [dy, dx] = direction;
-	
+
 	let x = initialCell[1] + dx;
 	let y = initialCell[0] + dy;
 	while (board[y]?.[x] === opponent) {
@@ -116,7 +125,6 @@ export function returnedPawns(board: Board, trait: number, initialCell: Move, di
 	}
 
 	return board[y]?.[x] === trait ? returnedCells : [];
-	
 }
 
 export function canMove(board: Board, trait: number, move: Move): boolean {

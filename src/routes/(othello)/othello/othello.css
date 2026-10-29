@@ -3,8 +3,8 @@
 	--board-size: min(50vw, 80vh);
 	--pawn-size: 80%;
 	--header-size: 35px;
-	--color-cell: rgb(50, 156, 68);
-	--color-cell-header: rgb(148, 66, 36);
+	--color-cell: rgb(50 156 68);
+	--color-cell-header: rgb(148 66 36);
 	--color-white: white;
 	--color-black: black;
 	--color-inter-cell: white;

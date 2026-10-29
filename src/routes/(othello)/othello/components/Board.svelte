@@ -1,11 +1,12 @@
 <script lang="ts">
-	import { board$ } from "../code";
+	import {board$} from "../code";
 	import Cell from "./Cell.svelte";
 	import HeaderCell from "./HeaderCell.svelte";
 </script>
+
 <div class="board-parent">
 	<div class="board">
-		{#each { length: 9 } as _, i (i)}
+		{#each {length: 9} as _, i (i)}
 			<HeaderCell index={i} letter />
 		{/each}
 		<HeaderCell index={0} letter />
@@ -16,7 +17,7 @@
 			{/each}
 			<HeaderCell index={y + 1} />
 		{/each}
-		{#each { length: 9 } as _, i (i)}
+		{#each {length: 9} as _, i (i)}
 			<HeaderCell index={i} letter />
 		{/each}
 		<HeaderCell index={0} letter />
@@ -24,7 +25,6 @@
 </div>
 
 <style>
-	
 	.board {
 		display: grid;
 		grid-template-columns: var(--header-size) repeat(8, 1fr) var(--header-size);
@@ -34,6 +34,4 @@
 		gap: var(--line-gap);
 		background-color: white;
 	}
-
-
 </style>
