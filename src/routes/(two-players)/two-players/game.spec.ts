@@ -1,7 +1,7 @@
 import {describe, test, expect} from "vitest";
 import {donnerEvalFns, preCalculs} from "./game";
 import type {Coordonnees, Direction, Noeud} from "./game";
-import {createMinMax} from "$lib/game/alphaBetaWorker";
+import {createMinMax} from "#lib/game/alphaBetaWorker.js";
 
 const directions: readonly Direction[] = [
 	[-1, 0],
@@ -81,17 +81,16 @@ describe("preCalculs", () => {
 	test("preCalcul with 5", () => {
 		const tabEval = preCalculs(5);
 		expect(tabEval).toStrictEqual([
-			[ 0.8, 1.4, 1.6, 1.4, 0.8 ],
-			[ 1.4, 2.2, 2.6, 2.2, 1.4 ],
-			[ 1.6, 2.6, 3.6, 2.6, 1.6 ],
-			[ 1.4, 2.2, 2.6, 2.2, 1.4 ],
-			[ 0.8, 1.4, 1.6, 1.4, 0.8 ]
+			[0.8, 1.4, 1.6, 1.4, 0.8],
+			[1.4, 2.2, 2.6, 2.2, 1.4],
+			[1.6, 2.6, 3.6, 2.6, 1.6],
+			[1.4, 2.2, 2.6, 2.2, 1.4],
+			[0.8, 1.4, 1.6, 1.4, 0.8],
 		]);
 	});
 });
 
 describe("evaluer", () => {
-
 	test("negative eval", () => {
 		const board = [
 			[0, 0, 0, 0, 0],
@@ -105,6 +104,4 @@ describe("evaluer", () => {
 		const evaluation = evaluer({board, trait: 1});
 		expect(evaluation).toBe(-10);
 	});
-
-
 });

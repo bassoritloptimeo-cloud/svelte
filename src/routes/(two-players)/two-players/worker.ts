@@ -1,4 +1,4 @@
-import {createMinMax} from "$lib/game/alphaBetaWorker";
+import {createMinMax} from "#lib/game/alphaBetaWorker.js";
 import {donnerEvalFns} from "./game.ts";
 import type {Coordonnees, Direction, Noeud} from "./game.ts";
 
