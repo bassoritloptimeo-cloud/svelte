@@ -1,4 +1,4 @@
-import type {MinMaxNode} from "$lib/game/alphaBetaWorker";
+import type {MinMaxNode} from "#lib/game/alphaBetaWorker.js";
 
 export const MAX_EVAL = 1_000_000;
 
@@ -163,9 +163,9 @@ export function preCalculs(tailleGrille: number): number[][] {
 	const milieu = (tailleGrille - 1) / 2;
 	const BASE_VALUE_OFFSET = 0.75;
 	const ROUNDING_FACTOR = 10;
-	const centerValue = Math.round(
-		BASE_VALUE_OFFSET + Math.sqrt(2 * Math.pow(milieu, 2)) * ROUNDING_FACTOR,
-	);
+	const centerValue =
+		Math.round((BASE_VALUE_OFFSET + Math.sqrt(2) * milieu) * ROUNDING_FACTOR) / 10;
+
 	const evals: number[][] = [];
 	for (let i = 0; i < tailleGrille; i++) {
 		const distI = Math.abs(milieu - i);

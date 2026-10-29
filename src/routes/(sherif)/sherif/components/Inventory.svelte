@@ -1,14 +1,14 @@
 <script lang="ts">
-	import type { SherifInventory, BanditInventory } from '../types.ts';
+	import type {SherifInventory, BanditInventory} from "../types.ts";
 	import "../styles.css";
 
 	interface Props {
-		sherifInventory: SherifInventory
-		banditInventory: BanditInventory
-		inventoryTranslations: Record<string, string>
+		sherifInventory: SherifInventory;
+		banditInventory: BanditInventory;
+		inventoryTranslations: Record<string, string>;
 	}
 
-	const { sherifInventory, banditInventory, inventoryTranslations }: Props = $props();
+	const {sherifInventory, banditInventory, inventoryTranslations}: Props = $props();
 </script>
 
 <div class="bottomElement">
@@ -54,8 +54,6 @@
 		font-family: Domine, serif;
 		font-size: 0.875rem;
 	}
-	
-
 
 	.title-category {
 		display: flex;
@@ -68,30 +66,30 @@
 	.inventory-container {
 		height: 100%;
 		display: flex;
-  		justify-content: center;
+		justify-content: center;
 	}
 
 	.inventory {
 		max-height: 300px;
 		display: grid;
-    	grid-template-columns: auto 1fr;
+		grid-template-columns: auto 1fr;
 		overflow-y: auto;
 	}
 
 	.avatar-inventory {
 		display: grid;
-    	grid-template-columns: auto 1fr;
+		grid-template-columns: auto 1fr;
 	}
 
 	.key-inventory {
 		display: inline-block;
-		border-bottom : 1px solid rgb(255 255 255 / 20%);
+		border-bottom: 1px solid rgb(255 255 255 / 20%);
 		padding: 5px 10px;
 	}
-	
+
 	.value-inventory {
 		display: flex;
-		border-bottom : 1px solid rgb(255 255 255 / 20%);
+		border-bottom: 1px solid rgb(255 255 255 / 20%);
 		padding: 5px 10px;
 	}
 
@@ -109,5 +107,4 @@
 		color: rgb(218 196 121);
 		font-weight: bold;
 	}
-
 </style>

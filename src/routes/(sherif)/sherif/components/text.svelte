@@ -1,14 +1,13 @@
 <script lang="ts">
-
 	import "../styles.css";
 
 	interface Props {
 		text: string[];
 	}
 
-
-	const { text }: Props = $props();
+	const {text}: Props = $props();
 </script>
+
 <div class="bottomElement newspaper">
 	<h2>Journal des Événements</h2>
 	<div class="bottom">
@@ -23,7 +22,6 @@
 		color: rgb(74 222 128);
 		white-space: nowrap;
 		overflow: hidden;
-
 	}
 
 	h2 {

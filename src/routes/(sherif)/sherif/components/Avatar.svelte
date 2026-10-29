@@ -1,24 +1,29 @@
 <script lang="ts">
-	import { base } from '$app/paths';
+	import {asset} from "$app/paths";
 
 	interface Props {
-		name: "sherif" | "bandit"
-		left: number
-		top: number
+		name: "sherif" | "bandit";
+		left: number;
+		top: number;
 	}
 
-	const { left = 0, top = 0, name }: Props = $props();
+	const {left = 0, top = 0, name}: Props = $props();
 
 	const labels = {
 		sherif: "Shérif",
 		bandit: "Bandit",
-	}
-
+	};
 </script>
 
-<div class="Avatar sherif" class:sherif={name === 'sherif'} class:bandit={name === 'bandit'} style:top={`${top}%`} style:left={`${left}%`}>
+<div
+	class="Avatar sherif"
+	class:sherif={name === "sherif"}
+	class:bandit={name === "bandit"}
+	style:top={`${top}%`}
+	style:left={`${left}%`}
+>
 	<div class="avatar-background"></div>
-	<img src={`${base}/sherif/${name}.png`} alt={labels[name]}>
+	<img src={asset(`sherif/${name}.png`)} alt={labels[name]} />
 </div>
 
 <style>

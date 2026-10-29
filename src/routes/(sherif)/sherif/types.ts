@@ -1,6 +1,6 @@
-import type { Writable } from '@amadeus-it-group/tansu';
+import type {Writable} from "@amadeus-it-group/tansu";
 
-export type CellPos = { x: number; y: number };
+export type CellPos = {x: number; y: number};
 
 export type Cell = Record<string, CellPos>;
 
@@ -61,7 +61,7 @@ export type ActionFn = (
 	sherifInventory$: Writable<SherifInventory>,
 	banditInventory$: Writable<BanditInventory>,
 	runNote: (note: string) => void,
-	addInventory: (owner: 'sherif' | 'bandit', item: string, amount?: number) => void
+	addInventory: (owner: "sherif" | "bandit", item: string, amount?: number) => void,
 ) => void;
 
 export interface Destination {
