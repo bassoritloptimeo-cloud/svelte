@@ -1,5 +1,16 @@
 # AGENTS.md
 
+## Tech stack
+
+- **SvelteKit 3** + **Svelte 5** (runes mode) + **TypeScript 6**
+- **Vite 8** with `@sveltejs/vite-plugin-svelte` 7
+- **Tailwind CSS v4** via `@tailwindcss/vite` (forms + typography plugins)
+- **`@amadeus-it-group/tansu`** for state management
+- **Vitest 5** (Node + browser projects via Playwright); **Playwright** for e2e
+- **`@sveltejs/adapter-static`** — prerendered static site
+- **ESLint 10**, **Prettier 3**, **Stylelint 17**
+- Requires **Node >= 22.17** (SvelteKit 3 minimum)
+
 ## Commands
 
 - `npm run dev` — dev server
