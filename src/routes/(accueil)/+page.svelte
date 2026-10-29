@@ -3,8 +3,8 @@
 </script>
 
 <nav class="container" data-sveltekit-reload>
-	<a href={resolve("/sur-le-toit/")}>Labyrinthe 3D (sur le toit)</a>
-	<a href={resolve("/two-players/")}>Two players</a>
+	<a href={resolve("sur-le-toit/")}>Labyrinthe 3D (sur le toit)</a>
+	<a href={resolve("two-players/")}>Two players</a>
 </nav>
 
 <style>

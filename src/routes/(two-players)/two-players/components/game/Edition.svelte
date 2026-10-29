@@ -45,7 +45,8 @@
 	<div class="retour">
 		<button onclick={() => ($gameStarted$ = false)} class="menu-bouton">
 			<div>Retour au menu</div>
-			<img class="icone" src={asset("/two-players/retour.svg")} width="20px" alt="Retour au menu" />
+
+			<img class="icone" src={asset("two-players/retour.svg")} width="20px" alt="Retour au menu" />
 		</button>
 	</div>
 	<div class="info"></div>
