@@ -23,6 +23,7 @@
 		align-items: center;
 		width: 100vw;
 		height: 100vh;
+		background-color: rgb(28 25 23);
 	}
 
 	.left {
