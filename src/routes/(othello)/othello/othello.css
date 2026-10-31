@@ -5,18 +5,24 @@
 	--pawn-size: 75%;
 	--header-size: 35px;
 	--color-cell: #257b49;
-	--color-cell-header-top-left: rgb(120, 56, 24);
-	--color-cell-header-bottom-right: rgb(61, 27, 11);
-	--color-cell-header-middle: rgb(84, 37, 14);
+	--color-cell-header-top-left: rgb(120 56 24);
+	--color-cell-header-bottom-right: rgb(61 27 11);
+	--color-cell-header-middle: rgb(84 37 14);
 	--color-white: white;
 	--color-black: black;
 	--color-inter-cell: white;
-	--board-shadow-color: rgba(0, 0, 0, 0.7), inset 2px 2px 4px rgba(255, 255, 255, 0.2), inset -3px -3px 6px rgba(0, 0, 0, 0.6);
+	--board-shadow-color:
+		rgb(0 0 0 / 70%), inset 2px 2px 4px rgb(255 255 255 / 20%),
+		inset -3px -3px 6px rgb(0 0 0 / 60%);
 	--board-padding: 1.5rem;
-	--white-radiant: #ffffff 0%, #f4f5f7 40%, #cfd3db 85%, #a8aebc;
-	--white-shadow-color: rgba(0, 0, 0, 0.5), inset 0 2px 2px rgba(255, 255, 255, 1), inset 0 -3px 4px rgba(135, 142, 156, 0.5);
-	--white-border-color: rgba(200, 205, 215, 0.8);
+	--white-radiant: #fff 0%, #f4f5f7 40%, #cfd3db 85%, #a8aebc;
+	--white-shadow-color:
+		rgb(0 0 0 / 50%), inset 0 2px 2px rgb(255 255 255 / 100%),
+		inset 0 -3px 4px rgb(135 142 156 / 50%);
+	--white-border-color: rgb(200 205 215 / 80%);
 	--black-radiant-color: #3f4247 0%, #15171a 50%, #050607;
-	--black-shadow-color: rgba(0, 0, 0, 0.65), inset 0 1px 1px rgba(255, 255, 255, 0.35), inset 0 -2px 3px rgba(0, 0, 0, 0.85);
-	--black-border-color: rgba(0, 0, 0, 0.6);
+	--black-shadow-color:
+		rgb(0 0 0 / 65%), inset 0 1px 1px rgb(255 255 255 / 35%),
+		inset 0 -2px 3px rgb(0 0 0 / 85%);
+	--black-border-color: rgb(0 0 0 / 60%);
 }

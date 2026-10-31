@@ -35,10 +35,14 @@
 	}
 
 	.board-parent {
-		background: linear-gradient(135deg, var(--color-cell-header-top-left) 0%, var(--color-cell-header-middle) 40%, var(--color-cell-header-bottom-right) 100%);;
+		background: linear-gradient(
+			135deg,
+			var(--color-cell-header-top-left) 0%,
+			var(--color-cell-header-middle) 40%,
+			var(--color-cell-header-bottom-right) 100%
+		);
 		border-radius: 1rem;
 		box-shadow: 0 20px 40px -10px var(--board-shadow-color);
 		padding: var(--board-padding);
 	}
-
 </style>

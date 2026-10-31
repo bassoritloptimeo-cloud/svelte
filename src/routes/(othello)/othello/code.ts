@@ -69,6 +69,16 @@ export const trait$ = writable(-1);
 // computed
 // ------------------------------------------
 
+/**
+ * Current game state store.
+ *
+ * Tracks the complete game state including:
+ * - `trait`: The current player's orientation (-1 for black, 1 for white)
+ * - `nbWhite`: Number of white pawns on the board
+ * - `nbBlack`: Number of black pawns on the board
+ *
+ * Computed from `board$` and `trait$` stores.
+ */
 export const state$ = computed(() => {
 	const board = board$();
 	const trait = trait$();
