@@ -73,7 +73,7 @@
         width: var(--pawn-size);
         aspect-ratio: 1 / 1;
         transform-style: preserve-3d;
-        transition: transform 0.6s ease; /* Durée du retournement */
+        transition: var(--flipping-transition); /* Durée du retournement */
 
         /* Lorsque value === 1, on retourne tout le pion de 180deg */
         &.is-white {
@@ -91,7 +91,7 @@
     }
 
     .black {
-        background: radial-gradient(circle at 35% 30%, var(--black-radiant-color) 100%);
+        background: var(--black-radiant-color);
         border: 1px solid var(--black-border-color);
 
         /* Visible par défaut (0°) */
