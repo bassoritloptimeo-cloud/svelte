@@ -1,5 +1,6 @@
 <script lang="ts">
 	import {onCellClick, playableCellsStr$} from "../code";
+	import Pawn from "./Pawn.svelte";
 
 	interface Props {
 		value: number;
@@ -23,8 +24,8 @@
 	{#if value !== 0}
 		<!-- Le pion unique qui contient les deux faces et gère la rotation -->
 		<div class="pawn" class:is-white={value === 1} class:is-black={value === -1}>
-			<div class="face black"></div>
-			<div class="face white"></div>
+			<Pawn color="black" />
+			<Pawn color="white" />
 		</div>
 	{:else}
 		<div class:possibleMove={isPlayable}></div>
@@ -79,37 +80,18 @@
 		&.is-white {
 			transform: rotateY(180deg);
 		}
+
+		:global(.white) {
+			/* Pré-pivotée à 180° pour être cachée au départ à l'arrière */
+			transform: rotateY(180deg);
+		}
 	}
 
-	/* Style commun aux deux faces du pion */
-	.face {
-		position: absolute;
-		width: 100%;
-		height: 100%;
-		border-radius: 50%;
-		backface-visibility: hidden; /* Cache la face arrière pendant la rotation */
+	.is-black :global(.white) {
+		box-shadow: none;
 	}
 
-	.black {
-		background: var(--black-radiant-color);
-		border: 1px solid var(--black-border-color);
-
-		/* Visible par défaut (0°) */
-	}
-
-	.white {
-		background: radial-gradient(circle at 35% 30%, var(--white-radiant) 100%);
-		border: 1px solid var(--white-border-color);
-
-		/* Pré-pivotée à 180° pour être cachée au départ à l'arrière */
-		transform: rotateY(180deg);
-	}
-
-	.is-black .black {
-		box-shadow: 2px 5px 9px var(--black-shadow-color);
-	}
-
-	.is-white .white {
-		box-shadow: 2px 5px 10px var(--white-shadow-color);
+	.is-white :global(.black) {
+		box-shadow: none;
 	}
 </style>

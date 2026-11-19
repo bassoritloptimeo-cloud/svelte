@@ -2,7 +2,7 @@
 	--border-board: 4px;
 	--border-cell: 1px;
 	--board-size: min(50vw, 80vh);
-	--pawn-size: 75%;
+	--pawn-size: 70%;
 	--header-size: 35px;
 	--color-cell: #257b49;
 	--color-cell-header-top-left: rgb(120 56 24);
@@ -24,4 +24,6 @@
 		rgb(0 0 0 / 65%), inset 0 1px 1px rgb(255 255 255 / 35%), inset 0 -2px 3px rgb(0 0 0 / 85%);
 	--black-border-color: rgb(0 0 0 / 60%);
 	--flipping-transition: transform 0.6s ease;
+	--color-gradiant-background: linear-gradient(215deg, rgb(14 12 11), rgb(28 25 23), rgb(42 37 34));
+	--color-text-inert: rgb(168 162 158);
 }
