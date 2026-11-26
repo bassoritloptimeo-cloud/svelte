@@ -20,12 +20,12 @@
 	.black {
 		background: var(--black-radiant-color);
 		border: 1px solid var(--black-border-color);
-		box-shadow: 2px 5px 9px var(--black-shadow-color);
+		box-shadow: var(--black-shadow);
 	}
 
 	.white {
 		background: radial-gradient(circle at 35% 30%, var(--white-radiant) 100%);
 		border: 1px solid var(--white-border-color);
-		box-shadow: 2px 5px 9px var(--white-shadow-color);
+		box-shadow: var(--white-shadow);
 	}
 </style>
